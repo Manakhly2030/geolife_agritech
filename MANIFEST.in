@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include geolife_agritech *.css
+recursive-include geolife_agritech *.csv
+recursive-include geolife_agritech *.html
+recursive-include geolife_agritech *.ico
+recursive-include geolife_agritech *.js
+recursive-include geolife_agritech *.json
+recursive-include geolife_agritech *.md
+recursive-include geolife_agritech *.png
+recursive-include geolife_agritech *.py
+recursive-include geolife_agritech *.svg
+recursive-include geolife_agritech *.txt
+recursive-exclude geolife_agritech *.pyc
