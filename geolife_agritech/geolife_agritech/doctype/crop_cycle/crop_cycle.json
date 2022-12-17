@@ -1,0 +1,66 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:crop_cycle",
+ "creation": "2022-12-17 17:03:40.663312",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "crop_cycle",
+  "crop_name",
+  "crop_type",
+  "crop_items"
+ ],
+ "fields": [
+  {
+   "fieldname": "crop_cycle",
+   "fieldtype": "Data",
+   "label": "Crop Cycle",
+   "unique": 1
+  },
+  {
+   "fieldname": "crop_name",
+   "fieldtype": "Link",
+   "label": "Crop Name",
+   "options": "Crop"
+  },
+  {
+   "fetch_from": "crop_name.crop_type",
+   "fieldname": "crop_type",
+   "fieldtype": "Data",
+   "label": "Crop Type"
+  },
+  {
+   "fieldname": "crop_items",
+   "fieldtype": "Table",
+   "label": "Crop Items",
+   "options": "Crop Cycle Item"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2022-12-17 17:10:42.492932",
+ "modified_by": "Administrator",
+ "module": "Geolife Agritech",
+ "name": "Crop Cycle",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

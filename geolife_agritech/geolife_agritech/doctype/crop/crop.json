@@ -1,0 +1,116 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:crop_name",
+ "creation": "2022-12-17 16:27:13.573146",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_1",
+  "crop_name",
+  "crop_type",
+  "section_break_4",
+  "fertilizer_required",
+  "weed_control",
+  "plant_protection",
+  "column_break_8",
+  "nutritient_required",
+  "irrigation",
+  "dieses_and_control"
+ ],
+ "fields": [
+  {
+   "fieldname": "crop_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Crop Name",
+   "unique": 1
+  },
+  {
+   "fieldname": "crop_type",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Crop Type",
+   "options": "Crop Type"
+  },
+  {
+   "default": "0",
+   "fieldname": "fertilizer_required",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Fertilizer Required"
+  },
+  {
+   "default": "0",
+   "fieldname": "weed_control",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Weed Control"
+  },
+  {
+   "default": "0",
+   "fieldname": "plant_protection",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Plant Protection"
+  },
+  {
+   "default": "0",
+   "fieldname": "nutritient_required",
+   "fieldtype": "Check",
+   "label": "Nutritient Required"
+  },
+  {
+   "default": "0",
+   "fieldname": "irrigation",
+   "fieldtype": "Check",
+   "label": "Irrigation"
+  },
+  {
+   "default": "0",
+   "fieldname": "dieses_and_control",
+   "fieldtype": "Check",
+   "label": "Dieses and Control"
+  },
+  {
+   "fieldname": "section_break_1",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "section_break_4",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_8",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2022-12-17 16:28:45.480819",
+ "modified_by": "Administrator",
+ "module": "Geolife Agritech",
+ "name": "Crop",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
