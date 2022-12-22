@@ -20,7 +20,9 @@
   "column_break_11",
   "district",
   "territory",
-  "month"
+  "month",
+  "section_break_15",
+  "crop_cycle_products"
  ],
  "fields": [
   {
@@ -116,11 +118,21 @@
   {
    "fieldname": "column_break_11",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_15",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "crop_cycle_products",
+   "fieldtype": "Long Text",
+   "label": "Crop Cycle Products",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-12-17 16:47:25.948585",
+ "modified": "2022-12-20 11:13:27.662520",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Crop Calendar",

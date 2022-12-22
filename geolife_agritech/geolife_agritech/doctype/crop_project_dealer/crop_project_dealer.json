@@ -1,0 +1,39 @@
+{
+ "actions": [],
+ "autoname": "hash",
+ "creation": "2022-12-20 11:30:25.411471",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "dealer_name",
+  "area"
+ ],
+ "fields": [
+  {
+   "fieldname": "dealer_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Dealer Name"
+  },
+  {
+   "fieldname": "area",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Area"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2022-12-20 11:30:25.411471",
+ "modified_by": "Administrator",
+ "module": "Geolife Agritech",
+ "name": "Crop Project Dealer",
+ "naming_rule": "Random",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

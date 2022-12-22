@@ -1,29 +1,28 @@
 {
  "actions": [],
- "allow_import": 1,
  "allow_rename": 1,
- "autoname": "field:crop_stage",
- "creation": "2022-12-17 16:59:54.466669",
+ "autoname": "field:activity_type",
+ "creation": "2022-12-17 20:00:31.012914",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "crop_stage"
+  "activity_type"
  ],
  "fields": [
   {
-   "fieldname": "crop_stage",
+   "fieldname": "activity_type",
    "fieldtype": "Data",
-   "label": "Crop Stage",
+   "label": "Activity Type",
    "unique": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-12-22 10:10:55.204119",
+ "modified": "2022-12-17 20:00:31.012914",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
- "name": "Crop Stage",
+ "name": "Activity Type",
  "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [

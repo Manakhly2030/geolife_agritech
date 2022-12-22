@@ -1,44 +1,45 @@
 {
  "actions": [],
  "autoname": "autoincrement",
- "creation": "2022-12-17 17:02:42.033269",
+ "creation": "2022-12-21 21:48:44.206264",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "crop_stage",
-  "interval",
-  "product_bundle"
+  "product_name",
+  "quantity",
+  "uom"
  ],
  "fields": [
   {
-   "fieldname": "crop_stage",
+   "fieldname": "product_name",
    "fieldtype": "Link",
    "in_list_view": 1,
-   "label": "Crop Stage",
-   "options": "Crop Stage"
+   "label": "Product Name",
+   "options": "Product"
   },
   {
-   "fieldname": "interval",
-   "fieldtype": "Int",
+   "fieldname": "quantity",
+   "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Interval"
+   "label": "Quantity"
   },
   {
-   "fieldname": "product_bundle",
+   "fetch_from": "product_name.uom",
+   "fieldname": "uom",
    "fieldtype": "Link",
    "in_list_view": 1,
-   "label": "Product Bundle",
-   "options": "Product Bundle"
+   "label": "Uom",
+   "options": "UOM"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-12-22 09:48:06.865830",
+ "modified": "2022-12-21 21:51:16.860106",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
- "name": "Crop Cycle Item",
+ "name": "Product Bundle Item",
  "naming_rule": "Autoincrement",
  "owner": "Administrator",
  "permissions": [],

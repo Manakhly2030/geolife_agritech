@@ -1,29 +1,35 @@
 {
  "actions": [],
- "allow_import": 1,
  "allow_rename": 1,
- "autoname": "field:crop_stage",
- "creation": "2022-12-17 16:59:54.466669",
+ "autoname": "field:bundle_name",
+ "creation": "2022-12-21 21:49:58.291966",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "crop_stage"
+  "bundle_name",
+  "bundle_items"
  ],
  "fields": [
   {
-   "fieldname": "crop_stage",
+   "fieldname": "bundle_name",
    "fieldtype": "Data",
-   "label": "Crop Stage",
+   "label": "Bundle Name",
    "unique": 1
+  },
+  {
+   "fieldname": "bundle_items",
+   "fieldtype": "Table",
+   "label": "Bundle Items",
+   "options": "Product Bundle Item"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-12-22 10:10:55.204119",
+ "modified": "2022-12-21 21:49:58.291966",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
- "name": "Crop Stage",
+ "name": "Product Bundle",
  "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [

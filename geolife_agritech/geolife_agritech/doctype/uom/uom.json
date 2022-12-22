@@ -1,29 +1,28 @@
 {
  "actions": [],
- "allow_import": 1,
  "allow_rename": 1,
- "autoname": "field:crop_stage",
- "creation": "2022-12-17 16:59:54.466669",
+ "autoname": "field:uom",
+ "creation": "2022-12-20 10:45:53.879383",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "crop_stage"
+  "uom"
  ],
  "fields": [
   {
-   "fieldname": "crop_stage",
+   "fieldname": "uom",
    "fieldtype": "Data",
-   "label": "Crop Stage",
+   "label": "uom",
    "unique": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-12-22 10:10:55.204119",
+ "modified": "2022-12-20 10:45:53.879383",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
- "name": "Crop Stage",
+ "name": "UOM",
  "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [

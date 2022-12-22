@@ -1,0 +1,229 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2022-12-20 11:31:16.704044",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "crop_calendar",
+  "crop_calendar_details_section",
+  "calendar_year",
+  "crop_season",
+  "crop_col_2_column",
+  "state",
+  "zone",
+  "region",
+  "crop_col_3_column",
+  "district",
+  "territory",
+  "month",
+  "section_break_3",
+  "date_of_sowing",
+  "column_break_5",
+  "crop_name",
+  "column_break_18",
+  "crop_cycle",
+  "section_break_9",
+  "villages",
+  "section_break_11",
+  "dealers",
+  "section_break_13",
+  "total_area",
+  "total_villages",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Naming Series",
+   "options": "PROJ.####"
+  },
+  {
+   "fieldname": "crop_calendar",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Crop Calendar",
+   "options": "Crop Calendar"
+  },
+  {
+   "fieldname": "section_break_3",
+   "fieldtype": "Section Break"
+  },
+  {
+   "default": "Today",
+   "fieldname": "date_of_sowing",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Date of Sowing"
+  },
+  {
+   "fieldname": "column_break_5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "crop_calendar.crop_name",
+   "fieldname": "crop_name",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Crop Name",
+   "options": "Crop"
+  },
+  {
+   "fieldname": "section_break_9",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "villages",
+   "fieldtype": "Table",
+   "label": "Villages",
+   "options": "Crop Project Village"
+  },
+  {
+   "fieldname": "section_break_11",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "dealers",
+   "fieldtype": "Table",
+   "label": "Dealers",
+   "options": "Crop Project Dealer"
+  },
+  {
+   "fieldname": "section_break_13",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "total_area",
+   "fieldtype": "Float",
+   "label": "Total Area",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_villages",
+   "fieldtype": "Float",
+   "label": "Total Villages",
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "crop_calendar_details_section",
+   "fieldtype": "Section Break",
+   "label": "Crop Calendar Details"
+  },
+  {
+   "fetch_from": "crop_calendar.calendar_year",
+   "fieldname": "calendar_year",
+   "fieldtype": "Link",
+   "label": "Calendar Year",
+   "options": "Calendar Year",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "crop_calendar.crop_season",
+   "fieldname": "crop_season",
+   "fieldtype": "Link",
+   "label": "Crop Season",
+   "options": "Crop Season",
+   "read_only": 1
+  },
+  {
+   "fieldname": "crop_col_2_column",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "crop_calendar.state",
+   "fieldname": "state",
+   "fieldtype": "Data",
+   "label": "State",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "crop_calendar.zone",
+   "fieldname": "zone",
+   "fieldtype": "Data",
+   "label": "Zone",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "crop_calendar.region",
+   "fieldname": "region",
+   "fieldtype": "Data",
+   "label": "Region",
+   "read_only": 1
+  },
+  {
+   "fieldname": "crop_col_3_column",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "crop_calendar.district",
+   "fieldname": "district",
+   "fieldtype": "Data",
+   "label": "District",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "crop_calendar.territory",
+   "fieldname": "territory",
+   "fieldtype": "Data",
+   "label": "Territory",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "crop_calendar.month",
+   "fieldname": "month",
+   "fieldtype": "Data",
+   "label": "Month",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_18",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "crop_cycle",
+   "fieldtype": "Link",
+   "label": "Crop Cycle",
+   "options": "Crop Cycle"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Crop Project",
+   "print_hide": 1,
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2022-12-22 11:54:09.111561",
+ "modified_by": "Administrator",
+ "module": "Geolife Agritech",
+ "name": "Crop Project",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

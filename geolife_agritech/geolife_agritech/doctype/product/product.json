@@ -8,7 +8,8 @@
  "engine": "InnoDB",
  "field_order": [
   "product_id",
-  "product_name"
+  "product_name",
+  "uom"
  ],
  "fields": [
   {
@@ -21,11 +22,17 @@
    "fieldname": "product_name",
    "fieldtype": "Data",
    "label": "Product Name"
+  },
+  {
+   "fieldname": "uom",
+   "fieldtype": "Link",
+   "label": "UOM",
+   "options": "UOM"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-12-17 17:02:36.358363",
+ "modified": "2022-12-20 10:46:39.207001",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Product",
