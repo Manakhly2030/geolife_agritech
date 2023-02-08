@@ -306,11 +306,14 @@ def crop_seminar():
 
         if Crop_data['crop_seminar_attendance']:
             crop.crop_seminar_attendance = Crop_data['crop_seminar_attendance']
+            crop.crop_seminar_attendance = []
+            for itm in Crop_data['crop_seminar_attendance'] :
+                crop.append("crop_seminar_attendance",itm)
             
         if Crop_data['upload_photos']:
-            doc.items = []
-            for itm in payload['items'] :
-                doc.append("items",itm)
+            crop.upload_photos = []
+            for itm in Crop_data['upload_photos'] :
+                crop.append("upload_photos",itm)
             # crop.upload_photos = Crop_data['upload_photos']
        
         # if Crop_data['image']:
