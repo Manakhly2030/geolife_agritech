@@ -460,6 +460,71 @@ def expenses():
         return
     
 @frappe.whitelist(allow_guest=True)
+def free_sample_distribution():
+    api_key  = frappe.request.headers.get("Authorization")[6:21]
+    api_sec  = frappe.request.headers.get("Authorization")[22:]
+
+    user_email = get_user_info(api_key, api_sec)
+    if not user_email:
+        frappe.response["message"] = {
+            "status": False,
+            "message": "Unauthorised Access",
+        }
+        return
+
+    if frappe.request.method =="GET":
+        home_data = frappe.db.get_list("Free Sample Distribution", fields=["posting_date","farmer","geo_mitra","notes"])
+        frappe.response["message"] = {
+            "status":True,
+            "message": "",
+            "data" : home_data
+        }
+        return
+    
+    elif frappe.request.method == "POST":
+        _data = frappe.request.json
+        doc = frappe.get_doc({
+            "doctype":"Free Sample Distribution",
+            "posting_date": frappe.utils.nowdate(),
+            "farmer": _data['farmer'],
+            "geo_mitra": _data['geomitra'],
+            # "notes": _data['notes'],
+            # "product": _data['product'],
+            "update_status": _data['update_status'],
+        })
+        doc.insert()
+        if _data['image']:
+            data = _data['image']
+            filename = doc.name
+            docname = doc.name
+            doctype = "Free Sample Distribution"
+            image = ng_write_file(data, filename, docname, doctype)
+
+            doc.image = image
+        doc.save()
+        frappe.db.commit()
+
+        frappe.response["message"] = {
+            "status":True,
+            "message": "Free Sample distribution Successfully",
+        }
+        return
+    elif frappe.request.method == "PUT":
+        payload = frappe.request.json
+        doc = frappe.get_doc('Free Sample Distribution', payload['name'])
+        doc.update_status = payload['update_status']
+
+        doc.save(ignore_permissions=True)
+        frappe.response["message"] = {
+            "status":True,
+            "message": "Free Sample Details Updated Successfully",
+        }
+        
+        return
+
+    
+
+@frappe.whitelist(allow_guest=True)
 def whatsapp_to_farmer():
     api_key  = frappe.request.headers.get("Authorization")[6:21]
     api_sec  = frappe.request.headers.get("Authorization")[22:]
@@ -474,6 +539,28 @@ def whatsapp_to_farmer():
 
     if frappe.request.method =="GET":
         home_data = frappe.db.get_list("Whatsapp Templates", fields=["*"])
+        frappe.response["message"] = {
+            "status":True,
+            "message": "",
+            "data" : home_data
+        }
+        return
+
+@frappe.whitelist(allow_guest=True)
+def bk_center():
+    api_key  = frappe.request.headers.get("Authorization")[6:21]
+    api_sec  = frappe.request.headers.get("Authorization")[22:]
+
+    user_email = get_user_info(api_key, api_sec)
+    if not user_email:
+        frappe.response["message"] = {
+            "status": False,
+            "message": "Unauthorised Access",
+        }
+        return
+
+    if frappe.request.method =="GET":
+        home_data = frappe.db.get_list("BK Center", fields=["*"])
         frappe.response["message"] = {
             "status":True,
             "message": "",

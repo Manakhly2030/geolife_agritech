@@ -1,0 +1,60 @@
+{
+ "actions": [],
+ "autoname": "autoincrement",
+ "creation": "2023-02-03 16:38:41.564860",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "adding_crop_to_app",
+  "auto_ivr_tts_trigger",
+  "auto_whatsapp_message_trigger",
+  "cnp_notifications_whatssapp",
+  "cnp_videos_whatssapp"
+ ],
+ "fields": [
+  {
+   "default": "0",
+   "fieldname": "adding_crop_to_app",
+   "fieldtype": "Check",
+   "label": "Adding Crop To App"
+  },
+  {
+   "default": "0",
+   "fieldname": "auto_ivr_tts_trigger",
+   "fieldtype": "Check",
+   "label": "Auto IVR (TTS) Trigger"
+  },
+  {
+   "default": "0",
+   "fieldname": "auto_whatsapp_message_trigger",
+   "fieldtype": "Check",
+   "label": "Auto WhatsApp Message trigger"
+  },
+  {
+   "default": "0",
+   "fieldname": "cnp_notifications_whatssapp",
+   "fieldtype": "Check",
+   "label": "CNP Notifications Whatssapp"
+  },
+  {
+   "default": "0",
+   "fieldname": "cnp_videos_whatssapp",
+   "fieldtype": "Check",
+   "label": "CNP Videos Whatssapp"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2023-02-09 11:06:11.110721",
+ "modified_by": "Administrator",
+ "module": "Geolife Agritech",
+ "name": "Post Activities",
+ "naming_rule": "Autoincrement",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
