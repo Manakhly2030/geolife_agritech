@@ -583,12 +583,21 @@ def door_to_door_awareness():
 
     elif frappe.request.method == "POST":
         _data = frappe.request.json
+        geo_mitra_id = get_geomitra_from_userid(user_email)
+        
+        if geo_mitra_id == False:
+            frappe.response["message"] = {
+                "status": False,
+                "message": "Unauthorised Access",
+            }
+            return
+            
         doc = frappe.get_doc({
             "doctype":"Door To Door Visit",
             # "posting_date": frappe.utils.nowdate(),
             # "employee_location": _data['location'],
             "notes": _data['notes'],
-            "geo_mitra":_data['geomitra']
+            "geo_mitra": geo_mitra_id
 
         })
         doc.insert()
@@ -608,6 +617,13 @@ def door_to_door_awareness():
             "message": "Report Added Successfully",
         }
         return
+
+def get_geomitra_from_userid(email):
+    geo_mitra = frappe.db.get_all("Geo Mitra", fields=["name"], filters={"linked_user": email})
+    if geo_mitra: 
+        return geo_mitra[0].name
+    else: 
+        return False
 
 @frappe.whitelist(allow_guest=True)
 def sticker_pasting():
