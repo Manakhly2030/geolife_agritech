@@ -1,0 +1,102 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2023-02-04 21:22:27.955917",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "first_name",
+  "last_name",
+  "mobile_number",
+  "geomitra_id",
+  "geomitra_number",
+  "geomitra_number_company",
+  "pincode",
+  "city",
+  "farm_acre",
+  "farm_acre_unit",
+  "register_date"
+ ],
+ "fields": [
+  {
+   "fieldname": "first_name",
+   "fieldtype": "Data",
+   "label": "First Name"
+  },
+  {
+   "fieldname": "last_name",
+   "fieldtype": "Data",
+   "label": "Last Name"
+  },
+  {
+   "fieldname": "mobile_number",
+   "fieldtype": "Data",
+   "label": "Mobile Number"
+  },
+  {
+   "fieldname": "geomitra_id",
+   "fieldtype": "Data",
+   "label": "GeoMitra ID"
+  },
+  {
+   "fieldname": "geomitra_number",
+   "fieldtype": "Data",
+   "label": "GeoMitra Number"
+  },
+  {
+   "fieldname": "geomitra_number_company",
+   "fieldtype": "Data",
+   "label": "GeoMitra Number Company"
+  },
+  {
+   "fieldname": "pincode",
+   "fieldtype": "Data",
+   "label": "Pincode"
+  },
+  {
+   "fieldname": "city",
+   "fieldtype": "Data",
+   "label": "City"
+  },
+  {
+   "fieldname": "farm_acre",
+   "fieldtype": "Data",
+   "label": "Farm Acre"
+  },
+  {
+   "fieldname": "farm_acre_unit",
+   "fieldtype": "Data",
+   "label": "Farm Acre Unit"
+  },
+  {
+   "fieldname": "register_date",
+   "fieldtype": "Data",
+   "label": "Register Date"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2023-02-09 11:06:09.803491",
+ "modified_by": "Administrator",
+ "module": "Geolife Agritech",
+ "name": "My Farmer",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

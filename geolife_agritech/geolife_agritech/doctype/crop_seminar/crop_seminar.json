@@ -1,0 +1,147 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2023-02-03 16:38:46.746354",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "village",
+  "geo_mitra",
+  "seminar_date",
+  "seminar_time",
+  "venue",
+  "speeker_name",
+  "mobile_no",
+  "column_break_5",
+  "message",
+  "bk_center",
+  "section_break_9",
+  "pre_activities",
+  "section_break_11",
+  "post_activities",
+  "section_break_14",
+  "upload_photos",
+  "section_break_16",
+  "crop_seminar_attendance"
+ ],
+ "fields": [
+  {
+   "fieldname": "village",
+   "fieldtype": "Link",
+   "label": "Village",
+   "options": "Village"
+  },
+  {
+   "fieldname": "geo_mitra",
+   "fieldtype": "Link",
+   "label": "Geo Mitra",
+   "options": "Geo Mitra"
+  },
+  {
+   "fieldname": "seminar_date",
+   "fieldtype": "Data",
+   "label": "Seminar Date"
+  },
+  {
+   "fieldname": "seminar_time",
+   "fieldtype": "Data",
+   "label": "Seminar Time"
+  },
+  {
+   "fieldname": "venue",
+   "fieldtype": "Select",
+   "label": "Select The Venue",
+   "options": "\nVenue 01\nVenue 02\nVenue 03"
+  },
+  {
+   "fieldname": "speeker_name",
+   "fieldtype": "Data",
+   "label": "Speeker Didi Name"
+  },
+  {
+   "fieldname": "mobile_no",
+   "fieldtype": "Data",
+   "label": "Speeker Didi Mobile Number"
+  },
+  {
+   "fieldname": "column_break_5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "message",
+   "fieldtype": "Long Text",
+   "label": "Message"
+  },
+  {
+   "fieldname": "bk_center",
+   "fieldtype": "Link",
+   "label": "Nearest BK Center",
+   "options": "BK Center"
+  },
+  {
+   "fieldname": "section_break_9",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "pre_activities",
+   "fieldtype": "Table",
+   "label": "Pre Activities",
+   "options": "Pre Activities"
+  },
+  {
+   "fieldname": "section_break_11",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "post_activities",
+   "fieldtype": "Table",
+   "label": "Post Activities",
+   "options": "Post Activities"
+  },
+  {
+   "fieldname": "section_break_14",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "upload_photos",
+   "fieldtype": "Table",
+   "label": "Upload Photos",
+   "options": "Crop Seminar Photos"
+  },
+  {
+   "fieldname": "section_break_16",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "crop_seminar_attendance",
+   "fieldtype": "Table",
+   "label": "Crop Seminar Attendance",
+   "options": "Crop Seminar Attendance"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2023-02-09 11:06:02.632766",
+ "modified_by": "Administrator",
+ "module": "Geolife Agritech",
+ "name": "Crop Seminar",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

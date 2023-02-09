@@ -1,0 +1,109 @@
+{
+ "actions": [],
+ "autoname": "autoincrement",
+ "creation": "2023-02-03 16:35:30.398931",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "coordination_with_bk_didi",
+  "seminar_event_script",
+  "auto_ivr_tts_trigger",
+  "auto_whatsapp_message_tr",
+  "pop_material",
+  "crop_leaflet",
+  "product_leaflet",
+  "bannerscnp_hanging_product_wise",
+  "stickers",
+  "pol_stickers",
+  "demo_board",
+  "book_dholvala"
+ ],
+ "fields": [
+  {
+   "default": "0",
+   "fieldname": "coordination_with_bk_didi",
+   "fieldtype": "Check",
+   "label": "Coordination with BK didi"
+  },
+  {
+   "default": "0",
+   "fieldname": "seminar_event_script",
+   "fieldtype": "Check",
+   "label": "Seminar Event Script"
+  },
+  {
+   "default": "0",
+   "fieldname": "auto_ivr_tts_trigger",
+   "fieldtype": "Check",
+   "label": "Auto IVR (TTS) Trigger"
+  },
+  {
+   "default": "0",
+   "fieldname": "auto_whatsapp_message_tr",
+   "fieldtype": "Check",
+   "label": "Auto WhatsApp Message tr"
+  },
+  {
+   "default": "0",
+   "fieldname": "pop_material",
+   "fieldtype": "Check",
+   "label": "POP Material"
+  },
+  {
+   "default": "0",
+   "fieldname": "crop_leaflet",
+   "fieldtype": "Check",
+   "label": "Crop Leaflet"
+  },
+  {
+   "default": "0",
+   "fieldname": "product_leaflet",
+   "fieldtype": "Check",
+   "label": "Product Leaflet"
+  },
+  {
+   "default": "0",
+   "fieldname": "bannerscnp_hanging_product_wise",
+   "fieldtype": "Check",
+   "label": "Banners(CNP hanging, Product wise)"
+  },
+  {
+   "default": "0",
+   "fieldname": "stickers",
+   "fieldtype": "Check",
+   "label": "Stickers"
+  },
+  {
+   "default": "0",
+   "fieldname": "pol_stickers",
+   "fieldtype": "Check",
+   "label": "Pol Stickers"
+  },
+  {
+   "default": "0",
+   "fieldname": "demo_board",
+   "fieldtype": "Check",
+   "label": "Demo Board"
+  },
+  {
+   "default": "0",
+   "fieldname": "book_dholvala",
+   "fieldtype": "Check",
+   "label": "Book Dholvala"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2023-02-09 11:06:11.765543",
+ "modified_by": "Administrator",
+ "module": "Geolife Agritech",
+ "name": "Pre Activities",
+ "naming_rule": "Autoincrement",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

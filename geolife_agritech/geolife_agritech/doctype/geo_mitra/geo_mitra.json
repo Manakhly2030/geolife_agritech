@@ -1,0 +1,82 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:geo_mitra_id",
+ "creation": "2023-02-04 21:43:34.226615",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "first_name",
+  "last_name",
+  "mobile_number",
+  "geo_mitra_id",
+  "geo_mitra_number",
+  "geo_mitra_company",
+  "linked_user"
+ ],
+ "fields": [
+  {
+   "fieldname": "first_name",
+   "fieldtype": "Data",
+   "label": "First Name"
+  },
+  {
+   "fieldname": "last_name",
+   "fieldtype": "Data",
+   "label": "Last Name"
+  },
+  {
+   "fieldname": "mobile_number",
+   "fieldtype": "Data",
+   "label": "Mobile Number"
+  },
+  {
+   "fieldname": "geo_mitra_id",
+   "fieldtype": "Data",
+   "label": "Geo Mitra ID",
+   "unique": 1
+  },
+  {
+   "fieldname": "geo_mitra_number",
+   "fieldtype": "Data",
+   "label": "Geo Mitra Number"
+  },
+  {
+   "fieldname": "geo_mitra_company",
+   "fieldtype": "Data",
+   "label": "Geo Mitra Company"
+  },
+  {
+   "fieldname": "linked_user",
+   "fieldtype": "Link",
+   "label": "Linked User",
+   "options": "User"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2023-02-09 11:06:07.913110",
+ "modified_by": "Administrator",
+ "module": "Geolife Agritech",
+ "name": "Geo Mitra",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
