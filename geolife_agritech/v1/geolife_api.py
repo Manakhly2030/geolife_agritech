@@ -568,7 +568,7 @@ def bk_center():
         }
         return
 
-@frappe.whitelist()
+@frappe.whitelist(allow_guest=True)
 def door_to_door_awareness():
     api_key  = frappe.request.headers.get("Authorization")[6:21]
     api_sec  = frappe.request.headers.get("Authorization")[22:]
@@ -588,7 +588,8 @@ def door_to_door_awareness():
         if geo_mitra_id == False:
             frappe.response["message"] = {
                 "status": False,
-                "message": "Unauthorised Access",
+                "message": "Please map a geo mitra with this user",
+                "user_email": user_email
             }
             return
             
