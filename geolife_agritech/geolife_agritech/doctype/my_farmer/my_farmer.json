@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "field:mobile_number",
  "creation": "2023-02-04 21:22:27.955917",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -22,21 +23,25 @@
   {
    "fieldname": "first_name",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "First Name"
   },
   {
    "fieldname": "last_name",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Last Name"
   },
   {
    "fieldname": "mobile_number",
    "fieldtype": "Data",
-   "label": "Mobile Number"
+   "label": "Mobile Number",
+   "unique": 1
   },
   {
    "fieldname": "geomitra_id",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "GeoMitra ID"
   },
   {
@@ -57,11 +62,13 @@
   {
    "fieldname": "city",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "City"
   },
   {
    "fieldname": "farm_acre",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Farm Acre"
   },
   {
@@ -77,10 +84,11 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-02-09 11:06:09.803491",
+ "modified": "2023-02-10 14:50:18.421934",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "My Farmer",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {
