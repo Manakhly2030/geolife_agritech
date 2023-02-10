@@ -9,6 +9,7 @@ from frappe.utils import get_files_path, get_site_name, now, add_to_date, get_da
 from frappe.utils.data import escape_html
 import requests
 from frappe.core.doctype.user.user import test_password_strength
+import re
 
 @frappe.whitelist(allow_guest=True)
 def generate_otp(mobile_no):
@@ -65,7 +66,7 @@ def generate_otp(mobile_no):
         })
 
         doc.insert(ignore_permissions=True)
-        doc.save
+        doc.save()
         frappe.db.commit()
         
         frappe.local.response["message"] = {
@@ -603,7 +604,7 @@ def door_to_door_awareness():
         })
         doc.insert()
         if _data['image']:
-            data = _data['image']
+            data = _data['image'][0]
             filename = doc.name
             docname = doc.name
             doctype = "Door To Door Visit"
@@ -706,3 +707,35 @@ def raise_crop_alert():
             "message": "Report Added Successfully",
         }
         return
+
+@frappe.whitelist(allow_guest=True)
+def get_user_task():
+    api_key  = frappe.request.headers.get("Authorization")[6:21]
+    api_sec  = frappe.request.headers.get("Authorization")[22:]
+
+    user_email = get_user_info(api_key, api_sec)
+    if not user_email:
+        frappe.response["message"] = {
+            "status": False,
+            "message": "Unauthorised Access",
+        }
+        return
+
+    elif frappe.request.method == "GET":
+        tasks = frappe.db.get_all("ToDo", fields=["*"], filters={"allocated_to": user_email})
+
+        for t in tasks:
+            regex = re.compile(r'<[^>]+>')
+            t.description = regex.sub('', t.description)
+
+        frappe.response["message"] = {
+            "status":True,
+            "data": tasks,
+        }
+        return
+    
+    frappe.response["message"] = {
+            "status":False,
+            "message": "Something Went Wrong",
+        }
+    return
