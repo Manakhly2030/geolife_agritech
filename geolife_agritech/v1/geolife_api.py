@@ -220,7 +220,7 @@ def get_doctype_images(doctype, docname):
 
 def ng_write_file(data, filename, docname, doctype):
     try:
-        filename_ext = f'/home/frappe-sonuarya/frappe-bench/sites/geolife_agritech/private/files/{filename}.png'
+        filename_ext = f'/home/geolife/frappe-bench/sites/crop.erpgeolife.com/private/files/{filename}.png'
         base64data = data.replace('data:image/jpeg;base64,', '')
         imgdata = base64.b64decode(base64data)
         with open(filename_ext, 'wb') as file:
@@ -539,16 +539,26 @@ def whatsapp_to_farmer():
         return
 
     if frappe.request.method =="GET":
-        home_data = frappe.db.get_list("Whatsapp Templates", fields=["*"])
+        home_data = frappe.db.get_list("Whatsapp Templates", fields=["*"], filters={"type": "Daily"}, order_by="creation desc")
+
+        # file_name = home_data[0].image.replace("/files/", "")
+        # x = get_files_path(file_name, is_private=0)        
+        # with open(x, "rb") as f:
+        #     img_content = f.read()
+        #     img_base64 = base64.b64encode(img_content).decode()
+        #     img_base64 = 'data:image/jpeg;base64,' + img_base64
+        # home_data[0].image = img_base64
+
+        home_data[0].image = frappe.utils.get_url(home_data[0].image)
         frappe.response["message"] = {
             "status":True,
             "message": "",
-            "data" : home_data
+            "data" : home_data[0]
         }
         return
 
 @frappe.whitelist(allow_guest=True)
-def bk_center():
+def get_seminar_masters():
     api_key  = frappe.request.headers.get("Authorization")[6:21]
     api_sec  = frappe.request.headers.get("Authorization")[22:]
 
@@ -561,7 +571,17 @@ def bk_center():
         return
 
     if frappe.request.method =="GET":
-        home_data = frappe.db.get_list("BK Center", fields=["*"])
+
+        bk_center = [d.name for d in frappe.db.get_all("BK Center", fields=["name"])]
+        villages = [d.name for d in frappe.db.get_all("Village", fields=["name"])]
+        venues = ["V1", "V2"]
+
+        home_data = {
+            "bk_center": bk_center,
+            "villages": villages,
+            "venues": venues
+        }
+
         frappe.response["message"] = {
             "status":True,
             "message": "",
@@ -639,20 +659,30 @@ def sticker_pasting():
             "message": "Unauthorised Access",
         }
         return
-
+    
     elif frappe.request.method == "POST":
         _data = frappe.request.json
+
+        geo_mitra_id = get_geomitra_from_userid(user_email)
+        
+        if geo_mitra_id == False:
+            frappe.response["message"] = {
+                "status": False,
+                "message": "Please map a geo mitra with this user",
+                "user_email": user_email
+            }
+            return
+
         doc = frappe.get_doc({
             "doctype":"Sticker Pasting",
-            # "posting_date": frappe.utils.nowdate(),
-            # "employ_location": _data['location'],
-            "notes": _data['notes'],
-            "geo_mitra":_data['geomitra']
+            "posting_date": frappe.utils.nowdate(),
+            "farmer": _data['farmer_name'],
+            "geo_mitra": geo_mitra_id
 
         })
         doc.insert()
         if _data['image']:
-            data = _data['image']
+            data = _data['image'][0]
             filename = doc.name
             docname = doc.name
             doctype = "Sticker Pasting"
@@ -739,3 +769,38 @@ def get_user_task():
             "message": "Something Went Wrong",
         }
     return
+
+@frappe.whitelist(allow_guest=True)
+def search_farmer():
+    api_key  = frappe.request.headers.get("Authorization")[6:21]
+    api_sec  = frappe.request.headers.get("Authorization")[22:]
+
+    user_email = get_user_info(api_key, api_sec)
+    if not user_email:
+        frappe.response["message"] = {
+            "status": False,
+            "message": "Unauthorised Access",
+        }
+        return
+
+    if frappe.request.method =="POST":
+        _data = frappe.request.json
+        text = f'%{_data["text"]}%'
+        geo_mitra_id = get_geomitra_from_userid(user_email)
+
+        geomitras = frappe.db.sql("""
+            SELECT 
+                *
+            FROM
+                `tabMy Farmer`
+            WHERE (first_name like %s OR last_name like %s OR mobile_number like %s) AND geomitra_number = %s
+            LIMIT 10
+        """, (text, text, text, geo_mitra_id), as_dict=1)
+
+        frappe.response["message"] = {
+            "status":True,
+            "message": "",
+            "data" : geomitras,
+            "geo_mitra_id": geo_mitra_id
+        }
+        return
