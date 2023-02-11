@@ -171,7 +171,7 @@ def validate_otp(mobile_no, otp):
             userm = frappe.db.get_all('User', filters={'mobile_no': mobile_no}, fields=['*'])
             user_email = userm[0].name
 
-            user_image = get_doctype_images('User', user_email)
+            user_image = get_doctype_images('User', user_email, 1)
             _user_image =[]
             
             if user_image:
@@ -202,13 +202,13 @@ def validate_otp(mobile_no, otp):
             "message": "User Not Exists",
         }
 
-def get_doctype_images(doctype, docname):
+def get_doctype_images(doctype, docname, is_private):
     attachments = frappe.get_all("File", fields=["attached_to_name", "file_name", "file_url", "is_private"], filters={
                                  "attached_to_name": docname, "attached_to_doctype": doctype})
     resp = []
     for attachment in attachments:
         # file_path = site_path + attachment["file_url"]
-        x = get_files_path(attachment['file_name'], is_private=1)
+        x = get_files_path(attachment['file_name'], is_private=is_private)
         with open(x, "rb") as f:
             # encoded_string = base64.b64encode(image_file.read())
             img_content = f.read()
@@ -218,9 +218,9 @@ def get_doctype_images(doctype, docname):
 
     return resp
 
-def ng_write_file(data, filename, docname, doctype):
+def ng_write_file(data, filename, docname, doctype, file_type):
     try:
-        filename_ext = f'/home/geolife/frappe-bench/sites/crop.erpgeolife.com/private/files/{filename}.png'
+        filename_ext = f'/home/geolife/frappe-bench/sites/crop.erpgeolife.com/{file_type}/files/{filename}.png'
         base64data = data.replace('data:image/jpeg;base64,', '')
         imgdata = base64.b64decode(base64data)
         with open(filename_ext, 'wb') as file:
@@ -229,8 +229,8 @@ def ng_write_file(data, filename, docname, doctype):
         doc = frappe.get_doc(
             {
                 "file_name": f'{filename}.png',
-                "is_private": 1,
-                "file_url": f'/private/files/{filename}.png',
+                "is_private": is_private,
+                "file_url": f'/{file_type}/files/{filename}.png',
                 "attached_to_doctype": doctype,
                 "attached_to_name": docname,
                 "doctype": "File",
@@ -269,6 +269,12 @@ def crop_seminar():
 
     if frappe.request.method =="GET":
         home_data = frappe.db.get_list("Crop Seminar", fields=["*"])
+
+        for h in home_data:
+            image = get_doctype_images('Crop Seminar', h.name, 1)                
+            if image:
+                h.image = image[0]['image']
+
         frappe.response["message"] = {
             "status":True,
             "message": "",
@@ -295,9 +301,9 @@ def crop_seminar():
         if crop_data['image']:
             data = crop_data['image'][0]
             filename = crop.name
-            docname = crop_data.name
+            docname = crop.name
             doctype = "Crop Seminar"
-            image = ng_write_file(data, filename, docname, doctype)
+            image = ng_write_file(data, filename, docname, doctype, 'private')
 
             crop.image = image
         crop.save()
@@ -382,7 +388,7 @@ def activity_list():
             filename = doc.name
             docname = doc.name
             doctype = "Daily Activity"
-            image = ng_write_file(data, filename, docname, doctype)
+            image = ng_write_file(data, filename, docname, doctype, 'private')
 
             doc.image = image
         doc.save()
@@ -456,7 +462,7 @@ def expenses():
             filename = doc.name
             docname = doc.name
             doctype = "Geo Expenses"
-            image = ng_write_file(data, filename, docname, doctype)
+            image = ng_write_file(data, filename, docname, doctype, 'private')
 
             doc.image = image
         doc.save()
@@ -507,7 +513,7 @@ def free_sample_distribution():
             filename = doc.name
             docname = doc.name
             doctype = "Free Sample Distribution"
-            image = ng_write_file(data, filename, docname, doctype)
+            image = ng_write_file(data, filename, docname, doctype, 'private')
 
             doc.image = image
         doc.save()
@@ -636,7 +642,7 @@ def door_to_door_awareness():
             filename = doc.name
             docname = doc.name
             doctype = "Door To Door Visit"
-            image = ng_write_file(data, filename, docname, doctype)
+            image = ng_write_file(data, filename, docname, doctype, 'private')
 
             doc.image = image
         doc.save()
@@ -694,7 +700,7 @@ def sticker_pasting():
             filename = doc.name
             docname = doc.name
             doctype = "Sticker Pasting"
-            image = ng_write_file(data, filename, docname, doctype)
+            image = ng_write_file(data, filename, docname, doctype, 'private')
             doc.image = image
 
         doc.save()
@@ -734,7 +740,7 @@ def raise_crop_alert():
             filename = doc.name
             docname = doc.name
             doctype = "Crop Alert"
-            image = ng_write_file(data, filename, docname, doctype)
+            image = ng_write_file(data, filename, docname, doctype, 'private')
 
         doc.image = image
         doc.save()
