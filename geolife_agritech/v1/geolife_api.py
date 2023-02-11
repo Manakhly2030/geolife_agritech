@@ -203,8 +203,10 @@ def validate_otp(mobile_no, otp):
         }
 
 def get_doctype_images(doctype, docname, is_private):
-    attachments = frappe.get_all("File", fields=["attached_to_name", "file_name", "file_url", "is_private"], filters={
-                                 "attached_to_name": docname, "attached_to_doctype": doctype})
+    attachments = frappe.db.get_all("File",
+        fields=["attached_to_name", "file_name", "file_url", "is_private"],
+        filters={"attached_to_name": docname, "attached_to_doctype": doctype}
+    )
     resp = []
     for attachment in attachments:
         # file_path = site_path + attachment["file_url"]
@@ -244,11 +246,10 @@ def ng_write_file(data, filename, docname, doctype, file_type):
     except Exception as e:
         return e
 
-@frappe.whitelist()
+@frappe.whitelist(allow_guest=True)
 def crop_seminar():
     api_key  = frappe.request.headers.get("Authorization")[6:21]
     api_sec  = frappe.request.headers.get("Authorization")[22:]
-
     user_email = get_user_info(api_key, api_sec)
     if not user_email:
         frappe.response["message"] = {
@@ -268,7 +269,7 @@ def crop_seminar():
 
 
     if frappe.request.method =="GET":
-        home_data = frappe.db.get_list("Crop Seminar", fields=["*"])
+        home_data = frappe.db.get_all("Crop Seminar", fields=["*"])
 
         for h in home_data:
             image = get_doctype_images('Crop Seminar', h.name, 1)                
@@ -298,6 +299,9 @@ def crop_seminar():
 
         })
         crop.insert()
+        crop.save()
+        frappe.db.commit()
+
         if crop_data['image']:
             data = crop_data['image'][0]
             filename = crop.name
@@ -306,8 +310,6 @@ def crop_seminar():
             image = ng_write_file(data, filename, docname, doctype, 'private')
 
             crop.image = image
-        crop.save()
-        frappe.db.commit()
 
         frappe.response["message"] = {
             "status":True,
