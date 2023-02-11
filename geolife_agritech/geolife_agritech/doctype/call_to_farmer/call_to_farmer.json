@@ -1,11 +1,13 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "naming_series:",
  "creation": "2023-02-03 15:39:11.427986",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "naming_series",
   "farmer_name",
   "mobile_number",
   "call_time",
@@ -25,7 +27,7 @@
   },
   {
    "fieldname": "call_time",
-   "fieldtype": "Data",
+   "fieldtype": "Datetime",
    "label": "Call Time"
   },
   {
@@ -37,14 +39,21 @@
    "fieldname": "description",
    "fieldtype": "Data",
    "label": "Description"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Naming Series",
+   "options": "CF-.YYYY.-####"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-02-09 11:06:12.642214",
+ "modified": "2023-02-11 19:34:44.240231",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Call To Farmer",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {

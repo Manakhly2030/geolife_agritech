@@ -1,54 +1,49 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:center_name",
- "creation": "2023-02-04 21:38:41.240877",
+ "autoname": "field:city",
+ "creation": "2023-02-11 19:27:09.715638",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "center_name",
-  "mobile_number",
   "city",
-  "pincode",
-  "state"
+  "state",
+  "region",
+  "country"
  ],
  "fields": [
   {
-   "fieldname": "center_name",
-   "fieldtype": "Data",
-   "label": "Center Name",
-   "unique": 1
-  },
-  {
-   "fieldname": "mobile_number",
-   "fieldtype": "Data",
-   "label": "Mobile Number"
-  },
-  {
    "fieldname": "city",
-   "fieldtype": "Link",
-   "label": "City",
-   "options": "City"
-  },
-  {
-   "fieldname": "pincode",
    "fieldtype": "Data",
-   "label": "Pincode"
+   "label": "City",
+   "unique": 1
   },
   {
    "fieldname": "state",
    "fieldtype": "Link",
    "label": "State",
    "options": "State"
+  },
+  {
+   "fieldname": "region",
+   "fieldtype": "Link",
+   "label": "Region",
+   "options": "Region"
+  },
+  {
+   "fieldname": "country",
+   "fieldtype": "Link",
+   "label": "Country",
+   "options": "Country"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-02-11 19:31:46.818904",
+ "modified": "2023-02-11 19:31:24.496469",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
- "name": "BK Center",
+ "name": "City",
  "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [

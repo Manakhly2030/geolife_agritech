@@ -1,11 +1,13 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "naming_series:",
  "creation": "2023-02-07 23:55:00.292459",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "naming_series",
   "farmer",
   "geo_mitra",
   "product",
@@ -46,14 +48,22 @@
    "fieldname": "notes",
    "fieldtype": "Long Text",
    "label": "notes"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Naming Series",
+   "options": "FSB-.YYYY.-####"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-02-09 11:05:17.245636",
+ "modified": "2023-02-11 19:36:04.747788",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Free Sample Distribution",
+ "name_case": "UPPER CASE",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {

@@ -1,11 +1,13 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "naming_series:",
  "creation": "2023-02-03 16:18:38.916253",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "naming_series",
   "village",
   "event_date",
   "event_time",
@@ -35,8 +37,9 @@
   },
   {
    "fieldname": "venue",
-   "fieldtype": "Data",
-   "label": "Select The Venue"
+   "fieldtype": "Link",
+   "label": "Select The Venue",
+   "options": "Venue"
   },
   {
    "fieldname": "event_type",
@@ -50,8 +53,9 @@
   },
   {
    "fieldname": "bk_center",
-   "fieldtype": "Data",
-   "label": "Nearrest BK Center"
+   "fieldtype": "Link",
+   "label": "Nearrest BK Center",
+   "options": "BK Center"
   },
   {
    "fieldname": "speeker_name",
@@ -62,14 +66,22 @@
    "fieldname": "mobile_number",
    "fieldtype": "Data",
    "label": "Speaker Didi Mobile Number"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Naming Series",
+   "options": "CE-.YYYY.-####"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-02-09 11:06:12.297619",
+ "modified": "2023-02-11 19:33:27.467557",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Crop Events",
+ "name_case": "UPPER CASE",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {

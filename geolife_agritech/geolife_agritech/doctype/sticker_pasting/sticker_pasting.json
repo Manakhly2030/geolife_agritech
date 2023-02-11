@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "naming_series:",
  "creation": "2023-02-03 15:13:55.884986",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -9,7 +10,8 @@
   "farmer",
   "employ_location",
   "posting_date",
-  "geo_mitra"
+  "geo_mitra",
+  "naming_series"
  ],
  "fields": [
   {
@@ -33,14 +35,22 @@
    "fieldtype": "Link",
    "label": "Geo Mitra",
    "options": "Geo Mitra"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Naming Series",
+   "options": "SP-.YYYY.-####"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-02-09 11:06:05.829000",
+ "modified": "2023-02-11 19:23:06.889532",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Sticker Pasting",
+ "name_case": "UPPER CASE",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {

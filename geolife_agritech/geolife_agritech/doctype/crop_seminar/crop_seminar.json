@@ -1,11 +1,13 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "naming_series:",
  "creation": "2023-02-03 16:38:46.746354",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "naming_series",
   "village",
   "geo_mitra",
   "seminar_date",
@@ -40,19 +42,19 @@
   },
   {
    "fieldname": "seminar_date",
-   "fieldtype": "Data",
+   "fieldtype": "Date",
    "label": "Seminar Date"
   },
   {
    "fieldname": "seminar_time",
-   "fieldtype": "Data",
+   "fieldtype": "Time",
    "label": "Seminar Time"
   },
   {
    "fieldname": "venue",
-   "fieldtype": "Select",
+   "fieldtype": "Link",
    "label": "Select The Venue",
-   "options": "\nVenue 01\nVenue 02\nVenue 03"
+   "options": "Venue"
   },
   {
    "fieldname": "speeker_name",
@@ -118,14 +120,22 @@
    "fieldtype": "Table",
    "label": "Crop Seminar Attendance",
    "options": "Crop Seminar Attendance"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Naming Series",
+   "options": "CS-.YYYY.-####"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-02-09 11:06:02.632766",
+ "modified": "2023-02-11 19:41:48.642953",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Crop Seminar",
+ "name_case": "UPPER CASE",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {

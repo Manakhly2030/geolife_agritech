@@ -1,11 +1,13 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "naming_series:",
  "creation": "2023-02-03 15:35:03.256821",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "naming_series",
   "template_name",
   "message",
   "video_url",
@@ -38,14 +40,22 @@
    "fieldtype": "Select",
    "label": "Type",
    "options": "\nDaily\nFirst Time\nSecond Time\nThird Time"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Naming Series",
+   "options": "WA-.YYYY.-####"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-02-09 11:06:07.085139",
+ "modified": "2023-02-11 19:24:17.939615",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Whatsapp Templates",
+ "name_case": "UPPER CASE",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {
