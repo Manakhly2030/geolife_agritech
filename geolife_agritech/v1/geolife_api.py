@@ -257,6 +257,16 @@ def crop_seminar():
         }
         return
 
+    geo_mitra_id = get_geomitra_from_userid(user_email)
+    if geo_mitra_id == False:
+        frappe.response["message"] = {
+            "status": False,
+            "message": "Please map a geo mitra with this user",
+            "user_email": user_email
+        }
+        return
+
+
     if frappe.request.method =="GET":
         home_data = frappe.db.get_list("Crop Seminar", fields=["*"])
         frappe.response["message"] = {
@@ -267,27 +277,25 @@ def crop_seminar():
         return
     
     elif frappe.request.method == "POST":
-        Crop_data = frappe.request.json
-        # if Crop_data['image']:
-        #     ng_write_file(Crop_data['image'], 'demo.jpg', "", "Pet")
+        crop_data = frappe.request.json
         crop = frappe.get_doc({
             "doctype":"Crop Seminar",
-            "village": Crop_data['village'],
-            "seminar_date": Crop_data['seminar_date'],
-            "seminar_time": Crop_data['seminar_time'],
-            "venue": Crop_data['venue'],
-            "speeker_name": Crop_data['speeker_name'],
-            "mobile_no": Crop_data['mobile_no'],
-            "message": Crop_data['message'],
-            "bk_center": Crop_data['bk_center'],
-            "geo_mitra":_data['geomitra']
+            "village": crop_data['village'],
+            "seminar_date": crop_data['seminar_date'],
+            "seminar_time": crop_data['seminar_time'],
+            "venue": crop_data['venue'],
+            "speeker_name": crop_data['speeker_name'],
+            "mobile_no": crop_data['mobile_no'],
+            "message": crop_data['message'],
+            "bk_center": crop_data['bk_center'],
+            "geo_mitra": geo_mitra_id
 
         })
         crop.insert()
-        if Crop_data['image']:
-            data = Crop_data['image']
-            filename = Crop_data['pet_name']
-            docname = crop.name
+        if crop_data['image']:
+            data = crop_data['image'][0]
+            filename = crop.name
+            docname = crop_data.name
             doctype = "Crop Seminar"
             image = ng_write_file(data, filename, docname, doctype)
 
@@ -302,18 +310,18 @@ def crop_seminar():
         return
 
     elif frappe.request.method == "PUT":
-        Crop_data = frappe.request.json
-        crop = frappe.get_doc('Crop Seminar', Crop_data['name'])
+        crop_data = frappe.request.json
+        crop = frappe.get_doc('Crop Seminar', crop_data['name'])
 
-        if Crop_data['crop_seminar_attendance']:
-            crop.crop_seminar_attendance = Crop_data['crop_seminar_attendance']
+        if crop_data['crop_seminar_attendance']:
+            crop.crop_seminar_attendance = crop_data['crop_seminar_attendance']
             crop.crop_seminar_attendance = []
-            for itm in Crop_data['crop_seminar_attendance'] :
+            for itm in crop_data['crop_seminar_attendance'] :
                 crop.append("crop_seminar_attendance",itm)
             
-        if Crop_data['upload_photos']:
+        if crop_data['upload_photos']:
             crop.upload_photos = []
-            for itm in Crop_data['upload_photos'] :
+            for itm in crop_data['upload_photos'] :
                 crop.append("upload_photos",itm)
             # crop.upload_photos = Crop_data['upload_photos']
        
@@ -574,7 +582,7 @@ def get_seminar_masters():
 
         bk_center = [d.name for d in frappe.db.get_all("BK Center", fields=["name"])]
         villages = [d.name for d in frappe.db.get_all("Village", fields=["name"])]
-        venues = ["V1", "V2"]
+        venues = [d.name for d in frappe.db.get_all("Venue", fields=["name"])]
 
         home_data = {
             "bk_center": bk_center,
