@@ -6,7 +6,7 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "image",
+  "seminar_image_path",
   "seminar_image",
   "note"
  ],
@@ -24,7 +24,7 @@
    "label": "Note"
   },
   {
-   "fieldname": "image",
+   "fieldname": "seminar_image_path",
    "fieldtype": "Attach Image",
    "label": "seminar_Image_path"
   }
@@ -32,7 +32,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2023-02-12 21:02:25.677769",
+ "modified": "2023-02-12 21:08:18.099497",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Crop Seminar Photos",
