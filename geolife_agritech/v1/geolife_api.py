@@ -231,7 +231,7 @@ def ng_write_file(data, filename, docname, doctype, file_type):
         doc = frappe.get_doc(
             {
                 "file_name": f'{filename}.png',
-                "is_private": is_private,
+                "is_private": 0 if file_type == 'public' else 1,
                 "file_url": f'/{file_type}/files/{filename}.png',
                 "attached_to_doctype": doctype,
                 "attached_to_name": docname,
@@ -244,6 +244,7 @@ def ng_write_file(data, filename, docname, doctype, file_type):
         return doc.file_url
 
     except Exception as e:
+        frappe.log_error(str(e))
         return e
 
 @frappe.whitelist(allow_guest=True)
@@ -327,26 +328,17 @@ def crop_seminar():
         crop_data = frappe.request.json
         crop = frappe.get_doc('Crop Seminar', crop_data['name'])
 
-        if crop_data['crop_seminar_attendance']:
+        if crop_data.get('crop_seminar_attendance'):
             crop.crop_seminar_attendance = crop_data['crop_seminar_attendance']
             crop.crop_seminar_attendance = []
             for itm in crop_data['crop_seminar_attendance'] :
                 crop.append("crop_seminar_attendance",itm)
             
-        if crop_data['upload_photos']:
-            crop.upload_photos = []
-            for itm in crop_data['upload_photos'] :
-                crop.append("upload_photos",itm)
-            # crop.upload_photos = Crop_data['upload_photos']
-       
-        # if Crop_data['image']:
-        #     data = Crop_data['image']
-        #     filename = Crop_data['pet_name']
-        #     docname = Crop_data['name']
-        #     doctype = "Pet"
-        #     image = ng_write_file(data, filename, docname, doctype)
-        #     crop.image = image
+        if crop_data.get('upload_photos'):
 
+            crop.append("upload_photos", {"note": crop_data.get('note')})
+            ng_write_file(crop_data.get('image'), crop_data.get('name'), crop_data.get('name'), 'Crop Seminar', 'private')
+            
         crop.save(ignore_permissions=True)
         frappe.response["message"] = {
             "status":True,
