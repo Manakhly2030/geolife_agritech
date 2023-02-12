@@ -6,29 +6,29 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "activity_type",
+  "activity_name",
   "activity_status"
  ],
  "fields": [
-  {
-   "fieldname": "activity_type",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Activity Type",
-   "options": "Crop Seminar Activity"
-  },
   {
    "default": "0",
    "fieldname": "activity_status",
    "fieldtype": "Check",
    "in_list_view": 1,
    "label": "Activity Status"
+  },
+  {
+   "fieldname": "activity_name",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Activity Name",
+   "options": "Crop Seminar Activity"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2023-02-12 17:57:12.234187",
+ "modified": "2023-02-12 19:06:17.856433",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Post Activities",
