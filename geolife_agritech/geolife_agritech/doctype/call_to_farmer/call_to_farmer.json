@@ -44,12 +44,12 @@
    "fieldname": "naming_series",
    "fieldtype": "Select",
    "label": "Naming Series",
-   "options": "CF-.YYYY.-####"
+   "options": "CF-.YYYY.-.####"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-02-11 19:34:44.240231",
+ "modified": "2023-02-12 18:07:43.833849",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Call To Farmer",

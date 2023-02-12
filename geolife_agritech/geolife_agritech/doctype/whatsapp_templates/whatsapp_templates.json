@@ -45,12 +45,12 @@
    "fieldname": "naming_series",
    "fieldtype": "Select",
    "label": "Naming Series",
-   "options": "WA-.YYYY.-####"
+   "options": "WA-.YYYY.-.####"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-02-11 19:24:17.939615",
+ "modified": "2023-02-12 18:07:14.511203",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Whatsapp Templates",

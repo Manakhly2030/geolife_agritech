@@ -6,48 +6,29 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "adding_crop_to_app",
-  "auto_ivr_tts_trigger",
-  "auto_whatsapp_message_trigger",
-  "cnp_notifications_whatssapp",
-  "cnp_videos_whatssapp"
+  "activity_type",
+  "activity_status"
  ],
  "fields": [
   {
-   "default": "0",
-   "fieldname": "adding_crop_to_app",
-   "fieldtype": "Check",
-   "label": "Adding Crop To App"
+   "fieldname": "activity_type",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Activity Type",
+   "options": "Crop Seminar Activity"
   },
   {
    "default": "0",
-   "fieldname": "auto_ivr_tts_trigger",
+   "fieldname": "activity_status",
    "fieldtype": "Check",
-   "label": "Auto IVR (TTS) Trigger"
-  },
-  {
-   "default": "0",
-   "fieldname": "auto_whatsapp_message_trigger",
-   "fieldtype": "Check",
-   "label": "Auto WhatsApp Message trigger"
-  },
-  {
-   "default": "0",
-   "fieldname": "cnp_notifications_whatssapp",
-   "fieldtype": "Check",
-   "label": "CNP Notifications Whatssapp"
-  },
-  {
-   "default": "0",
-   "fieldname": "cnp_videos_whatssapp",
-   "fieldtype": "Check",
-   "label": "CNP Videos Whatssapp"
+   "in_list_view": 1,
+   "label": "Activity Status"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2023-02-09 11:06:11.110721",
+ "modified": "2023-02-12 17:57:12.234187",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Post Activities",

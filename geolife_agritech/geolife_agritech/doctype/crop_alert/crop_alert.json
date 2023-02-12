@@ -39,12 +39,12 @@
    "fieldname": "naming_series",
    "fieldtype": "Select",
    "label": "Naming Series",
-   "options": "CA-.YYYY.-####"
+   "options": "CA-.YYYY.-.####"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-02-11 19:21:16.878929",
+ "modified": "2023-02-12 17:59:56.550042",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Crop Alert",

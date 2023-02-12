@@ -71,12 +71,12 @@
    "fieldname": "naming_series",
    "fieldtype": "Select",
    "label": "Naming Series",
-   "options": "CE-.YYYY.-####"
+   "options": "CE-.YYYY.-.####"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-02-11 19:33:27.467557",
+ "modified": "2023-02-12 18:07:30.911725",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Crop Events",

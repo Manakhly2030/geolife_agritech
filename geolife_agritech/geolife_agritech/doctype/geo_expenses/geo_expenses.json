@@ -52,12 +52,12 @@
    "fieldname": "naming_series",
    "fieldtype": "Select",
    "label": "Naming Series",
-   "options": "GE-.YYYY.-####"
+   "options": "GE-.YYYY.-.####"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-02-11 19:22:25.463771",
+ "modified": "2023-02-12 18:00:08.798219",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Geo Expenses",

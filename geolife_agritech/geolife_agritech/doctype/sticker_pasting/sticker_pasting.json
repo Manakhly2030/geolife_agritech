@@ -40,12 +40,12 @@
    "fieldname": "naming_series",
    "fieldtype": "Select",
    "label": "Naming Series",
-   "options": "SP-.YYYY.-####"
+   "options": "SP-.YYYY.-.####"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-02-11 19:23:06.889532",
+ "modified": "2023-02-12 18:00:24.464617",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Sticker Pasting",
