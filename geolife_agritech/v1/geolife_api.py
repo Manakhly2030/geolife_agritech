@@ -272,9 +272,15 @@ def crop_seminar():
         home_data = frappe.db.get_all("Crop Seminar", fields=["*"])
 
         for h in home_data:
+            child_data = frappe.get_doc("Crop Seminar", h.name)
+            if child_data:
+                h.details = child_data
             image = get_doctype_images('Crop Seminar', h.name, 1)                
+
             if image:
                 h.image = image[0]['image']
+            else:
+                h.image = frappe.utils.get_url("/files/no-image.png")
 
         frappe.response["message"] = {
             "status":True,
