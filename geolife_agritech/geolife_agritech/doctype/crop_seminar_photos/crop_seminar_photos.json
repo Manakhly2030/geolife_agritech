@@ -6,37 +6,33 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "image",
   "seminar_image",
-  "note",
-  "live_location",
-  "image"
+  "note"
  ],
  "fields": [
   {
    "fieldname": "seminar_image",
    "fieldtype": "Image",
-   "label": "Seminar Image"
+   "label": "Seminar Image",
+   "options": "seminar_Image_path"
   },
   {
    "fieldname": "note",
    "fieldtype": "Long Text",
+   "in_list_view": 1,
    "label": "Note"
-  },
-  {
-   "fieldname": "live_location",
-   "fieldtype": "Geolocation",
-   "label": "Live Location"
   },
   {
    "fieldname": "image",
    "fieldtype": "Attach Image",
-   "label": "image"
+   "label": "seminar_Image_path"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2023-02-09 11:06:03.273210",
+ "modified": "2023-02-12 21:02:25.677769",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Crop Seminar Photos",
