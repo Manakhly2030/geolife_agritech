@@ -334,10 +334,10 @@ def crop_seminar():
             for itm in crop_data['crop_seminar_attendance'] :
                 crop.append("crop_seminar_attendance",itm)
             
-        if crop_data.get('upload_photos'):
+        if crop_data.get('is_upload_photos'):
 
-            crop.append("upload_photos", {"note": crop_data.get('note')})
-            ng_write_file(crop_data.get('image'), crop_data.get('name'), crop_data.get('name'), 'Crop Seminar', 'private')
+            image_url = ng_write_file(crop_data.get('image'), crop_data.get('name'), crop_data.get('name'), 'Crop Seminar', 'private')
+            crop.append("upload_photos", {"note": crop_data.get('note'), "seminar_image": frappe.utils.get_url(image_url)})
             
         crop.save(ignore_permissions=True)
         frappe.response["message"] = {
