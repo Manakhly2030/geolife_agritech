@@ -9,7 +9,20 @@
  "field_order": [
   "product_id",
   "product_name",
-  "uom"
+  "uom",
+  "column_break_rmug8",
+  "company_name",
+  "has_free_sample",
+  "dosage",
+  "dosage_unit",
+  "section_break_gtios",
+  "poduct_description",
+  "column_break_pgjsh",
+  "method_of_application",
+  "section_break_c2etn",
+  "categories",
+  "column_break_jse9b",
+  "subcategories"
  ],
  "fields": [
   {
@@ -28,11 +41,73 @@
    "fieldtype": "Link",
    "label": "UOM",
    "options": "UOM"
+  },
+  {
+   "fieldname": "column_break_rmug8",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "company_name",
+   "fieldtype": "Data",
+   "label": "Company Name"
+  },
+  {
+   "fieldname": "has_free_sample",
+   "fieldtype": "Data",
+   "label": "Has Free Sample"
+  },
+  {
+   "fieldname": "dosage",
+   "fieldtype": "Data",
+   "label": "Dosage"
+  },
+  {
+   "fieldname": "dosage_unit",
+   "fieldtype": "Data",
+   "label": "Dosage Unit"
+  },
+  {
+   "fieldname": "section_break_gtios",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "poduct_description",
+   "fieldtype": "Long Text",
+   "label": "Poduct Description"
+  },
+  {
+   "fieldname": "column_break_pgjsh",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "method_of_application",
+   "fieldtype": "Data",
+   "label": "Method Of Application"
+  },
+  {
+   "fieldname": "section_break_c2etn",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "categories",
+   "fieldtype": "Table",
+   "label": "Categories",
+   "options": "Geo Product Category"
+  },
+  {
+   "fieldname": "column_break_jse9b",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "subcategories",
+   "fieldtype": "Table",
+   "label": "Subcategories",
+   "options": "Geo Product Category"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-12-20 10:46:39.207001",
+ "modified": "2023-03-01 14:58:33.817788",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Product",

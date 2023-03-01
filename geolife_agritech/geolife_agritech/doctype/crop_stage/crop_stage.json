@@ -8,7 +8,25 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "crop_stage"
+  "crop_stage",
+  "locale",
+  "stagedescription",
+  "companyname",
+  "stagecontent",
+  "translatedfrom",
+  "crop",
+  "sequence",
+  "triggerbeforeorafter",
+  "stagenutirents",
+  "products",
+  "deleted",
+  "pushnotificationtemplate",
+  "ivrnotificationtemplate",
+  "ivrurl",
+  "whatsappnotificationtemplateimage",
+  "whatsappnotificationtemplate",
+  "smsnotificationtemplate",
+  "smstemplateid"
  ],
  "fields": [
   {
@@ -16,11 +34,103 @@
    "fieldtype": "Data",
    "label": "Crop Stage",
    "unique": 1
+  },
+  {
+   "fieldname": "locale",
+   "fieldtype": "Data",
+   "label": "Locale "
+  },
+  {
+   "fieldname": "stagedescription",
+   "fieldtype": "Long Text",
+   "label": "Stage Description"
+  },
+  {
+   "fieldname": "companyname",
+   "fieldtype": "Data",
+   "label": "Ccompany Name"
+  },
+  {
+   "fieldname": "stagecontent",
+   "fieldtype": "Long Text",
+   "label": "Stage Content"
+  },
+  {
+   "fieldname": "translatedfrom",
+   "fieldtype": "Data",
+   "label": "Translated From "
+  },
+  {
+   "fieldname": "crop",
+   "fieldtype": "Link",
+   "label": "Crop",
+   "options": "Crop"
+  },
+  {
+   "fieldname": "sequence",
+   "fieldtype": "Data",
+   "label": "Sequence"
+  },
+  {
+   "fieldname": "triggerbeforeorafter",
+   "fieldtype": "Data",
+   "label": "Trigger Before Or After"
+  },
+  {
+   "fieldname": "stagenutirents",
+   "fieldtype": "Data",
+   "label": "Stage Nutirents"
+  },
+  {
+   "fieldname": "products",
+   "fieldtype": "Table",
+   "label": "Products",
+   "options": "Crop Stage Products"
+  },
+  {
+   "fieldname": "deleted",
+   "fieldtype": "Data",
+   "label": "deleted"
+  },
+  {
+   "fieldname": "pushnotificationtemplate",
+   "fieldtype": "Data",
+   "label": "Push Notification Template"
+  },
+  {
+   "fieldname": "ivrnotificationtemplate",
+   "fieldtype": "Data",
+   "label": "IVR Notification Template"
+  },
+  {
+   "fieldname": "ivrurl",
+   "fieldtype": "Data",
+   "label": "IVR Url"
+  },
+  {
+   "fieldname": "whatsappnotificationtemplateimage",
+   "fieldtype": "Data",
+   "label": "Whatsapp Notification Template Image"
+  },
+  {
+   "fieldname": "whatsappnotificationtemplate",
+   "fieldtype": "Data",
+   "label": "Whatsapp Notification Template"
+  },
+  {
+   "fieldname": "smsnotificationtemplate",
+   "fieldtype": "Data",
+   "label": "SMS Notification Template"
+  },
+  {
+   "fieldname": "smstemplateid",
+   "fieldtype": "Data",
+   "label": "SMS TemplateId"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-12-22 10:10:55.204119",
+ "modified": "2023-03-01 15:41:17.193915",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Crop Stage",

@@ -17,7 +17,18 @@
   "column_break_8",
   "nutritient_required",
   "irrigation",
-  "dieses_and_control"
+  "dieses_and_control",
+  "section_break_ndl9s",
+  "infosection",
+  "displayonfarmerapp",
+  "crop_nutirents",
+  "crop_botanical_name",
+  "description",
+  "column_break_pc6gk",
+  "translatedfrom",
+  "companyname",
+  "crop_season",
+  "locale"
  ],
  "fields": [
   {
@@ -86,11 +97,64 @@
   {
    "fieldname": "column_break_8",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_ndl9s",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "infosection",
+   "fieldtype": "Data",
+   "label": "Info Section"
+  },
+  {
+   "fieldname": "displayonfarmerapp",
+   "fieldtype": "Data",
+   "label": "Display On Farmer App"
+  },
+  {
+   "fieldname": "crop_nutirents",
+   "fieldtype": "Data",
+   "label": "Crop Nutirents"
+  },
+  {
+   "fieldname": "crop_botanical_name",
+   "fieldtype": "Data",
+   "label": "Crop Botanical Name"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Long Text",
+   "label": "Description"
+  },
+  {
+   "fieldname": "column_break_pc6gk",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "translatedfrom",
+   "fieldtype": "Data",
+   "label": "Translated From"
+  },
+  {
+   "fieldname": "companyname",
+   "fieldtype": "Data",
+   "label": "Company Name"
+  },
+  {
+   "fieldname": "crop_season",
+   "fieldtype": "Data",
+   "label": "Crop Season"
+  },
+  {
+   "fieldname": "locale",
+   "fieldtype": "Data",
+   "label": "Locale"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-12-17 16:28:45.480819",
+ "modified": "2023-03-01 15:47:50.145681",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Crop",
