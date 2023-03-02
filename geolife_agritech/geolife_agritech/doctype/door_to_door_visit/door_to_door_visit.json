@@ -8,6 +8,7 @@
  "engine": "InnoDB",
  "field_order": [
   "notes",
+  "farmer",
   "employee_location",
   "geo_mitra",
   "naming_series"
@@ -34,11 +35,17 @@
    "fieldtype": "Select",
    "label": "Naming Series",
    "options": "DV-.YYYY.-.####"
+  },
+  {
+   "fieldname": "farmer",
+   "fieldtype": "Link",
+   "label": "Farmer",
+   "options": "My Farmer"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-02-12 18:00:38.708678",
+ "modified": "2023-03-02 14:41:51.298101",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Door To Door Visit",

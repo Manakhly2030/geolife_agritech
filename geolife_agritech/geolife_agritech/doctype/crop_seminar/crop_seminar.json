@@ -25,7 +25,8 @@
   "section_break_14",
   "upload_photos",
   "section_break_16",
-  "crop_seminar_attendance"
+  "crop_seminar_attendance",
+  "employee_location"
  ],
  "fields": [
   {
@@ -126,11 +127,16 @@
    "fieldtype": "Select",
    "label": "Naming Series",
    "options": "CS-.YYYY.-.####"
+  },
+  {
+   "fieldname": "employee_location",
+   "fieldtype": "Geolocation",
+   "label": "Employee Location"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-02-12 17:59:15.041912",
+ "modified": "2023-03-02 14:48:11.802380",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Crop Seminar",

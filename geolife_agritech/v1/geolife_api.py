@@ -371,6 +371,16 @@ def activity_list():
     
     elif frappe.request.method == "POST":
         _data = frappe.request.json
+
+        geo_mitra_id = get_geomitra_from_userid(user_email)
+        
+        if geo_mitra_id == False:
+            frappe.response["message"] = {
+                "status": False,
+                "message": "Please map a geo mitra with this user",
+                "user_email": user_email
+            }
+            return
         # if Crop_data['image']:
         #     ng_write_file(Crop_data['image'], 'demo.jpg', "", "Pet")
         doc = frappe.get_doc({
@@ -379,7 +389,7 @@ def activity_list():
             "activity_name": _data['activity_name'],
             "activity_type": _data['activity_type'],
             "notes": _data['notes'],
-            "geo_mitra":_data['geomitra']
+            "geo_mitra":geo_mitra_id
 
         })
         doc.insert()
@@ -446,6 +456,16 @@ def expenses():
     
     elif frappe.request.method == "POST":
         _data = frappe.request.json
+        geo_mitra_id = get_geomitra_from_userid(user_email)
+        
+        if geo_mitra_id == False:
+            frappe.response["message"] = {
+                "status": False,
+                "message": "Please map a geo mitra with this user",
+                "user_email": user_email
+            }
+            return
+        
         doc = frappe.get_doc({
             "doctype":"Geo Expenses",
             "posting_date": frappe.utils.nowdate(),
@@ -453,7 +473,7 @@ def expenses():
             "amount": _data['amount'],
             "against_expense": _data['against_expense'],
             "notes": _data['notes'],
-            "geo_mitra":_data['geomitra']
+            "geo_mitra":geo_mitra_id
 
         })
         doc.insert()
@@ -498,11 +518,20 @@ def free_sample_distribution():
     
     elif frappe.request.method == "POST":
         _data = frappe.request.json
+        geo_mitra_id = get_geomitra_from_userid(user_email)
+        
+        if geo_mitra_id == False:
+            frappe.response["message"] = {
+                "status": False,
+                "message": "Please map a geo mitra with this user",
+                "user_email": user_email
+            }
+            return
         doc = frappe.get_doc({
             "doctype":"Free Sample Distribution",
             "posting_date": frappe.utils.nowdate(),
             "farmer": _data['farmer'],
-            "geo_mitra": _data['geomitra'],
+            "geo_mitra": geo_mitra_id,
             # "notes": _data['notes'],
             # "product": _data['product'],
             "update_status": _data['update_status'],
@@ -555,15 +584,10 @@ def whatsapp_to_farmer():
     if frappe.request.method =="GET":
         home_data = frappe.db.get_list("Whatsapp Templates", fields=["*"], filters={"type": "Daily"}, order_by="creation desc")
 
-        # file_name = home_data[0].image.replace("/files/", "")
-        # x = get_files_path(file_name, is_private=0)        
-        # with open(x, "rb") as f:
-        #     img_content = f.read()
-        #     img_base64 = base64.b64encode(img_content).decode()
-        #     img_base64 = 'data:image/jpeg;base64,' + img_base64
-        # home_data[0].image = img_base64
+        himage = get_doctype_images("Whatsapp Templates",home_data[0].name,0)
+        home_data[0].image = himage[0]
 
-        home_data[0].image = frappe.utils.get_url(home_data[0].image)
+        # home_data[0].image = frappe.utils.get_url(home_data[0].image)
         frappe.response["message"] = {
             "status":True,
             "message": "",
@@ -586,12 +610,12 @@ def get_seminar_masters():
 
     if frappe.request.method =="GET":
 
-        bk_center = [d.name for d in frappe.db.get_all("BK Center", fields=["name"])]
+        # bk_center = frappe.db.get_all("BK Center", fields=["*"])
         villages = [d.name for d in frappe.db.get_all("Village", fields=["name"])]
         venues = [d.name for d in frappe.db.get_all("Venue", fields=["name"])]
 
         home_data = {
-            "bk_center": bk_center,
+            "bk_center": frappe.db.get_all("BK Center", fields=["*"]),
             "villages": villages,
             "venues": venues
         }
@@ -631,12 +655,13 @@ def door_to_door_awareness():
         doc = frappe.get_doc({
             "doctype":"Door To Door Visit",
             # "posting_date": frappe.utils.nowdate(),
-            # "employee_location": _data['location'],
+            "employee_location": _data['mylocation'],
+            "farmer": _data['farmer_name'],
             "notes": _data['notes'],
-            "geo_mitra": geo_mitra_id
-
+            "geo_mitra": geo_mitra_id,
         })
         doc.insert()
+
         if _data['image']:
             data = _data['image'][0]
             filename = doc.name
@@ -690,6 +715,7 @@ def sticker_pasting():
         doc = frappe.get_doc({
             "doctype":"Sticker Pasting",
             "posting_date": frappe.utils.nowdate(),
+            "employee_location": _data['mylocation'],
             "farmer": _data['farmer_name'],
             "geo_mitra": geo_mitra_id
 
@@ -727,12 +753,22 @@ def raise_crop_alert():
 
     elif frappe.request.method == "POST":
         _data = frappe.request.json
+        geo_mitra_id = get_geomitra_from_userid(user_email)
+        
+        if geo_mitra_id == False:
+            frappe.response["message"] = {
+                "status": False,
+                "message": "Please map a geo mitra with this user",
+                "user_email": user_email
+            }
+            return
+
         doc = frappe.get_doc({
             "doctype":"Crop Alert",
             # "posting_date": frappe.utils.nowdate(),
             # "employ_location": _data['location'],
             "notes": _data['notes'],
-            "geo_mitra":_data['geomitra']
+            "geo_mitra":geo_mitra_id
         })
         doc.insert()
         if _data['image']:

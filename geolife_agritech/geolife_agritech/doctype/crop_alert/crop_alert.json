@@ -11,7 +11,9 @@
   "employ_location",
   "posting_date",
   "geo_mitra",
-  "naming_series"
+  "naming_series",
+  "latitude",
+  "longitude"
  ],
  "fields": [
   {
@@ -40,11 +42,21 @@
    "fieldtype": "Select",
    "label": "Naming Series",
    "options": "CA-.YYYY.-.####"
+  },
+  {
+   "fieldname": "latitude",
+   "fieldtype": "Data",
+   "label": "Latitude"
+  },
+  {
+   "fieldname": "longitude",
+   "fieldtype": "Data",
+   "label": "Longitude"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-02-12 17:59:56.550042",
+ "modified": "2023-03-02 12:48:06.974718",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Crop Alert",

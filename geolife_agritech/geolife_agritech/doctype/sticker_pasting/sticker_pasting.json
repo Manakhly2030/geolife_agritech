@@ -8,10 +8,10 @@
  "engine": "InnoDB",
  "field_order": [
   "farmer",
-  "employ_location",
   "posting_date",
   "geo_mitra",
-  "naming_series"
+  "naming_series",
+  "employee_location"
  ],
  "fields": [
   {
@@ -19,11 +19,6 @@
    "fieldtype": "Link",
    "label": "Farmer",
    "options": "My Farmer"
-  },
-  {
-   "fieldname": "employ_location",
-   "fieldtype": "Geolocation",
-   "label": "Employ Location"
   },
   {
    "fieldname": "posting_date",
@@ -41,11 +36,16 @@
    "fieldtype": "Select",
    "label": "Naming Series",
    "options": "SP-.YYYY.-.####"
+  },
+  {
+   "fieldname": "employee_location",
+   "fieldtype": "Geolocation",
+   "label": "Employee Location"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-02-12 18:00:24.464617",
+ "modified": "2023-03-02 14:41:21.356093",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Sticker Pasting",
