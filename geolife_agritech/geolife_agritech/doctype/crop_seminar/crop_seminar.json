@@ -12,12 +12,14 @@
   "geo_mitra",
   "seminar_date",
   "seminar_time",
+  "address",
+  "pincode",
   "venue",
-  "speeker_name",
-  "mobile_no",
   "column_break_5",
   "message",
   "bk_center",
+  "speeker_name",
+  "mobile_no",
   "section_break_9",
   "pre_activities",
   "section_break_11",
@@ -53,8 +55,8 @@
   },
   {
    "fieldname": "venue",
-   "fieldtype": "Link",
-   "label": "Select The Venue",
+   "fieldtype": "Data",
+   "label": "Venue",
    "options": "Venue"
   },
   {
@@ -132,11 +134,21 @@
    "fieldname": "employee_location",
    "fieldtype": "Geolocation",
    "label": "Employee Location"
+  },
+  {
+   "fieldname": "address",
+   "fieldtype": "Data",
+   "label": "Address"
+  },
+  {
+   "fieldname": "pincode",
+   "fieldtype": "Data",
+   "label": "Pincode"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-03-02 14:48:11.802380",
+ "modified": "2023-03-03 12:44:50.025769",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Crop Seminar",

@@ -42,7 +42,7 @@
    "fieldname": "update_status",
    "fieldtype": "Select",
    "label": "Update status",
-   "options": "\nUsed\nResults\nPurchased"
+   "options": "Used\nResults\nPurchased"
   },
   {
    "fieldname": "notes",
@@ -58,7 +58,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-02-12 18:07:59.745432",
+ "modified": "2023-03-04 13:00:20.540264",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Free Sample Distribution",

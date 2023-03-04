@@ -302,6 +302,8 @@ def crop_seminar():
             "mobile_no": crop_data['mobile_no'],
             "message": crop_data['message'],
             "bk_center": crop_data['bk_center'],
+            "address": crop_data['address'],
+            "pincode": crop_data['pincode'],
             "geo_mitra": geo_mitra_id
 
         })
@@ -332,13 +334,14 @@ def crop_seminar():
             crop.crop_seminar_attendance = crop_data['crop_seminar_attendance']
             crop.crop_seminar_attendance = []
             for itm in crop_data['crop_seminar_attendance'] :
-                crop.append("crop_seminar_attendance",itm)
+                crop.append("crop_seminar_attendance",{"farmer": crop_data.get('farmer_name')})
             
         if crop_data.get('is_upload_photos'):
 
             image_url = ng_write_file(crop_data.get('image'), crop_data.get('name'), crop_data.get('name'), 'Crop Seminar', 'private')
-            crop.append("upload_photos", {"note": crop_data.get('note'), "seminar_image_path": frappe.utils.get_url(image_url)})
-            
+            crop.append("upload_photos", {"farmer": crop_data.get('farmer_name'),"note": crop_data.get('note'), "seminar_image_path": frappe.utils.get_url(image_url)})
+            crop.append("crop_seminar_attendance",{"farmer": crop_data.get('farmer_name')})
+
         crop.save(ignore_permissions=True)
         frappe.response["message"] = {
             "status":True,
@@ -508,7 +511,7 @@ def free_sample_distribution():
         return
 
     if frappe.request.method =="GET":
-        home_data = frappe.db.get_list("Free Sample Distribution", fields=["posting_date","farmer","geo_mitra","notes"])
+        home_data = frappe.db.get_list("Free Sample Distribution", fields=["posting_date","farmer","geo_mitra","notes","update_status"])
         frappe.response["message"] = {
             "status":True,
             "message": "",
@@ -532,19 +535,20 @@ def free_sample_distribution():
             "posting_date": frappe.utils.nowdate(),
             "farmer": _data['farmer'],
             "geo_mitra": geo_mitra_id,
+            # "crop_seminar": _data['name'],
             # "notes": _data['notes'],
             # "product": _data['product'],
-            "update_status": _data['update_status'],
+            # "update_status": _data['update_status'],
         })
         doc.insert()
-        if _data['image']:
-            data = _data['image']
-            filename = doc.name
-            docname = doc.name
-            doctype = "Free Sample Distribution"
-            image = ng_write_file(data, filename, docname, doctype, 'private')
+        # if _data['image']:
+        #     data = _data['image']
+        #     filename = doc.name
+        #     docname = doc.name
+        #     doctype = "Free Sample Distribution"
+        #     image = ng_write_file(data, filename, docname, doctype, 'private')
 
-            doc.image = image
+        #     doc.image = image
         doc.save()
         frappe.db.commit()
 
@@ -683,6 +687,13 @@ def get_geomitra_from_userid(email):
     geo_mitra = frappe.db.get_all("Geo Mitra", fields=["name"], filters={"linked_user": email})
     if geo_mitra: 
         return geo_mitra[0].name
+    else: 
+        return False
+
+def get_farmer_from_id(name):
+    farmer_check = frappe.db.get_all("Free Sample Distribution", fields=["*"], filters={"farmer": name})
+    if farmer_check: 
+        return farmer_check[0].update_status
     else: 
         return False
 
@@ -846,6 +857,9 @@ def search_farmer():
             WHERE (first_name like %s OR last_name like %s OR mobile_number like %s) AND geomitra_number = %s
             LIMIT 10
         """, (text, text, text, geo_mitra_id), as_dict=1)
+        
+        for g in geomitras:
+           g.free_sample = get_farmer_from_id(g.name)
 
         frappe.response["message"] = {
             "status":True,
