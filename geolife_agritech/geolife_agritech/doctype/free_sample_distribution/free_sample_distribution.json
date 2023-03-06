@@ -13,7 +13,8 @@
   "product",
   "posting_date",
   "update_status",
-  "notes"
+  "notes",
+  "crop_seminar"
  ],
  "fields": [
   {
@@ -54,11 +55,17 @@
    "fieldtype": "Select",
    "label": "Naming Series",
    "options": "FSB-.YYYY.-.####"
+  },
+  {
+   "fieldname": "crop_seminar",
+   "fieldtype": "Link",
+   "label": "Crop Seminar",
+   "options": "Crop Seminar"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-03-04 13:00:20.540264",
+ "modified": "2023-03-04 13:36:54.203188",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Free Sample Distribution",

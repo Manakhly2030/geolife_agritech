@@ -23,7 +23,7 @@ def generate_otp(mobile_no):
     user_email = frappe.db.get_all('User', filters={'mobile_no': mobile_no}, fields=['email'])
     if not user_email:
         frappe.local.response["message"] = {
-            "status": True,
+            "status": False,
             "message": "User does not exits"
         }
         return 
@@ -365,6 +365,15 @@ def activity_list():
 
     if frappe.request.method =="GET":
         home_data = frappe.db.get_list("Daily Activity", fields=["posting_date","activity_name","activity_type","notes"])
+        for h in home_data:
+            image = get_doctype_images('Daily Activity', h.name, 1)  
+            return image              
+
+            if image:
+                h.image = image[0]['image']
+            else:
+                h.image = "https://winaero.com/blog/wp-content/uploads/2019/11/Photos-new-icon.png"
+        
         frappe.response["message"] = {
             "status":True,
             "message": "",
@@ -396,8 +405,9 @@ def activity_list():
 
         })
         doc.insert()
+        
         if _data['image']:
-            data = _data['image']
+            data = _data['image'][0]
             filename = doc.name
             docname = doc.name
             doctype = "Daily Activity"
@@ -434,6 +444,28 @@ def activity_type():
             "data" : home_data
         }
         return
+
+@frappe.whitelist(allow_guest=True)
+def expense_type():
+    api_key  = frappe.request.headers.get("Authorization")[6:21]
+    api_sec  = frappe.request.headers.get("Authorization")[22:]
+
+    user_email = get_user_info(api_key, api_sec)
+    if not user_email:
+        frappe.response["message"] = {
+            "status": False,
+            "message": "Unauthorised Access",
+        }
+        return
+
+    if frappe.request.method =="GET":
+        home_data = frappe.db.get_list("Geo Expense Type", fields=["name"])
+        frappe.response["message"] = {
+            "status":True,
+            "message": "",
+            "data" : home_data
+        }
+        return
     
 @frappe.whitelist(allow_guest=True)
 def expenses():
@@ -449,7 +481,12 @@ def expenses():
         return
 
     if frappe.request.method =="GET":
-        home_data = frappe.db.get_list("Geo Expenses", fields=["posting_date","expense_type","amount","against_expense","notes"])
+        home_data = frappe.db.get_list("Geo Expenses", fields=["name","posting_date","expense_type","amount","against_expense","notes"])
+        for hd in home_data:
+            himage = get_doctype_images("Geo Expenses",hd.name,0)
+            if himage :
+                hd.image = himage
+
         frappe.response["message"] = {
             "status":True,
             "message": "",
@@ -474,14 +511,15 @@ def expenses():
             "posting_date": frappe.utils.nowdate(),
             "expense_type": _data['expense_type'],
             "amount": _data['amount'],
-            "against_expense": _data['against_expense'],
+            # "against_expense": _data['against_expense'],
             "notes": _data['notes'],
             "geo_mitra":geo_mitra_id
 
         })
         doc.insert()
+        
         if _data['image']:
-            data = _data['image']
+            data = _data['image'][0]
             filename = doc.name
             docname = doc.name
             doctype = "Geo Expenses"
@@ -538,7 +576,7 @@ def free_sample_distribution():
             # "crop_seminar": _data['name'],
             # "notes": _data['notes'],
             # "product": _data['product'],
-            # "update_status": _data['update_status'],
+            "update_status": "Used",
         })
         doc.insert()
         # if _data['image']:
@@ -559,8 +597,9 @@ def free_sample_distribution():
         return
     elif frappe.request.method == "PUT":
         payload = frappe.request.json
-        doc = frappe.get_doc('Free Sample Distribution', payload['name'])
-        doc.update_status = payload['update_status']
+        doc = frappe.get_doc('Free Sample Distribution', payload['fsd_name'])
+        doc.update_status = payload['status']
+        doc.crop_seminar = payload['crop_seminar_name']
 
         doc.save(ignore_permissions=True)
         frappe.response["message"] = {
@@ -570,7 +609,7 @@ def free_sample_distribution():
         
         return
 
-    
+   
 
 @frappe.whitelist(allow_guest=True)
 def whatsapp_to_farmer():
@@ -693,9 +732,9 @@ def get_geomitra_from_userid(email):
 def get_farmer_from_id(name):
     farmer_check = frappe.db.get_all("Free Sample Distribution", fields=["*"], filters={"farmer": name})
     if farmer_check: 
-        return farmer_check[0].update_status
+        return farmer_check[0].update_status, farmer_check[0].name
     else: 
-        return False
+        return False , False
 
 @frappe.whitelist(allow_guest=True)
 def sticker_pasting():
@@ -859,7 +898,7 @@ def search_farmer():
         """, (text, text, text, geo_mitra_id), as_dict=1)
         
         for g in geomitras:
-           g.free_sample = get_farmer_from_id(g.name)
+           g.free_sample, g.free_sample_name = get_farmer_from_id(g.name)
 
         frappe.response["message"] = {
             "status":True,

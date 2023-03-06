@@ -18,9 +18,9 @@
  "fields": [
   {
    "fieldname": "expense_type",
-   "fieldtype": "Select",
+   "fieldtype": "Link",
    "label": "Expense Type",
-   "options": "\nExpense 01\nExpense 02\nExpense 03"
+   "options": "Geo Expense Type"
   },
   {
    "fieldname": "amount",
@@ -57,7 +57,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-02-12 18:00:08.798219",
+ "modified": "2023-03-06 12:25:30.031286",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Geo Expenses",
