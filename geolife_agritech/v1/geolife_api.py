@@ -332,9 +332,19 @@ def crop_seminar():
 
         if crop_data.get('crop_seminar_attendance'):
             crop.crop_seminar_attendance = crop_data['crop_seminar_attendance']
-            crop.crop_seminar_attendance = []
+            # crop.crop_seminar_attendance = []
             for itm in crop_data['crop_seminar_attendance'] :
                 crop.append("crop_seminar_attendance",{"farmer": crop_data.get('farmer_name')})
+            
+        if crop_data.get('is_pre_activity'):
+            crop.pre_activities = []
+            for itm in crop_data['pre_activities'] :
+                crop.append("pre_activities",{"activity_name": itm['activity_name'], "activity_status":itm['activity_status']})
+
+        if crop_data.get('is_post_activity'):
+            crop.post_activities = []
+            for itm in crop_data['post_activities'] :
+                crop.append("post_activities",{"activity_name": itm['activity_name'], "activity_status":itm['activity_status']})
             
         if crop_data.get('is_upload_photos'):
 
@@ -367,7 +377,6 @@ def activity_list():
         home_data = frappe.db.get_list("Daily Activity", fields=["posting_date","activity_name","activity_type","notes"])
         for h in home_data:
             image = get_doctype_images('Daily Activity', h.name, 1)  
-            return image              
 
             if image:
                 h.image = image[0]['image']
@@ -459,7 +468,7 @@ def expense_type():
         return
 
     if frappe.request.method =="GET":
-        home_data = frappe.db.get_list("Geo Expense Type", fields=["name"])
+        home_data = frappe.db.get_list("Geo Expense Type", fields=["name","json"])
         frappe.response["message"] = {
             "status":True,
             "message": "",
@@ -482,10 +491,10 @@ def expenses():
 
     if frappe.request.method =="GET":
         home_data = frappe.db.get_list("Geo Expenses", fields=["name","posting_date","expense_type","amount","against_expense","notes"])
-        for hd in home_data:
-            himage = get_doctype_images("Geo Expenses",hd.name,0)
-            if himage :
-                hd.image = himage
+        # for hd in home_data:
+        #     himage = get_doctype_images("Geo Expenses",hd.name,0)
+        #     if himage :
+        #         hd.image = himage
 
         frappe.response["message"] = {
             "status":True,
@@ -509,11 +518,24 @@ def expenses():
         doc = frappe.get_doc({
             "doctype":"Geo Expenses",
             "posting_date": frappe.utils.nowdate(),
-            "expense_type": _data['expense_type'],
-            "amount": _data['amount'],
-            # "against_expense": _data['against_expense'],
-            "notes": _data['notes'],
-            "geo_mitra":geo_mitra_id
+            # "expense_type": _data['expense_type'],
+            # "amount": _data['amount'],
+            # "notes": _data['notes'],
+            "geo_mitra":geo_mitra_id,
+            _data
+
+            # if _data.get('vehical_type'):
+            #     "vehical_type" : _data.get('vehical_type')
+            # if _data['fuel_type'] :
+            #     "fuel_type" :_data['fuel_type']
+            # if _data['odometer_start']:
+            #     "odometer_start" :_data['odometer_start']
+            # if _data['odometer_end']:
+            #     "odometer_end" :_data['odometer_end']
+            # if _data['liters']:
+            #     "liters" :_data['liters']
+            # if _data['odometer_start_image']:
+            #     "odometer_start_image" :_data['odometer_start_image']
 
         })
         doc.insert()

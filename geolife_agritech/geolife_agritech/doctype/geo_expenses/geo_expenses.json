@@ -13,14 +13,25 @@
   "notes",
   "posting_date",
   "geo_mitra",
-  "naming_series"
+  "naming_series",
+  "column_break_3p6sn",
+  "vehicale_type",
+  "odometer_start",
+  "odometer_start_image",
+  "odometer_end",
+  "odometer_end_image",
+  "fuel_type",
+  "liters",
+  "amended_from"
  ],
  "fields": [
   {
    "fieldname": "expense_type",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Expense Type",
-   "options": "Geo Expense Type"
+   "options": "Geo Expense Type",
+   "reqd": 1
   },
   {
    "fieldname": "amount",
@@ -53,11 +64,60 @@
    "fieldtype": "Select",
    "label": "Naming Series",
    "options": "GE-.YYYY.-.####"
+  },
+  {
+   "fieldname": "column_break_3p6sn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "vehicale_type",
+   "fieldtype": "Data",
+   "label": "Vehicale Type"
+  },
+  {
+   "fieldname": "odometer_start",
+   "fieldtype": "Data",
+   "label": "Odometer Start"
+  },
+  {
+   "fieldname": "odometer_start_image",
+   "fieldtype": "Attach Image",
+   "label": "Odometer Start image"
+  },
+  {
+   "fieldname": "odometer_end",
+   "fieldtype": "Data",
+   "label": "Odometer End"
+  },
+  {
+   "fieldname": "odometer_end_image",
+   "fieldtype": "Attach Image",
+   "label": "Odometer End image"
+  },
+  {
+   "fieldname": "fuel_type",
+   "fieldtype": "Data",
+   "label": "Fuel Type"
+  },
+  {
+   "fieldname": "liters",
+   "fieldtype": "Data",
+   "label": "Fuel in Liters"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Geo Expenses",
+   "print_hide": 1,
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
+ "is_submittable": 1,
  "links": [],
- "modified": "2023-03-06 12:25:30.031286",
+ "modified": "2023-03-11 19:16:12.239061",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Geo Expenses",

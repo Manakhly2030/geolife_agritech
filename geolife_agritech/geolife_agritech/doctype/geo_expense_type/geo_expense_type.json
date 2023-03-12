@@ -8,7 +8,8 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "expense_type"
+  "expense_type",
+  "json"
  ],
  "fields": [
   {
@@ -16,11 +17,16 @@
    "fieldtype": "Data",
    "label": "Expense Type",
    "unique": 1
+  },
+  {
+   "fieldname": "json",
+   "fieldtype": "JSON",
+   "label": "Json"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-03-06 12:24:10.302358",
+ "modified": "2023-03-11 10:25:16.932245",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Geo Expense Type",

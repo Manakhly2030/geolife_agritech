@@ -19,16 +19,15 @@
   },
   {
    "fieldname": "activity_name",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Activity Name",
-   "options": "Crop Seminar Activity"
+   "label": "Activity Name"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2023-02-12 19:06:17.856433",
+ "modified": "2023-03-11 11:35:58.972290",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Post Activities",

@@ -12,10 +12,9 @@
  "fields": [
   {
    "fieldname": "activity_name",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Activity Name",
-   "options": "Crop Seminar Activity"
+   "label": "Activity Name"
   },
   {
    "default": "0",
@@ -28,7 +27,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2023-02-12 17:58:13.806163",
+ "modified": "2023-03-11 11:35:24.553892",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Pre Activities",
