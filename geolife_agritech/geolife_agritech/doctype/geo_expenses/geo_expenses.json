@@ -22,7 +22,8 @@
   "odometer_end_image",
   "fuel_type",
   "liters",
-  "amended_from"
+  "amended_from",
+  "employee_location"
  ],
  "fields": [
   {
@@ -81,7 +82,7 @@
   },
   {
    "fieldname": "odometer_start_image",
-   "fieldtype": "Attach Image",
+   "fieldtype": "Attach",
    "label": "Odometer Start image"
   },
   {
@@ -91,7 +92,7 @@
   },
   {
    "fieldname": "odometer_end_image",
-   "fieldtype": "Attach Image",
+   "fieldtype": "Attach",
    "label": "Odometer End image"
   },
   {
@@ -112,12 +113,17 @@
    "options": "Geo Expenses",
    "print_hide": 1,
    "read_only": 1
+  },
+  {
+   "fieldname": "employee_location",
+   "fieldtype": "Geolocation",
+   "label": "Employee Location"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-11 19:16:12.239061",
+ "modified": "2023-03-14 13:09:50.620460",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Geo Expenses",

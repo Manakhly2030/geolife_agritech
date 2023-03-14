@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "field:mobile_number",
  "creation": "2022-12-21 21:30:36.800918",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -16,7 +17,8 @@
   "address_2",
   "city",
   "state",
-  "pin"
+  "pin",
+  "geomitra_number"
  ],
  "fields": [
   {
@@ -37,7 +39,8 @@
   {
    "fieldname": "mobile_number",
    "fieldtype": "Data",
-   "label": "Mobile Number"
+   "label": "Mobile Number",
+   "unique": 1
   },
   {
    "fieldname": "pan_no",
@@ -74,14 +77,21 @@
    "fieldname": "pin",
    "fieldtype": "Data",
    "label": "Pin"
+  },
+  {
+   "fieldname": "geomitra_number",
+   "fieldtype": "Link",
+   "label": "Geo Mitra",
+   "options": "Geo Mitra"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-12-21 21:30:36.800918",
+ "modified": "2023-03-13 18:54:02.446716",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Dealer",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {

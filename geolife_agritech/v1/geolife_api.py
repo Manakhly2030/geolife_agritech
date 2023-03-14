@@ -518,36 +518,34 @@ def expenses():
         doc = frappe.get_doc({
             "doctype":"Geo Expenses",
             "posting_date": frappe.utils.nowdate(),
-            # "expense_type": _data['expense_type'],
-            # "amount": _data['amount'],
-            # "notes": _data['notes'],
+            "expense_type": _data['expense_type'],
+            "amount" : _data.get('amount') if _data.get('amount') else 0,
+            "notes": _data['notes'],
             "geo_mitra":geo_mitra_id,
-            _data
-
-            # if _data.get('vehical_type'):
-            #     "vehical_type" : _data.get('vehical_type')
-            # if _data['fuel_type'] :
-            #     "fuel_type" :_data['fuel_type']
-            # if _data['odometer_start']:
-            #     "odometer_start" :_data['odometer_start']
-            # if _data['odometer_end']:
-            #     "odometer_end" :_data['odometer_end']
-            # if _data['liters']:
-            #     "liters" :_data['liters']
-            # if _data['odometer_start_image']:
-            #     "odometer_start_image" :_data['odometer_start_image']
+            "vehical_type" : _data.get('vehical_type') if _data.get('vehical_type') else '',
+            "fuel_type" : _data.get('fuel_type') if _data.get('fuel_type') else '',
+            "odometer_start" : _data.get('odometer_start') if _data.get('odometer_start') else '',
+            "odometer_end" : _data.get('odometer_end') if _data.get('odometer_end') else '',
+            "liters" : _data.get('liters') if _data.get('liters') else '',
+            "employee_location": _data['mylocation'],
 
         })
-        doc.insert()
-        
-        if _data['image']:
-            data = _data['image'][0]
+        doc.insert()        
+        if _data['odometer_start_image']:
+            data = _data['odometer_start_image'][0]
             filename = doc.name
             docname = doc.name
             doctype = "Geo Expenses"
             image = ng_write_file(data, filename, docname, doctype, 'private')
+            doc.odometer_start_image = image
 
-            doc.image = image
+        if _data.get('odometer_end_image'):
+            data = _data['odometer_end_image'][0]
+            filename = doc.name
+            docname = doc.name
+            doctype = "Geo Expenses"
+            image = ng_write_file(data, filename, docname, doctype, 'private')
+            doc.odometer_end_image = image
         doc.save()
         frappe.db.commit()
 
@@ -810,6 +808,54 @@ def sticker_pasting():
         }
         return
 
+
+@frappe.whitelist(allow_guest=True)
+def create_sales_order():
+    api_key  = frappe.request.headers.get("Authorization")[6:21]
+    api_sec  = frappe.request.headers.get("Authorization")[22:]
+
+    user_email = get_user_info(api_key, api_sec)
+    if not user_email:
+        frappe.response["message"] = {
+            "status": False,
+            "message": "Unauthorised Access",
+        }
+        return
+    
+    elif frappe.request.method == "POST":
+        _data = frappe.request.json
+
+        geo_mitra_id = get_geomitra_from_userid(user_email)
+        
+        if geo_mitra_id == False:
+            frappe.response["message"] = {
+                "status": False,
+                "message": "Please map a geo mitra with this user",
+                "user_email": user_email
+            }
+            return
+
+        doc = frappe.get_doc({
+            "doctype":"GEO Orders",
+            "posting_date": frappe.utils.nowdate(),
+            "dealer": _data['dealer_mobile'],
+            "geo_mitra": geo_mitra_id,
+        })
+        doc.insert()
+
+        for itm in _data['cart'] :
+                doc.append("products",{"item_code": itm.get('item_code'), "uom": itm.get('uom'), "quantity": itm.get('quantity'), "rate": itm.get('rate')})
+
+        doc.save()
+        frappe.db.commit()
+
+        frappe.response["message"] = {
+            "status":True,
+            "message": "Sales Order Successfully Created",
+        }
+        return
+
+
 @frappe.whitelist(allow_guest=True)
 def raise_crop_alert():
     api_key  = frappe.request.headers.get("Authorization")[6:21]
@@ -929,3 +975,70 @@ def search_farmer():
             "geo_mitra_id": geo_mitra_id
         }
         return
+
+@frappe.whitelist(allow_guest=True)
+def search_dealer():
+
+    api_key  = frappe.request.headers.get("Authorization")[6:21]
+    api_sec  = frappe.request.headers.get("Authorization")[22:]
+
+    user_email = get_user_info(api_key, api_sec)
+    if not user_email:
+        frappe.response["message"] = {
+            "status": False,
+            "message": "Unauthorised Access",
+        }
+        return
+
+    if frappe.request.method =="POST":
+        _data = frappe.request.json
+        text = f'%{_data["text"]}%'
+        geo_mitra_id = get_geomitra_from_userid(user_email)
+
+        dealers = frappe.db.sql("""
+            SELECT 
+                *
+            FROM
+                `tabDealer`
+            WHERE (dealer_name like %s OR contact_person like %s OR mobile_number like %s) AND geomitra_number = %s
+            LIMIT 10
+        """, (text, text, text, geo_mitra_id), as_dict=1)
+        
+        frappe.response["message"] = {
+            "status":True,
+            "message": "",
+            "data" : dealers,
+            "geo_mitra_id": geo_mitra_id
+        }
+        return
+
+
+@frappe.whitelist(allow_guest=True)
+def search_product():
+
+    api_key  = frappe.request.headers.get("Authorization")[6:21]
+    api_sec  = frappe.request.headers.get("Authorization")[22:]
+
+    user_email = get_user_info(api_key, api_sec)
+    if not user_email:
+        frappe.response["message"] = {
+            "status": False,
+            "message": "Unauthorised Access",
+        }
+        return
+
+    if frappe.request.method =="POST":
+        _data = frappe.request.json
+        text = f'%{_data["text"]}%'
+        geo_mitra_id = get_geomitra_from_userid(user_email)
+
+        products = frappe.db.get_all("Product",fields=["*"] )
+        
+        frappe.response["message"] = {
+            "status":True,
+            "message": "",
+            "data" : products,
+            "geo_mitra_id": geo_mitra_id
+        }
+        return
+
