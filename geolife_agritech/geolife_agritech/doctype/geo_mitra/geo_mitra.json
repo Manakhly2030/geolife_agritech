@@ -56,7 +56,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-02-09 11:06:07.913110",
+ "modified": "2023-03-14 15:32:46.433412",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Geo Mitra",
@@ -76,6 +76,7 @@
    "write": 1
   }
  ],
+ "search_fields": "first_name, last_name",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []

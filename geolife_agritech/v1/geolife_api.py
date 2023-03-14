@@ -855,6 +855,52 @@ def create_sales_order():
         }
         return
 
+@frappe.whitelist(allow_guest=True)
+def update_dealer_stock():
+    api_key  = frappe.request.headers.get("Authorization")[6:21]
+    api_sec  = frappe.request.headers.get("Authorization")[22:]
+
+    user_email = get_user_info(api_key, api_sec)
+    if not user_email:
+        frappe.response["message"] = {
+            "status": False,
+            "message": "Unauthorised Access",
+        }
+        return
+    
+    elif frappe.request.method == "POST":
+        _data = frappe.request.json
+
+        geo_mitra_id = get_geomitra_from_userid(user_email)
+        
+        if geo_mitra_id == False:
+            frappe.response["message"] = {
+                "status": False,
+                "message": "Please map a geo mitra with this user",
+                "user_email": user_email
+            }
+            return
+
+        doc = frappe.get_doc({
+            "doctype":"Dealer Stock",
+            "posting_date": frappe.utils.nowdate(),
+            "dealer": _data['dealer_mobile'],
+            "geo_mitra": geo_mitra_id,
+        })
+        doc.insert()
+
+        for itm in _data['stock'] :
+                doc.append("Stock",{"product": itm.get('item_code'), "uom": itm.get('uom'), "quantity": itm.get('quantity'), "rate": itm.get('rate')})
+
+        doc.save()
+        frappe.db.commit()
+
+        frappe.response["message"] = {
+            "status":True,
+            "message": "Dealer Stock Successfully Updated",
+        }
+        return
+
 
 @frappe.whitelist(allow_guest=True)
 def raise_crop_alert():
@@ -1042,3 +1088,28 @@ def search_product():
         }
         return
 
+@frappe.whitelist(allow_guest=True)
+def get_stock():
+    api_key  = frappe.request.headers.get("Authorization")[6:21]
+    api_sec  = frappe.request.headers.get("Authorization")[22:]
+
+    user_email = get_user_info(api_key, api_sec)
+    if not user_email:
+        frappe.response["message"] = {
+            "status": False,
+            "message": "Unauthorised Access",
+        }
+        return
+
+    if frappe.request.method =="POST":
+        home_data = frappe.db.get_list("Dealer Stock", fields=["*"])
+        for h in home_data:
+            child_data = frappe.get_doc("Dealer Stock", h.name)
+            if child_data:
+                h.details = child_data
+        
+        frappe.response["message"] = {
+            "status":True,
+            "data" : home_data
+        }
+        return

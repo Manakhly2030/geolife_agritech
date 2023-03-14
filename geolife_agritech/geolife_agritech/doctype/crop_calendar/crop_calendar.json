@@ -10,6 +10,7 @@
   "section_break_1",
   "naming_series",
   "calendar_year",
+  "sowing_date",
   "column_break_4",
   "crop_season",
   "crop_name",
@@ -50,6 +51,7 @@
   {
    "fieldname": "state",
    "fieldtype": "Link",
+   "hidden": 1,
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "State",
@@ -128,11 +130,16 @@
    "fieldtype": "Long Text",
    "label": "Crop Cycle Products",
    "read_only": 1
+  },
+  {
+   "fieldname": "sowing_date",
+   "fieldtype": "Date",
+   "label": "Date Of Sowing"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-12-20 11:13:27.662520",
+ "modified": "2023-03-14 15:39:49.951358",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Crop Calendar",

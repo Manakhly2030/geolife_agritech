@@ -87,7 +87,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-03-13 18:54:02.446716",
+ "modified": "2023-03-14 15:29:13.746999",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Dealer",
@@ -107,6 +107,7 @@
    "write": 1
   }
  ],
+ "search_fields": "dealer_name",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []
