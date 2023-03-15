@@ -7,7 +7,8 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "activity_type"
+  "activity_type",
+  "type"
  ],
  "fields": [
   {
@@ -15,11 +16,17 @@
    "fieldtype": "Data",
    "label": "Activity Type",
    "unique": 1
+  },
+  {
+   "fieldname": "type",
+   "fieldtype": "Select",
+   "label": "Type",
+   "options": "Show\nHide"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-12-17 20:00:31.012914",
+ "modified": "2023-03-15 11:52:18.674785",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Activity Type",

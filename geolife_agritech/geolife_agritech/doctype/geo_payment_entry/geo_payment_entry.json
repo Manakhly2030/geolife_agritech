@@ -2,20 +2,23 @@
  "actions": [],
  "allow_rename": 1,
  "autoname": "naming_series:",
- "creation": "2023-03-14 12:42:23.190998",
+ "creation": "2023-03-15 13:58:51.317315",
  "default_view": "List",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
   "dealer",
-  "posting_date",
   "geo_mitra",
-  "dealer_stock_details_section",
-  "stock",
-  "naming_series",
+  "notes",
+  "payment_method",
+  "ref_number",
+  "amount",
   "employee_location",
-  "amended_from"
+  "posting_date",
+  "amended_from",
+  "image",
+  "naming_series"
  ],
  "fields": [
   {
@@ -25,55 +28,69 @@
    "options": "Dealer"
   },
   {
-   "fieldname": "posting_date",
-   "fieldtype": "Data",
-   "label": "Posting Date"
-  },
-  {
    "fieldname": "geo_mitra",
    "fieldtype": "Link",
    "label": "Geo Mitra",
    "options": "Geo Mitra"
   },
   {
-   "fieldname": "dealer_stock_details_section",
-   "fieldtype": "Section Break",
-   "label": "Dealer Stock Details"
+   "fieldname": "notes",
+   "fieldtype": "Data",
+   "label": "Notes"
   },
   {
-   "fieldname": "stock",
-   "fieldtype": "Table",
-   "label": "Stock",
-   "options": "Dealer Stock Table"
+   "fieldname": "payment_method",
+   "fieldtype": "Data",
+   "label": "Payment Method"
   },
   {
-   "fieldname": "naming_series",
-   "fieldtype": "Select",
-   "label": "Naming Series",
-   "options": "DS-.YYYY.-.#####"
+   "fieldname": "ref_number",
+   "fieldtype": "Data",
+   "label": "Refrence Number"
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Float",
+   "label": "Amount"
   },
   {
    "fieldname": "employee_location",
    "fieldtype": "Geolocation",
-   "label": "employee_location"
+   "label": "Employee Location"
+  },
+  {
+   "fieldname": "posting_date",
+   "fieldtype": "Data",
+   "label": "Posting Date"
   },
   {
    "fieldname": "amended_from",
    "fieldtype": "Link",
    "label": "Amended From",
    "no_copy": 1,
-   "options": "Dealer Stock",
+   "options": "Geo Payment Entry",
    "print_hide": 1,
    "read_only": 1
+  },
+  {
+   "fieldname": "image",
+   "fieldtype": "Attach Image",
+   "label": "image"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Naming Series",
+   "options": "PE-.YYYY.-.####"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-15 16:28:00.675031",
+ "modified": "2023-03-15 14:39:50.340945",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
- "name": "Dealer Stock",
+ "name": "Geo Payment Entry",
  "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [

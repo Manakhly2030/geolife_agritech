@@ -446,7 +446,7 @@ def activity_type():
         return
 
     if frappe.request.method =="GET":
-        home_data = frappe.db.get_list("Activity Type", fields=["activity_type","name"])
+        home_data = frappe.db.get_list("Activity Type", fields=["activity_type","name"], filters={"type":"Show"})
         frappe.response["message"] = {
             "status":True,
             "message": "",
@@ -844,7 +844,7 @@ def create_sales_order():
         doc.insert()
 
         for itm in _data['cart'] :
-                doc.append("products",{"item_code": itm.get('item_code'), "uom": itm.get('uom'), "quantity": itm.get('quantity'), "rate": itm.get('rate')})
+                doc.append("products",{"item_code": itm.get('item_code'),"product_name": itm.get('title'), "uom": itm.get('uom'), "quantity": itm.get('quantity'), "rate": itm.get('rate')})
 
         doc.save()
         frappe.db.commit()
@@ -890,7 +890,7 @@ def update_dealer_stock():
         doc.insert()
 
         for itm in _data['stock'] :
-                doc.append("Stock",{"product": itm.get('item_code'), "uom": itm.get('uom'), "quantity": itm.get('quantity'), "rate": itm.get('rate')})
+                doc.append("stock",{"product": itm.get('item_code'), "uom": itm.get('uom'),"product_name": itm.get('title'), "quantity": itm.get('quantity'), "rate": itm.get('rate')})
 
         doc.save()
         frappe.db.commit()
@@ -898,6 +898,60 @@ def update_dealer_stock():
         frappe.response["message"] = {
             "status":True,
             "message": "Dealer Stock Successfully Updated",
+        }
+        return
+
+
+@frappe.whitelist(allow_guest=True)
+def add_dealer_payment():
+    api_key  = frappe.request.headers.get("Authorization")[6:21]
+    api_sec  = frappe.request.headers.get("Authorization")[22:]
+
+    user_email = get_user_info(api_key, api_sec)
+    if not user_email:
+        frappe.response["message"] = {
+            "status": False,
+            "message": "Unauthorised Access",
+        }
+        return
+
+    elif frappe.request.method == "POST":
+        _data = frappe.request.json
+        geo_mitra_id = get_geomitra_from_userid(user_email)
+        
+        if geo_mitra_id == False:
+            frappe.response["message"] = {
+                "status": False,
+                "message": "Please map a geo mitra with this user",
+                "user_email": user_email
+            }
+            return
+
+        doc = frappe.get_doc({
+            "doctype":"Geo Payment Entry",
+            "posting_date": frappe.utils.nowdate(),
+            "employee_location": _data['mylocation'],
+            "amount":_data['amount'],
+            "ref_number":_data['ref_number'],
+            "payment_method":_data['type'],
+            "notes": _data['notes'],
+            "geo_mitra":geo_mitra_id,
+            "dealer":_data['dealer_mobile'],
+        })
+        doc.insert()
+        if _data['image']:
+            data = _data['image'][0]
+            filename = doc.name
+            docname = doc.name
+            doctype = "Geo Payment Entry"
+            image = ng_write_file(data, filename, docname, doctype, 'private')
+            doc.image = image
+        doc.save()
+        frappe.db.commit()
+
+        frappe.response["message"] = {
+            "status":True,
+            "message": "Payment Added Successfully",
         }
         return
 
