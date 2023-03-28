@@ -1,0 +1,104 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2023-03-27 18:11:24.367537",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "mobilenumber",
+  "scheduleid",
+  "cropname",
+  "stagename",
+  "cropfarmsize",
+  "startdate",
+  "farmid",
+  "status",
+  "id",
+  "cropfarmsizeunit",
+  "enddate"
+ ],
+ "fields": [
+  {
+   "fieldname": "mobilenumber",
+   "fieldtype": "Link",
+   "label": "Farmer",
+   "options": "My Farmer"
+  },
+  {
+   "fieldname": "scheduleid",
+   "fieldtype": "Data",
+   "label": "Schedule Id"
+  },
+  {
+   "fieldname": "cropname",
+   "fieldtype": "Data",
+   "label": "Crop Name"
+  },
+  {
+   "fieldname": "stagename",
+   "fieldtype": "Data",
+   "label": "Stage Name"
+  },
+  {
+   "fieldname": "cropfarmsize",
+   "fieldtype": "Int",
+   "label": "Crop Farm Size"
+  },
+  {
+   "fieldname": "startdate",
+   "fieldtype": "Data",
+   "label": "Start Date"
+  },
+  {
+   "fieldname": "farmid",
+   "fieldtype": "Data",
+   "label": "Farm ID"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Data",
+   "label": "Status"
+  },
+  {
+   "fieldname": "id",
+   "fieldtype": "Data",
+   "label": "Record ID"
+  },
+  {
+   "fieldname": "cropfarmsizeunit",
+   "fieldtype": "Int",
+   "label": "Crop Farm Size Unit"
+  },
+  {
+   "fieldname": "enddate",
+   "fieldtype": "Data",
+   "label": "End Date"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2023-03-27 18:11:24.367537",
+ "modified_by": "Administrator",
+ "module": "Geolife Agritech",
+ "name": "Fromer Schedule",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

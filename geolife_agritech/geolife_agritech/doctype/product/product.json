@@ -120,7 +120,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-03-14 12:23:21.126123",
+ "modified": "2023-03-17 13:29:40.803104",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Product",
@@ -140,6 +140,7 @@
    "write": 1
   }
  ],
+ "search_fields": "product_name",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []

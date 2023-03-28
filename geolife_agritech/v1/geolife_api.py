@@ -1142,6 +1142,66 @@ def search_product():
         }
         return
 
+
+@frappe.whitelist(allow_guest=True)
+def search_crops():
+
+    api_key  = frappe.request.headers.get("Authorization")[6:21]
+    api_sec  = frappe.request.headers.get("Authorization")[22:]
+
+    user_email = get_user_info(api_key, api_sec)
+    if not user_email:
+        frappe.response["message"] = {
+            "status": False,
+            "message": "Unauthorised Access",
+        }
+        return
+
+    if frappe.request.method =="POST":
+        _data = frappe.request.json
+        text = f'%{_data["text"]}%'
+        geo_mitra_id = get_geomitra_from_userid(user_email)
+
+        products = frappe.db.get_all("Crop",fields=["*"] )
+        
+        frappe.response["message"] = {
+            "status":True,
+            "message": "",
+            "data" : products,
+            "geo_mitra_id": geo_mitra_id
+        }
+        return
+
+@frappe.whitelist(allow_guest=True)
+def search_product_kit():
+
+    api_key  = frappe.request.headers.get("Authorization")[6:21]
+    api_sec  = frappe.request.headers.get("Authorization")[22:]
+
+    user_email = get_user_info(api_key, api_sec)
+    if not user_email:
+        frappe.response["message"] = {
+            "status": False,
+            "message": "Unauthorised Access",
+        }
+        return
+
+    if frappe.request.method =="POST":
+        _data = frappe.request.json
+        text = f'%{_data["text"]}%'
+        geo_mitra_id = get_geomitra_from_userid(user_email)
+
+        products = frappe.db.get_all("Product Kit",fields=["*"] )
+        
+        frappe.response["message"] = {
+            "status":True,
+            "message": "",
+            "data" : products,
+            "geo_mitra_id": geo_mitra_id
+        }
+        return
+
+
 @frappe.whitelist(allow_guest=True)
 def get_stock():
     api_key  = frappe.request.headers.get("Authorization")[6:21]
