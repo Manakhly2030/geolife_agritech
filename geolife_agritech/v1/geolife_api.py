@@ -856,6 +856,55 @@ def create_sales_order():
         return
 
 @frappe.whitelist(allow_guest=True)
+def create_Advance_booking_order():
+    api_key  = frappe.request.headers.get("Authorization")[6:21]
+    api_sec  = frappe.request.headers.get("Authorization")[22:]
+
+    user_email = get_user_info(api_key, api_sec)
+    if not user_email:
+        frappe.response["message"] = {
+            "status": False,
+            "message": "Unauthorised Access",
+        }
+        return
+    
+    elif frappe.request.method == "POST":
+        _data = frappe.request.json
+
+        geo_mitra_id = get_geomitra_from_userid(user_email)
+        
+        if geo_mitra_id == False:
+            frappe.response["message"] = {
+                "status": False,
+                "message": "Please map a geo mitra with this user",
+                "user_email": user_email
+            }
+            return
+
+        doc = frappe.get_doc({
+            "doctype":"Geo Advance Booking",
+            "posting_date": frappe.utils.nowdate(),
+            "dealer": _data['dealer_mobile'],
+            "farmer": _data['farmer'],
+            "crop": _data['crop'],
+            "geo_mitra": geo_mitra_id,
+        })
+        doc.insert()
+
+        for itm in _data['cart'] :
+                doc.append("product_kit",{"product_kit": itm.get('name'), "qty": itm.get('quantity')})
+
+        doc.save()
+        frappe.db.commit()
+
+        frappe.response["message"] = {
+            "status":True,
+            "message": "Advance Booking Successfully Created",
+        }
+        return
+
+
+@frappe.whitelist(allow_guest=True)
 def update_dealer_stock():
     api_key  = frappe.request.headers.get("Authorization")[6:21]
     api_sec  = frappe.request.headers.get("Authorization")[22:]
@@ -1191,7 +1240,10 @@ def search_product_kit():
         text = f'%{_data["text"]}%'
         geo_mitra_id = get_geomitra_from_userid(user_email)
 
-        products = frappe.db.get_all("Product Kit",fields=["*"] )
+        if text :
+            products = frappe.db.get_all("Product Kit",filters={"crop":_data["text"]},fields=["*"] )
+        else :
+            products = frappe.db.get_all("Product Kit",fields=["*"] )
         
         frappe.response["message"] = {
             "status":True,
