@@ -11,10 +11,12 @@
   "farmer",
   "dealer",
   "crop",
+  "payment_method",
   "column_break_whbsl",
   "geo_mitra",
   "posting_date",
   "booking_date",
+  "amount",
   "section_break_rrwsi",
   "product_kit",
   "naming_series",
@@ -83,12 +85,23 @@
   {
    "fieldname": "section_break_rrwsi",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Data",
+   "label": "Booking Amount"
+  },
+  {
+   "fieldname": "payment_method",
+   "fieldtype": "Select",
+   "label": "Payment Method",
+   "options": "Cash\nUPI"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-29 08:34:17.714919",
+ "modified": "2023-04-08 19:17:37.916893",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Geo Advance Booking",

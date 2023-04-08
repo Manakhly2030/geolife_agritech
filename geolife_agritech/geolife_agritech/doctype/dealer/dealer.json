@@ -18,7 +18,8 @@
   "city",
   "state",
   "pin",
-  "geomitra_number"
+  "geomitra_number",
+  "qr_code"
  ],
  "fields": [
   {
@@ -83,11 +84,16 @@
    "fieldtype": "Link",
    "label": "Geo Mitra",
    "options": "Geo Mitra"
+  },
+  {
+   "fieldname": "qr_code",
+   "fieldtype": "Attach Image",
+   "label": "QR Code"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-03-14 15:29:13.746999",
+ "modified": "2023-04-08 20:27:52.266608",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Dealer",

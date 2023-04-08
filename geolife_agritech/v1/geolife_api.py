@@ -330,11 +330,13 @@ def crop_seminar():
         crop_data = frappe.request.json
         crop = frappe.get_doc('Crop Seminar', crop_data['name'])
 
-        if crop_data.get('crop_seminar_attendance'):
-            crop.crop_seminar_attendance = crop_data['crop_seminar_attendance']
-            # crop.crop_seminar_attendance = []
+        if crop_data.get('is_attendance'):
             for itm in crop_data['crop_seminar_attendance'] :
-                crop.append("crop_seminar_attendance",{"farmer": crop_data.get('farmer_name')})
+                crop.append("crop_seminar_attendance",{"farmer":itm,"posting_date": frappe.utils.nowdate()})
+            if crop_data.get('is_attendance_image') :
+                for img in crop_data['images'] :
+                    image_url = ng_write_file(img, crop_data.get('name'), crop_data.get('name'), 'Crop Seminar', 'private')
+                    crop.append("crop_seminar_attendance", { "image": frappe.utils.get_url(image_url),"posting_date": frappe.utils.nowdate()})
             
         if crop_data.get('is_pre_activity'):
             crop.pre_activities = []
@@ -347,10 +349,9 @@ def crop_seminar():
                 crop.append("post_activities",{"activity_name": itm['activity_name'], "activity_status":itm['activity_status']})
             
         if crop_data.get('is_upload_photos'):
-
-            image_url = ng_write_file(crop_data.get('image'), crop_data.get('name'), crop_data.get('name'), 'Crop Seminar', 'private')
-            crop.append("upload_photos", {"farmer": crop_data.get('farmer_name'),"note": crop_data.get('note'), "seminar_image_path": frappe.utils.get_url(image_url)})
-            crop.append("crop_seminar_attendance",{"farmer": crop_data.get('farmer_name')})
+            for itm in crop_data['image'] :
+                image_url = ng_write_file(itm, crop_data.get('name'), crop_data.get('name'), 'Crop Seminar', 'private')
+                crop.append("upload_photos", { "seminar_image_path": frappe.utils.get_url(image_url)})
 
         crop.save(ignore_permissions=True)
         frappe.response["message"] = {
@@ -599,14 +600,14 @@ def free_sample_distribution():
             "update_status": "Used",
         })
         doc.insert()
-        # if _data['image']:
-        #     data = _data['image']
-        #     filename = doc.name
-        #     docname = doc.name
-        #     doctype = "Free Sample Distribution"
-        #     image = ng_write_file(data, filename, docname, doctype, 'private')
+        if _data['image']:
+            data = _data['image']
+            filename = doc.name
+            docname = doc.name
+            doctype = "Free Sample Distribution"
+            image = ng_write_file(data, filename, docname, doctype, 'private')
 
-        #     doc.image = image
+            doc.image = image
         doc.save()
         frappe.db.commit()
 
@@ -887,6 +888,9 @@ def create_Advance_booking_order():
             "dealer": _data['dealer_mobile'],
             "farmer": _data['farmer'],
             "crop": _data['crop'],
+            "booking_date": _data['expected_date'],
+            "payment_method": _data['payment_method'],
+            "amount": _data['amount'],
             "geo_mitra": geo_mitra_id,
         })
         doc.insert()
@@ -1152,7 +1156,8 @@ def search_dealer():
             WHERE (dealer_name like %s OR contact_person like %s OR mobile_number like %s) AND geomitra_number = %s
             LIMIT 10
         """, (text, text, text, geo_mitra_id), as_dict=1)
-        
+        for m in dealers :
+            m.qr_code = frappe.utils.get_url(m.qr_code)
         frappe.response["message"] = {
             "status":True,
             "message": "",
