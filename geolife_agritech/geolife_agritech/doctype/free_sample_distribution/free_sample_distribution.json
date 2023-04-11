@@ -12,6 +12,7 @@
   "geo_mitra",
   "product",
   "posting_date",
+  "column_break_d2nip",
   "update_status",
   "notes",
   "crop_seminar"
@@ -61,11 +62,15 @@
    "fieldtype": "Link",
    "label": "Crop Seminar",
    "options": "Crop Seminar"
+  },
+  {
+   "fieldname": "column_break_d2nip",
+   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-03-04 13:36:54.203188",
+ "modified": "2023-04-09 14:56:07.484774",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Free Sample Distribution",

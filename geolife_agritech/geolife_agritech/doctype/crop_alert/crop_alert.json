@@ -8,23 +8,20 @@
  "engine": "InnoDB",
  "field_order": [
   "notes",
-  "employ_location",
+  "column_break_kdxk5",
   "posting_date",
   "geo_mitra",
   "naming_series",
   "latitude",
-  "longitude"
+  "longitude",
+  "section_break_scaql",
+  "employee_location"
  ],
  "fields": [
   {
    "fieldname": "notes",
    "fieldtype": "Long Text",
    "label": "Notes"
-  },
-  {
-   "fieldname": "employ_location",
-   "fieldtype": "Data",
-   "label": "Employ Location"
   },
   {
    "fieldname": "posting_date",
@@ -52,11 +49,24 @@
    "fieldname": "longitude",
    "fieldtype": "Data",
    "label": "Longitude"
+  },
+  {
+   "fieldname": "employee_location",
+   "fieldtype": "Geolocation",
+   "label": "Employee Location"
+  },
+  {
+   "fieldname": "column_break_kdxk5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_scaql",
+   "fieldtype": "Section Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-03-02 12:48:06.974718",
+ "modified": "2023-04-09 16:33:57.463737",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Crop Alert",

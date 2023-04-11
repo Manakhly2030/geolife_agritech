@@ -11,7 +11,8 @@
   "posting_date",
   "activity_name",
   "activity_type",
-  "notes"
+  "notes",
+  "geo_mitra"
  ],
  "fields": [
   {
@@ -41,11 +42,17 @@
    "fieldname": "notes",
    "fieldtype": "Long Text",
    "label": "Notes"
+  },
+  {
+   "fieldname": "geo_mitra",
+   "fieldtype": "Link",
+   "label": "Geo Mitra",
+   "options": "Geo Mitra"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-12-17 20:00:36.314577",
+ "modified": "2023-04-09 18:23:35.628653",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Daily Activity",

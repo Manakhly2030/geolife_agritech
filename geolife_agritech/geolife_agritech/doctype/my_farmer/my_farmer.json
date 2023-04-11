@@ -13,11 +13,13 @@
   "geomitra_id",
   "geomitra_number",
   "geomitra_number_company",
+  "column_break_ip9ux",
   "pincode",
   "city",
   "farm_acre",
   "farm_acre_unit",
-  "register_date"
+  "register_date",
+  "app_installed"
  ],
  "fields": [
   {
@@ -61,9 +63,10 @@
   },
   {
    "fieldname": "city",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "in_list_view": 1,
-   "label": "City"
+   "label": "City",
+   "options": "City"
   },
   {
    "fieldname": "farm_acre",
@@ -78,13 +81,23 @@
   },
   {
    "fieldname": "register_date",
-   "fieldtype": "Data",
+   "fieldtype": "Date",
    "label": "Register Date"
+  },
+  {
+   "fieldname": "column_break_ip9ux",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "app_installed",
+   "fieldtype": "Select",
+   "label": "App Installed",
+   "options": "\nInstalled\nNot Installed"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-02-10 14:50:18.421934",
+ "modified": "2023-04-11 14:22:45.029231",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "My Farmer",

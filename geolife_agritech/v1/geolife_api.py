@@ -373,9 +373,10 @@ def activity_list():
             "message": "Unauthorised Access",
         }
         return
+    geo_mitra_id = get_geomitra_from_userid(user_email)
 
     if frappe.request.method =="GET":
-        home_data = frappe.db.get_list("Daily Activity", fields=["posting_date","activity_name","activity_type","notes"])
+        home_data = frappe.db.get_list("Daily Activity", filters={"posting_date": frappe.utils.nowdate(), "geo_mitra":geo_mitra_id}, fields=["posting_date","activity_name","activity_type","notes"])
         for h in home_data:
             image = get_doctype_images('Daily Activity', h.name, 1)  
 
@@ -393,8 +394,6 @@ def activity_list():
     
     elif frappe.request.method == "POST":
         _data = frappe.request.json
-
-        geo_mitra_id = get_geomitra_from_userid(user_email)
         
         if geo_mitra_id == False:
             frappe.response["message"] = {
@@ -426,10 +425,22 @@ def activity_list():
             doc.image = image
         doc.save()
         frappe.db.commit()
+        if doc.activity_type == 'Start Day' :
+            videoData = frappe.db.get_list('Session Videos', filters={"session_date":frappe.utils.nowdate()}, fields=["name","session_date","youtube_video"])
+            if videoData :
+                faq = frappe.get_doc('Session Videos',videoData[0].name)
+                videoData[0].faq = faq
+                frappe.response["message"] = {
+                    "status":True,
+                    "message": "Daily Activity Added Successfully",
+                    "video":faq
+                }
+                return
 
         frappe.response["message"] = {
             "status":True,
             "message": "Daily Activity Added Successfully",
+            "video":False
         }
         return
 
@@ -743,6 +754,59 @@ def door_to_door_awareness():
         }
         return
 
+
+@frappe.whitelist(allow_guest=True)
+def create_farmer():
+    api_key  = frappe.request.headers.get("Authorization")[6:21]
+    api_sec  = frappe.request.headers.get("Authorization")[22:]
+
+    user_email = get_user_info(api_key, api_sec)
+    if not user_email:
+        frappe.response["message"] = {
+            "status": False,
+            "message": "Unauthorised Access",
+        }
+        return
+
+    elif frappe.request.method == "POST":
+        _data = frappe.request.json
+        geo_mitra_id = get_geomitra_from_userid(user_email)
+
+        db_check = frappe.db.exists("My Farmer", _data['mobile_no'])
+        if db_check :
+            frappe.response["message"] = {
+            "status":True,
+            "message": "Farmer Already Added",
+            }
+            return
+
+        
+        if geo_mitra_id == False:
+            frappe.response["message"] = {
+                "status": False,
+                "message": "Please map a geo mitra with this user",
+                "user_email": user_email
+            }
+            return
+            
+        doc = frappe.get_doc({
+            "doctype":"My Farmer",
+            "register_date": frappe.utils.nowdate(),
+            "first_name": _data['farmer_name'],
+            "mobile_number": _data['mobile_no'],
+            "geomitra_number": geo_mitra_id,
+            "app_installed":"Not Installed"
+        })
+        doc.insert()
+        doc.save()
+        frappe.db.commit()
+
+        frappe.response["message"] = {
+            "status":True,
+            "message": "Farmer Added Successfully",
+        }
+        return
+
 def get_geomitra_from_userid(email):
     geo_mitra = frappe.db.get_all("Geo Mitra", fields=["name"], filters={"linked_user": email})
     if geo_mitra: 
@@ -1036,14 +1100,15 @@ def raise_crop_alert():
 
         doc = frappe.get_doc({
             "doctype":"Crop Alert",
-            # "posting_date": frappe.utils.nowdate(),
+            "posting_date": frappe.utils.nowdate(),
             # "employ_location": _data['location'],
+            "employee_location": _data['mylocation'],
             "notes": _data['notes'],
             "geo_mitra":geo_mitra_id
         })
         doc.insert()
         if _data['image']:
-            data = _data['image']
+            data = _data['image'][0]
             filename = doc.name
             docname = doc.name
             doctype = "Crop Alert"
