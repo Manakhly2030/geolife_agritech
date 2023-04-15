@@ -88,7 +88,7 @@
   },
   {
    "fieldname": "amount",
-   "fieldtype": "Data",
+   "fieldtype": "Int",
    "label": "Booking Amount"
   },
   {
@@ -101,7 +101,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-04-08 19:17:37.916893",
+ "modified": "2023-04-14 17:12:28.869424",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Geo Advance Booking",

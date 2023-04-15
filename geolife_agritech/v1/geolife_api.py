@@ -29,36 +29,15 @@ def generate_otp(mobile_no):
         return 
 
     try:
-        otp = "1234"
-        # otp = str(random.randint(1000,9999))
-        # msisdn = mobile_no #frappe.generate_hash("", 10)
-        # text = f"You OTP {otp}"
-
-        # callback_url = frappe.db.get_single_value("Geo Settings", "sms_call_back_url")
-        # url = frappe.db.get_single_value("Geo Settings", "sms_base_url")
-        # app_id = frappe.db.get_single_value("Geo Settings", "sms_app_id")
-        # app_key = frappe.db.get_single_value("Geo Settings", "sms_app_key")
-
-        # sms_payload = {
-        #     "msisdn": msisdn,
-        #     "text": text,
-        #     "callback_url": callback_url,
-        #     "premium": True
-        # }
-        # sms_headers = {
-        #     "accept": "application/json",
-        #     "App-ID": app_id,
-        #     "API-Key": app_key,
-        #     "content-type": "application/json"
-        # }
-        # r = requests.post(url, json=sms_payload, headers=sms_headers)
-
-        # if r.status_code != 201:
-        #     frappe.local.response["message"] = {
-        #         "status": False,
-        #         "message": json.loads(r.text)["message"]
-        #     }
-        #     return
+        # otp = "1234"
+        otp = str(random.randint(1000,9999))
+        sms_headers = {
+            "accept": "application/json",
+            "content-type": "application/json"
+        }
+        url = f"http://admin.bulksmslogin.com/api/otp.php?authkey=349851AFBrdHyz5632c330aP1&mobile=91{mobile_no}&message={otp}%20is%20your%20OTP%20for%20Geolife%20App%20Login%2C%20OTP%20is%20valid%20for%203%20minutes.%20Do%20not%20share%20it%20with%20anyone.%20Regards%2C%20Team%20Geolife%20Digital&sender=GEOLIF&otp={otp}&DLT_TE_ID=1107168121670241152"
+        r = requests.get(url, headers=sms_headers)
+        
         doc = frappe.get_doc({
             "doctype": "OTP Auth",
             "mobile_number": mobile_no,
@@ -807,6 +786,58 @@ def create_farmer():
         }
         return
 
+
+
+@frappe.whitelist(allow_guest=True)
+def submit_quiz():
+    api_key  = frappe.request.headers.get("Authorization")[6:21]
+    api_sec  = frappe.request.headers.get("Authorization")[22:]
+
+    user_email = get_user_info(api_key, api_sec)
+    if not user_email:
+        frappe.response["message"] = {
+            "status": False,
+            "message": "Unauthorised Access",
+        }
+        return
+
+    elif frappe.request.method == "POST":
+        _data = frappe.request.json
+        geo_mitra_id = get_geomitra_from_userid(user_email)
+
+        db_check = frappe.db.exists("Geo Mitra Points", {"geo_mitra":geo_mitra_id,"posting_date":frappe.utils.nowdate()})
+        if db_check :
+            frappe.response["message"] = {
+            "status":True,
+            "message": "Quiz Already Played",
+            }
+            return
+
+        
+        if geo_mitra_id == False:
+            frappe.response["message"] = {
+                "status": False,
+                "message": "Please map a geo mitra with this user",
+                "user_email": user_email
+            }
+            return
+            
+        doc = frappe.get_doc({
+            "doctype":"Geo Mitra Points",
+            "posting_date": frappe.utils.nowdate(),
+            "points": _data['points'],
+            "geo_mitra": geo_mitra_id,
+        })
+        doc.insert()
+        doc.save()
+        frappe.db.commit()
+
+        frappe.response["message"] = {
+            "status":True,
+            "message": "Answers Submited Successfully",
+        }
+        return
+
 def get_geomitra_from_userid(email):
     geo_mitra = frappe.db.get_all("Geo Mitra", fields=["name"], filters={"linked_user": email})
     if geo_mitra: 
@@ -1193,6 +1224,50 @@ def search_farmer():
             "geo_mitra_id": geo_mitra_id
         }
         return
+
+
+@frappe.whitelist(allow_guest=True)
+def search_farmer_orders():
+    api_key  = frappe.request.headers.get("Authorization")[6:21]
+    api_sec  = frappe.request.headers.get("Authorization")[22:]
+
+    user_email = get_user_info(api_key, api_sec)
+    if not user_email:
+        frappe.response["message"] = {
+            "status": False,
+            "message": "Unauthorised Access",
+        }
+        return
+
+    if frappe.request.method =="POST":
+        _data = frappe.request.json
+        text = f'%{_data["text"]}%'
+        geo_mitra_id = get_geomitra_from_userid(user_email)
+
+        geoOrders = frappe.db.sql("""
+            SELECT 
+                *
+            FROM
+                `tabGeo Advance Booking`
+            WHERE (name like %s OR farmer like %s OR dealer like %s) AND geo_mitra = %s
+            LIMIT 10
+        """, (text, text, text, geo_mitra_id), as_dict=1)
+
+        for m in geoOrders :
+            farmer_name = frappe.get_doc("My Farmer",m.farmer)
+            m.farmer_name= farmer_name.first_name
+            dealer_name = frappe.get_doc("Dealer", m.dealer)
+            m.dealer_name=dealer_name.dealer_name
+        
+        frappe.response["message"] = {
+            "status":True,
+            "message": "",
+            "data" : geoOrders,
+            "geo_mitra_id": geo_mitra_id
+        }
+        return
+
+
 
 @frappe.whitelist(allow_guest=True)
 def search_dealer():

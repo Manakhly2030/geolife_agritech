@@ -1,7 +1,8 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
- "autoname": "field:geo_mitra_id",
+ "autoname": "field:mobile_number",
  "creation": "2023-02-04 21:43:34.226615",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -13,7 +14,16 @@
   "geo_mitra_id",
   "geo_mitra_number",
   "geo_mitra_company",
-  "linked_user"
+  "linked_user",
+  "dgo_code",
+  "state",
+  "date_of_joining",
+  "reporting_person_name",
+  "reporting_person_code",
+  "designation",
+  "resignation_date",
+  "under_crop_project__non_crop_project",
+  "email"
  ],
  "fields": [
   {
@@ -29,7 +39,8 @@
   {
    "fieldname": "mobile_number",
    "fieldtype": "Data",
-   "label": "Mobile Number"
+   "label": "Mobile Number",
+   "unique": 1
   },
   {
    "fieldname": "geo_mitra_id",
@@ -52,11 +63,57 @@
    "fieldtype": "Link",
    "label": "Linked User",
    "options": "User"
+  },
+  {
+   "fieldname": "dgo_code",
+   "fieldtype": "Data",
+   "label": "DGO Code"
+  },
+  {
+   "fieldname": "state",
+   "fieldtype": "Data",
+   "label": "State"
+  },
+  {
+   "fieldname": "date_of_joining",
+   "fieldtype": "Data",
+   "label": "Date Of Joining"
+  },
+  {
+   "fieldname": "reporting_person_name",
+   "fieldtype": "Data",
+   "label": "Reporting Person Name"
+  },
+  {
+   "fieldname": "reporting_person_code",
+   "fieldtype": "Data",
+   "label": "Reporting Person Code"
+  },
+  {
+   "fieldname": "designation",
+   "fieldtype": "Data",
+   "label": "Designation"
+  },
+  {
+   "fieldname": "resignation_date",
+   "fieldtype": "Date",
+   "label": "Resignation Date"
+  },
+  {
+   "default": "0",
+   "fieldname": "under_crop_project__non_crop_project",
+   "fieldtype": "Check",
+   "label": "Under Crop Project / Non Crop Project"
+  },
+  {
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "label": "Email"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-03-14 15:32:46.433412",
+ "modified": "2023-04-14 11:36:26.928731",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Geo Mitra",
