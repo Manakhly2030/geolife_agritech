@@ -12,6 +12,16 @@ from frappe.core.doctype.user.user import test_password_strength
 import re
 
 @frappe.whitelist(allow_guest=True)
+def send_whatsapp(mobile_no, msg):
+    url = "https://api.ultramsg.com/instance7520/messages/chat"
+    payload = f"token=if2vzrlxmha5rz5u&to=91{mobile_no}&body={msg}"
+    payload = payload.encode('utf8').decode('iso-8859-1')
+    headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+    response = requests.request("POST", url, data=payload, headers=headers)
+    return response.text
+
+@frappe.whitelist(allow_guest=True)
 def generate_otp(mobile_no):
     if not mobile_no :
         frappe.local.response["message"] = {
@@ -992,9 +1002,10 @@ def create_Advance_booking_order():
 
         for itm in _data['cart'] :
                 doc.append("product_kit",{"product_kit": itm.get('name'), "qty": itm.get('quantity')})
-
         doc.save()
         frappe.db.commit()
+        send_whatsapp(doc.farmer, f"HI {doc.farmer} your Advance booking order id is {doc.name}")
+        send_whatsapp(doc.dealer, f"HI {doc.dealer} your have a new Advance booking order id is {doc.name}")
 
         frappe.response["message"] = {
             "status":True,
