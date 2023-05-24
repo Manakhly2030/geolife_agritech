@@ -10,8 +10,12 @@
  "field_order": [
   "kit_name",
   "crop",
-  "products",
   "amended_from",
+  "kit_category_type",
+  "column_break_jcv19",
+  "crop_bundle",
+  "cnp_kit_type",
+  "products",
   "naming_series"
  ],
  "fields": [
@@ -47,12 +51,34 @@
    "fieldtype": "Select",
    "label": "Naming Series",
    "options": "PK-.YYYY.-.####"
+  },
+  {
+   "fieldname": "kit_category_type",
+   "fieldtype": "Select",
+   "label": "Kit Category Type",
+   "options": "Standard CNP\nPremium CNP"
+  },
+  {
+   "fieldname": "crop_bundle",
+   "fieldtype": "Link",
+   "label": "Crop Bundle",
+   "options": "Crop Bundle"
+  },
+  {
+   "fieldname": "column_break_jcv19",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cnp_kit_type",
+   "fieldtype": "Select",
+   "label": "CNP KIT Type",
+   "options": "With Soil Application\nWithout Soil Application"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-17 13:34:02.965521",
+ "modified": "2023-05-15 12:04:50.150914",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Product Kit",

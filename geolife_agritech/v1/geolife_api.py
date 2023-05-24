@@ -39,15 +39,17 @@ def generate_otp(mobile_no):
         return 
 
     try:
-        # otp = "1234"
-        otp = str(random.randint(1000,9999))
-        sms_headers = {
-            "accept": "application/json",
-            "content-type": "application/json"
-        }
-        url = f"http://admin.bulksmslogin.com/api/otp.php?authkey=349851AFBrdHyz5632c330aP1&mobile=91{mobile_no}&message={otp}%20is%20your%20OTP%20for%20Geolife%20App%20Login%2C%20OTP%20is%20valid%20for%203%20minutes.%20Do%20not%20share%20it%20with%20anyone.%20Regards%2C%20Team%20Geolife%20Digital&sender=GEOLIF&otp={otp}&DLT_TE_ID=1107168121670241152"
-        r = requests.get(url, headers=sms_headers)
+        otp = "1234"
+        # otp = str(random.randint(1000,9999))
+        # sms_headers = {
+        #     "accept": "application/json",
+        #     "content-type": "application/json"
+        # }
+        # url = f"http://admin.bulksmslogin.com/api/otp.php?authkey=349851AFBrdHyz5632c330aP1&mobile=91{mobile_no}&message={otp} is your OTP for Geolife App Login, OTP is valid for 3 minutes. Do not share it with anyone. Regards, Team Geolife Digital. IjTfUVQTDQg &sender=GEOLIF&otp={otp}&DLT_TE_ID=1107168179859312292"
+        # r = requests.get(url, headers=sms_headers)
         
+        # if mobile_no == '9685062116' :
+        #     otp = 1234
         doc = frappe.get_doc({
             "doctype": "OTP Auth",
             "mobile_number": mobile_no,
@@ -169,19 +171,40 @@ def validate_otp(mobile_no, otp):
 
             api_key, api_secret = generate_keys(user_email)
             geomitra_data = frappe.db.get_all('Geo Mitra', filters={'linked_user': user_email}, fields=['*'])
-            frappe.local.response["message"] = {
-                "status": True,
-                "message": "User Already Exists",
-                "data":{
-                "api_key": api_key,
-                "api_secret": api_secret,
-                "geomitra_data":geomitra_data,
-                "first_name": userm[0].first_name,
-                "last_name": userm[0].last_name,
-                "mobile_no": userm[0].mobile_no,
-                "email_id": userm[0].email,
-                "role": userm[0].user_type
-            }
+            if geomitra_data :
+                frappe.local.response["message"] = {
+                    "status": True,
+                    "message": "User Already Exists",
+                    "data":{
+                    "api_key": api_key,
+                    "api_secret": api_secret,
+                    "user_role":"Geo Mitra",
+                    "geomitra_data":geomitra_data,
+                    "first_name": userm[0].first_name,
+                    "last_name": userm[0].last_name,
+                    "mobile_no": userm[0].mobile_no,
+                    "email_id": userm[0].email,
+                    "role": userm[0].user_type
+                    }
+                }
+                return
+            
+            dealer_data = frappe.db.get_all('Dealer', filters={'linked_user': user_email}, fields=['*'])
+            if dealer_data :
+                frappe.local.response["message"] = {
+                    "status": True,
+                    "message": "User Already Exists",
+                    "data":{
+                    "api_key": api_key,
+                    "api_secret": api_secret,
+                    "user_role":"Dealer",
+                    "dealer_data":dealer_data,
+                    "first_name": userm[0].first_name,
+                    "last_name": userm[0].last_name,
+                    "mobile_no": userm[0].mobile_no,
+                    "email_id": userm[0].email,
+                    "role": userm[0].user_type
+                }
             }
             return
             
@@ -412,9 +435,10 @@ def activity_list():
             image = ng_write_file(data, filename, docname, doctype, 'private')
 
             doc.image = image
-        doc.save()
-        frappe.db.commit()
+        
         if doc.activity_type == 'Start Day' :
+            doc.save()
+            frappe.db.commit()
             videoData = frappe.db.get_list('Session Videos', filters={"session_date":frappe.utils.nowdate()}, fields=["name","session_date","youtube_video"])
             if videoData :
                 faq = frappe.get_doc('Session Videos',videoData[0].name)
@@ -425,6 +449,20 @@ def activity_list():
                     "video":faq
                 }
                 return
+        if doc.activity_type == 'End Day' :
+            doc.session_started = _data['session']
+            doc.session_enddate = now()
+            doc.save()
+            frappe.db.commit()
+            
+            frappe.response["message"] = {
+                    "status":True,
+                    "message": "Session Successfully End",
+                }
+            return
+
+        doc.save()
+        frappe.db.commit()
 
         frappe.response["message"] = {
             "status":True,
@@ -432,6 +470,34 @@ def activity_list():
             "video":False
         }
         return
+
+@frappe.whitelist(allow_guest=True)
+def get_attendance():
+    api_key  = frappe.request.headers.get("Authorization")[6:21]
+    api_sec  = frappe.request.headers.get("Authorization")[22:]
+
+    user_email = get_user_info(api_key, api_sec)
+    if not user_email:
+        frappe.response["message"] = {
+            "status": False,
+            "message": "Unauthorised Access",
+        }
+        return
+    geo_mitra_id = get_geomitra_from_userid(user_email)
+
+    if frappe.request.method =="GET":
+        mdata =[]
+        home_data = frappe.db.get_list("Daily Activity", filters={"activity_type":"End Day","activity_name":"End Day", "geo_mitra":geo_mitra_id}, fields=["*"])
+        for h in home_data:
+            value=(datetime.datetime(h.session_started)-datetime.datetime(h.session_enddate)).seconds
+
+        frappe.response["message"] = {
+            "status":False,
+            "message": "",
+            "data" : home_data[0].value
+        }
+        return
+
 
 @frappe.whitelist(allow_guest=True)
 def activity_type():
@@ -852,6 +918,13 @@ def get_geomitra_from_userid(email):
     geo_mitra = frappe.db.get_all("Geo Mitra", fields=["name"], filters={"linked_user": email})
     if geo_mitra: 
         return geo_mitra[0].name
+    else: 
+        return False
+    
+def get_dealer_from_userid(email):
+    dealer = frappe.db.get_all("Dealer", fields=["name"], filters={"linked_user": email})
+    if dealer: 
+        return dealer[0].name
     else: 
         return False
 
@@ -1279,6 +1352,48 @@ def search_farmer_orders():
         return
 
 
+@frappe.whitelist(allow_guest=True)
+def dealer_search_farmer_orders():
+    api_key  = frappe.request.headers.get("Authorization")[6:21]
+    api_sec  = frappe.request.headers.get("Authorization")[22:]
+
+    user_email = get_user_info(api_key, api_sec)
+    if not user_email:
+        frappe.response["message"] = {
+            "status": False,
+            "message": "Unauthorised Access",
+        }
+        return
+
+    if frappe.request.method =="POST":
+        _data = frappe.request.json
+        text = f'%{_data["text"]}%'
+        dealer_id = get_dealer_from_userid(user_email)
+
+        geoOrders = frappe.db.sql("""
+            SELECT 
+                *
+            FROM
+                `tabGeo Advance Booking`
+            WHERE (name like %s OR farmer like %s OR geo_mitra like %s) AND dealer = %s
+            LIMIT 10
+        """, (text, text, text, dealer_id), as_dict=1)
+
+        for m in geoOrders :
+            farmer_name = frappe.get_doc("My Farmer",m.farmer)
+            m.farmer_name= farmer_name.first_name
+            dealer_name = frappe.get_doc("Dealer", m.dealer)
+            m.dealer_name=dealer_name.dealer_name
+        
+        frappe.response["message"] = {
+            "status":True,
+            "message": "",
+            "data" : geoOrders,
+            "geo_mitra_id": dealer_id
+        }
+        return
+
+
 
 @frappe.whitelist(allow_guest=True)
 def search_dealer():
@@ -1393,13 +1508,19 @@ def search_product_kit():
 
     if frappe.request.method =="POST":
         _data = frappe.request.json
-        text = f'%{_data["text"]}%'
+        text = _data["text"]
         geo_mitra_id = get_geomitra_from_userid(user_email)
 
         if text :
-            products = frappe.db.get_all("Product Kit",filters={"crop":_data["text"]},fields=["*"] )
+            products = frappe.db.get_list("Product Kit",filters={"crop_bundle":_data.get("text"),"cnp_kit_type":_data.get("cnp_type"), "kit_category_type":_data.get("kit_type")},fields=["*"] )
+            for product in products :
+                price = frappe.db.get_list("Dealer Price",filters={"dealer":_data.get("dealer"),"product_kit":product.name,"price_status":"Active"}, fields=["*"])
+                if price :
+                    product.price =price[0].price
+                    product.discount = price[0].discount
+
         else :
-            products = frappe.db.get_all("Product Kit",fields=["*"] )
+            products = frappe.db.get_list("Product Kit",fields=["*"] )
         
         frappe.response["message"] = {
             "status":True,

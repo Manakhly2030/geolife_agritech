@@ -1,0 +1,63 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:crop_bundle",
+ "creation": "2023-05-15 11:22:05.520834",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "crop_bundle",
+  "amended_from",
+  "crops"
+ ],
+ "fields": [
+  {
+   "fieldname": "crop_bundle",
+   "fieldtype": "Data",
+   "label": "Crop Bundle",
+   "unique": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Crop Bundle",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "crops",
+   "fieldtype": "Table",
+   "label": "Crops",
+   "options": "Crop Bundle Child"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2023-05-15 11:37:52.921687",
+ "modified_by": "Administrator",
+ "module": "Geolife Agritech",
+ "name": "Crop Bundle",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
  "autoname": "naming_series:",
  "creation": "2022-12-17 16:42:01.686024",
@@ -139,7 +140,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-03-14 15:39:49.951358",
+ "modified": "2023-05-06 14:28:57.442928",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Crop Calendar",

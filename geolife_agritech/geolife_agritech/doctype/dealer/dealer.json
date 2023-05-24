@@ -11,9 +11,11 @@
   "dealer_name",
   "contact_person",
   "email_id",
+  "linked_user",
   "mobile_number",
   "pan_no",
   "gst_number",
+  "column_break_ox3mz",
   "address_1",
   "address_2",
   "city",
@@ -90,11 +92,21 @@
    "fieldname": "qr_code",
    "fieldtype": "Attach Image",
    "label": "QR Code"
+  },
+  {
+   "fieldname": "linked_user",
+   "fieldtype": "Link",
+   "label": "Linked User",
+   "options": "User"
+  },
+  {
+   "fieldname": "column_break_ox3mz",
+   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-04-14 13:00:07.719473",
+ "modified": "2023-05-13 11:40:51.073316",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Dealer",

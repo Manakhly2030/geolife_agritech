@@ -12,7 +12,9 @@
   "activity_name",
   "activity_type",
   "notes",
-  "geo_mitra"
+  "geo_mitra",
+  "session_started",
+  "session_enddate"
  ],
  "fields": [
   {
@@ -48,11 +50,21 @@
    "fieldtype": "Link",
    "label": "Geo Mitra",
    "options": "Geo Mitra"
+  },
+  {
+   "fieldname": "session_started",
+   "fieldtype": "Datetime",
+   "label": "Session Started"
+  },
+  {
+   "fieldname": "session_enddate",
+   "fieldtype": "Datetime",
+   "label": "Session EndDate"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-04-09 18:23:35.628653",
+ "modified": "2023-04-19 16:17:04.123988",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Daily Activity",
