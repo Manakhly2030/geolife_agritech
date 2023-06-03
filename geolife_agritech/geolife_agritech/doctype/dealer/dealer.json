@@ -22,7 +22,9 @@
   "state",
   "pin",
   "geomitra_number",
-  "qr_code"
+  "qr_code",
+  "section_break_lc4tc",
+  "dgo_list"
  ],
  "fields": [
   {
@@ -102,11 +104,21 @@
   {
    "fieldname": "column_break_ox3mz",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "dgo_list",
+   "fieldtype": "Table",
+   "label": "DGO List",
+   "options": "Dealer Geo Mitra"
+  },
+  {
+   "fieldname": "section_break_lc4tc",
+   "fieldtype": "Section Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-05-13 11:40:51.073316",
+ "modified": "2023-05-27 13:49:11.880337",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Dealer",

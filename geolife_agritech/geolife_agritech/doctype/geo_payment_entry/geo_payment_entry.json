@@ -40,8 +40,9 @@
   },
   {
    "fieldname": "payment_method",
-   "fieldtype": "Data",
-   "label": "Payment Method"
+   "fieldtype": "Select",
+   "label": "Payment Method",
+   "options": "Cash\nUPI"
   },
   {
    "fieldname": "ref_number",
@@ -87,7 +88,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-15 14:39:50.340945",
+ "modified": "2023-05-30 11:01:25.779699",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Geo Payment Entry",

@@ -1065,7 +1065,6 @@ def create_Advance_booking_order():
             "posting_date": frappe.utils.nowdate(),
             "dealer": _data['dealer_mobile'],
             "farmer": _data['farmer'],
-            "crop": _data['crop'],
             "booking_date": _data['expected_date'],
             "payment_method": _data['payment_method'],
             "amount": _data['amount'],
@@ -1077,8 +1076,8 @@ def create_Advance_booking_order():
                 doc.append("product_kit",{"product_kit": itm.get('name'), "qty": itm.get('quantity')})
         doc.save()
         frappe.db.commit()
-        send_whatsapp(doc.farmer, f"HI {doc.farmer} your Advance booking order id is {doc.name}")
-        send_whatsapp(doc.dealer, f"HI {doc.dealer} your have a new Advance booking order id is {doc.name}")
+        # send_whatsapp(doc.farmer, f"HI {doc.farmer} your Advance booking order id is {doc.name}")
+        # send_whatsapp(doc.dealer, f"HI {doc.dealer} your have a new Advance booking order id is {doc.name}")
 
         frappe.response["message"] = {
             "status":True,
@@ -1333,9 +1332,9 @@ def search_farmer_orders():
                 *
             FROM
                 `tabGeo Advance Booking`
-            WHERE (name like %s OR farmer like %s OR dealer like %s) AND geo_mitra = %s
-            LIMIT 10
-        """, (text, text, text, geo_mitra_id), as_dict=1)
+            WHERE (name like %s OR farmer like %s OR dealer like %s) AND geo_mitra = %s AND posting_date BETWEEN %s AND %s 
+            ORDER BY posting_date DESC
+        """, (text, text, text, geo_mitra_id,_data["from_date"],_data["to_date"]), as_dict=1)
 
         for m in geoOrders :
             farmer_name = frappe.get_doc("My Farmer",m.farmer)
@@ -1375,9 +1374,9 @@ def dealer_search_farmer_orders():
                 *
             FROM
                 `tabGeo Advance Booking`
-            WHERE (name like %s OR farmer like %s OR geo_mitra like %s) AND dealer = %s
+            WHERE (name like %s OR farmer like %s OR geo_mitra like %s) AND dealer = %s AND posting_date BETWEEN %s AND %s
             LIMIT 10
-        """, (text, text, text, dealer_id), as_dict=1)
+        """, (text, text, text, dealer_id, _data["from_date"],_data["to_date"]), as_dict=1)
 
         for m in geoOrders :
             farmer_name = frappe.get_doc("My Farmer",m.farmer)
@@ -1392,6 +1391,7 @@ def dealer_search_farmer_orders():
             "geo_mitra_id": dealer_id
         }
         return
+
 
 
 
@@ -1429,6 +1429,38 @@ def search_dealer():
             "message": "",
             "data" : dealers,
             "geo_mitra_id": geo_mitra_id
+        }
+        return
+
+@frappe.whitelist(allow_guest=True)
+def search_geomitra():
+
+    api_key  = frappe.request.headers.get("Authorization")[6:21]
+    api_sec  = frappe.request.headers.get("Authorization")[22:]
+
+    user_email = get_user_info(api_key, api_sec)
+    if not user_email:
+        frappe.response["message"] = {
+            "status": False,
+            "message": "Unauthorised Access",
+        }
+        return
+    dealer_id = get_dealer_from_userid(user_email)
+
+    if frappe.request.method =="GET":
+        geomitras = frappe.get_doc("Dealer",dealer_id)
+        for gm in geomitras.dgo_list :
+            cash_amount = frappe.db.sql(""" SELECT sum(amount) as amount FROM `tabGeo Payment Entry` WHERE dealer=%s AND geo_mitra= %s  """, (dealer_id, gm.get("geo_mitra")), as_dict=1)
+            upi_amount = frappe.db.sql(""" SELECT sum(amount) as amount FROM `tabGeo Payment Entry` WHERE dealer=%s AND geo_mitra= %s """, (dealer_id, gm.get("geo_mitra")), as_dict=1)
+            if cash_amount :
+                gm.geo_mitra_cash=cash_amount[0].amount
+            if upi_amount :
+                gm.geo_mitra_upi=cash_amount[0].amount
+        frappe.response["message"] = {
+            "status":True,
+            "message": "",
+            "data" : geomitras.dgo_list,
+            "geo_mitra_id": dealer_id
         }
         return
 
@@ -1492,6 +1524,55 @@ def search_crops():
         }
         return
 
+
+@frappe.whitelist(allow_guest=True)
+def farmer_meeting():
+
+    api_key  = frappe.request.headers.get("Authorization")[6:21]
+    api_sec  = frappe.request.headers.get("Authorization")[22:]
+
+    user_email = get_user_info(api_key, api_sec)
+    if not user_email:
+        frappe.response["message"] = {
+            "status": False,
+            "message": "Unauthorised Access",
+        }
+        return
+
+    if frappe.request.method =="POST":
+        _data = frappe.request.json
+        geo_mitra_id = get_geomitra_from_userid(user_email)
+
+        doc = frappe.get_doc({
+            "doctype":"Farmer Meeting",
+            "posting_date": frappe.utils.nowdate(),
+            "employee_location": _data['mylocation'],
+            "agenda":_data['agenda'],
+            "location":_data['location'],
+            "no_attendees":_data['no_attendees'],
+            "notes": _data['notes'],
+            "geo_mitra":geo_mitra_id,
+            
+        })
+        doc.insert()
+        if _data['image']:
+            data = _data['image'][0]
+            filename = doc.name
+            docname = doc.name
+            doctype = "Farmer Meeting"
+            image = ng_write_file(data, filename, docname, doctype, 'private')
+            doc.image = image
+        doc.save()
+        frappe.db.commit()
+        
+        frappe.response["message"] = {
+            "status":True,
+            "message": "",
+            "geo_mitra_id": geo_mitra_id
+        }
+        return
+
+
 @frappe.whitelist(allow_guest=True)
 def search_product_kit():
 
@@ -1510,17 +1591,13 @@ def search_product_kit():
         _data = frappe.request.json
         text = _data["text"]
         geo_mitra_id = get_geomitra_from_userid(user_email)
-
-        if text :
-            products = frappe.db.get_list("Product Kit",filters={"crop_bundle":_data.get("text"),"cnp_kit_type":_data.get("cnp_type"), "kit_category_type":_data.get("kit_type")},fields=["*"] )
-            for product in products :
-                price = frappe.db.get_list("Dealer Price",filters={"dealer":_data.get("dealer"),"product_kit":product.name,"price_status":"Active"}, fields=["*"])
-                if price :
-                    product.price =price[0].price
-                    product.discount = price[0].discount
-
-        else :
-            products = frappe.db.get_list("Product Kit",fields=["*"] )
+        
+        products = frappe.db.get_list("Product Kit",filters={"crop_bundle":_data.get("text"),"cnp_kit_type":_data.get("cnp_type")},fields=["*"] )
+        for product in products :
+            price = frappe.db.get_list("Dealer Price List",filters={"dealer":_data.get("dealer"),"product_kit":product.name,"price_status":"Active"}, fields=["*"])
+            if price :
+                product.price =price[0].price
+                product.discount = price[0].discount
         
         frappe.response["message"] = {
             "status":True,
@@ -1554,5 +1631,39 @@ def get_stock():
         frappe.response["message"] = {
             "status":True,
             "data" : home_data
+        }
+        return
+
+
+@frappe.whitelist(allow_guest=True)
+def dealer_payments_data():
+    api_key  = frappe.request.headers.get("Authorization")[6:21]
+    api_sec  = frappe.request.headers.get("Authorization")[22:]
+
+    user_email = get_user_info(api_key, api_sec)
+    if not user_email:
+        frappe.response["message"] = {
+            "status": False,
+            "message": "Unauthorised Access",
+        }
+        return
+
+    if frappe.request.method =="POST":
+        _data = frappe.request.json
+        dealer_id = get_dealer_from_userid(user_email)
+
+        geoPayments = frappe.db.get_all("Geo Payment Entry", filters={'dealer':dealer_id,'posting_date': ['>=', _data['from_date']],'posting_date': ['<=', _data['to_date']]}, fields=["*"])
+
+        # for m in geoOrders :
+        #     farmer_name = frappe.get_doc("My Farmer",m.farmer)
+        #     m.farmer_name= farmer_name.first_name
+        #     dealer_name = frappe.get_doc("Dealer", m.dealer)
+        #     m.dealer_name=dealer_name.dealer_name
+        
+        frappe.response["message"] = {
+            "status":True,
+            "message": "",
+            "data" : geoPayments,
+            "dealer_id": dealer_id
         }
         return
