@@ -9,7 +9,11 @@ from frappe.utils import get_files_path, get_site_name, now, add_to_date, get_da
 from frappe.utils.data import escape_html
 import requests
 from frappe.core.doctype.user.user import test_password_strength
+import calendar
 import re
+from datetime import datetime
+
+
 
 @frappe.whitelist(allow_guest=True)
 def send_whatsapp(mobile_no, msg):
@@ -260,6 +264,35 @@ def ng_write_file(data, filename, docname, doctype, file_type):
         return e
 
 @frappe.whitelist(allow_guest=True)
+def Upload_image_in_doctype():
+    api_key  = frappe.request.headers.get("Authorization")[6:21]
+    api_sec  = frappe.request.headers.get("Authorization")[22:]
+    user_email = get_user_info(api_key, api_sec)
+    if not user_email:
+        frappe.response["message"] = {
+            "status": False,
+            "message": "Unauthorised Access",
+        }
+        return
+    if frappe.request.method == "POST":
+        _data = frappe.request.json
+        if _data['image']:
+            data = _data['image']
+            filename = _data['name']
+            docname = _data['name']
+            doctype = _data["doctype"]
+            image = ng_write_file(data, filename, docname, doctype, 'private')
+
+        frappe.response["message"] = {
+            "status":True,
+            "message": "Image Uploaded Successfully",
+        }
+        return
+    
+
+    
+
+@frappe.whitelist(allow_guest=True)
 def crop_seminar():
     api_key  = frappe.request.headers.get("Authorization")[6:21]
     api_sec  = frappe.request.headers.get("Authorization")[22:]
@@ -487,12 +520,22 @@ def get_attendance():
 
     if frappe.request.method =="GET":
         mdata =[]
+        count_days=[]
         home_data = frappe.db.get_list("Daily Activity", filters={"activity_type":"End Day","activity_name":"End Day", "geo_mitra":geo_mitra_id}, fields=["*"])
         for h in home_data:
-            value=(datetime.datetime(h.session_started)-datetime.datetime(h.session_enddate)).seconds
-
+            if h.session_enddate is not None:
+                start_time_str = h.session_started.strftime("%Y-%m-%d %H:%M:%S")
+                start_time = datetime.strptime(start_time_str, "%Y-%m-%d %H:%M:%S")
+                end_time_str = h.session_enddate.strftime("%Y-%m-%d %H:%M:%S")
+                end_time = datetime.strptime(end_time_str, "%Y-%m-%d %H:%M:%S")
+                time_difference = end_time - start_time
+                if time_difference :
+                    value = time_difference.total_seconds() / 3600
+                    if value > 3 :
+                        count_days.append({ "value": value, "label": start_time.strftime("%d-%b")})
+                        h.value = count_days
         frappe.response["message"] = {
-            "status":False,
+            "status":True,
             "message": "",
             "data" : home_data[0].value
         }
@@ -555,9 +598,12 @@ def expenses():
             "message": "Unauthorised Access",
         }
         return
+    
+    geo_mitra_id = get_geomitra_from_userid(user_email)
+
 
     if frappe.request.method =="GET":
-        home_data = frappe.db.get_list("Geo Expenses", fields=["name","posting_date","expense_type","amount","against_expense","notes"])
+        home_data = frappe.db.get_list("Geo Expenses",filters={"posting_date": ['=', frappe.utils.nowdate()],"geo_mitra":geo_mitra_id}, fields=["name","posting_date","expense_type","amount","against_expense","notes"])
         # for hd in home_data:
         #     himage = get_doctype_images("Geo Expenses",hd.name,0)
         #     if himage :
@@ -1047,6 +1093,43 @@ def create_Advance_booking_order():
         }
         return
     
+    elif frappe.request.method == "PUT":
+        _data = frappe.request.json
+
+        geo_mitra_id = get_geomitra_from_userid(user_email)
+        
+        if geo_mitra_id == False:
+            frappe.response["message"] = {
+                "status": False,
+                "message": "Please map a geo mitra with this user",
+                "user_email": user_email
+            }
+            return
+        if _data['payment_method'] == 'UPI' :
+            doc = frappe.get_doc({
+            "doctype":"Geo Payment Entry",
+            "posting_date": frappe.utils.nowdate(),
+            "amount":_data['amount'],
+            "payment_method":_data['payment_method'],
+            "ref_number":_data['ref_number'],
+            "geo_mitra":geo_mitra_id,
+            "dealer":_data['dealer_mobile'],
+            })
+            doc.insert()
+            if _data['image']:
+                data = _data['image']
+                filename = doc.name
+                docname = doc.name
+                doctype = "Geo Payment Entry"
+                image = ng_write_file(data, filename, docname, doctype, 'private')
+                doc.image = image
+            doc.save()
+            frappe.response["message"] = {
+                "status":True,
+                "message": "Advance Booking Successfully Created",
+            }
+            return
+
     elif frappe.request.method == "POST":
         _data = frappe.request.json
 
@@ -1071,17 +1154,18 @@ def create_Advance_booking_order():
             "geo_mitra": geo_mitra_id,
         })
         doc.insert()
-
         for itm in _data['cart'] :
                 doc.append("product_kit",{"product_kit": itm.get('name'), "qty": itm.get('quantity')})
         doc.save()
         frappe.db.commit()
+        
         # send_whatsapp(doc.farmer, f"HI {doc.farmer} your Advance booking order id is {doc.name}")
         # send_whatsapp(doc.dealer, f"HI {doc.dealer} your have a new Advance booking order id is {doc.name}")
 
         frappe.response["message"] = {
             "status":True,
             "message": "Advance Booking Successfully Created",
+            "name":doc.name
         }
         return
 
@@ -1171,7 +1255,7 @@ def add_dealer_payment():
         })
         doc.insert()
         if _data['image']:
-            data = _data['image'][0]
+            data = _data['image']
             filename = doc.name
             docname = doc.name
             doctype = "Geo Payment Entry"
@@ -1244,6 +1328,7 @@ def get_user_task():
     api_sec  = frappe.request.headers.get("Authorization")[22:]
 
     user_email = get_user_info(api_key, api_sec)
+    geo_mitra_id = get_geomitra_from_userid(user_email)
     if not user_email:
         frappe.response["message"] = {
             "status": False,
@@ -1261,6 +1346,7 @@ def get_user_task():
         frappe.response["message"] = {
             "status":True,
             "data": tasks,
+            "dashboard":dashboard_data(geo_mitra_id)
         }
         return
     
@@ -1450,12 +1536,12 @@ def search_geomitra():
     if frappe.request.method =="GET":
         geomitras = frappe.get_doc("Dealer",dealer_id)
         for gm in geomitras.dgo_list :
-            cash_amount = frappe.db.sql(""" SELECT sum(amount) as amount FROM `tabGeo Payment Entry` WHERE dealer=%s AND geo_mitra= %s  """, (dealer_id, gm.get("geo_mitra")), as_dict=1)
-            upi_amount = frappe.db.sql(""" SELECT sum(amount) as amount FROM `tabGeo Payment Entry` WHERE dealer=%s AND geo_mitra= %s """, (dealer_id, gm.get("geo_mitra")), as_dict=1)
+            cash_amount = frappe.db.sql(""" SELECT sum(amount) as amount FROM `tabGeo Advance Booking` WHERE dealer=%s AND geo_mitra= %s AND payment_method ='Cash'  """, (dealer_id, gm.get("geo_mitra")), as_dict=1)
+            upi_amount  = frappe.db.sql(""" SELECT sum(amount) as amount FROM `tabGeo Advance Booking` WHERE dealer=%s AND geo_mitra= %s AND payment_method ='UPI' """, (dealer_id, gm.get("geo_mitra")), as_dict=1)
             if cash_amount :
                 gm.geo_mitra_cash=cash_amount[0].amount
             if upi_amount :
-                gm.geo_mitra_upi=cash_amount[0].amount
+                gm.geo_mitra_upi=upi_amount[0].amount
         frappe.response["message"] = {
             "status":True,
             "message": "",
@@ -1667,3 +1753,48 @@ def dealer_payments_data():
             "dealer_id": dealer_id
         }
         return
+
+
+@frappe.whitelist(allow_guest=True)
+def dashboard_data(geo_mitra):
+    if frappe.request.method =="GET":
+        Dashboard = {"present_days":""}
+        count_days=0
+        present_days=""
+        home_data = frappe.db.get_list("Daily Activity", filters={"activity_type":"End Day","activity_name":"End Day", "geo_mitra":geo_mitra}, fields=["*"])
+        for h in home_data:
+            if h.session_enddate is not None:
+                start_time_str = h.session_started.strftime("%Y-%m-%d %H:%M:%S")
+                start_time = datetime.strptime(start_time_str, "%Y-%m-%d %H:%M:%S")
+                end_time_str = h.session_enddate.strftime("%Y-%m-%d %H:%M:%S")
+                end_time = datetime.strptime(end_time_str, "%Y-%m-%d %H:%M:%S")
+                time_difference = end_time - start_time
+                if time_difference :
+                    value = time_difference.total_seconds() / 3600
+                    if value > 3 :
+                        count_days = count_days+1
+                        h.value = count_days
+        Dashboard["present_days"] = f"{count_days}/{calendar.monthrange(2023, 1)[1]}"
+
+        Dashboard["kit_booking"] = frappe.db.count("Geo Advance Booking", {"geo_mitra":geo_mitra})
+        Dealers_count=0
+        Dealers = frappe.db.get_all("Dealer", fields=["*"])
+        for dealer in Dealers :
+            ddealer = frappe.get_doc("Dealer",dealer.name)
+            if ddealer.dgo_list:
+                for d in ddealer.dgo_list :
+                    if d.geo_mitra == geo_mitra :
+                        Dealers_count = Dealers_count+1
+        dealer_visit_data = frappe.db.count("Daily Activity", {"activity_type":"Dealer Appointment", "geo_mitra":geo_mitra})
+        if dealer_visit_data :
+            dealer_not_visit = Dealers_count-dealer_visit_data
+        else :
+            dealer_not_visit=0
+        Dashboard["dealer_not_visit"] = f"{dealer_not_visit}/{Dealers_count}"
+
+        Dashboard["tft_downloads"] = frappe.db.count("Door To Door Visit", {"geo_mitra":geo_mitra})
+        Dashboard["farmer_connected"] = frappe.db.count("My Farmer", {"geomitra_number":geo_mitra})
+        Dashboard["new_dealer"] = Dealers_count
+        Dashboard["target_achievement"] = ""
+      
+        return Dashboard

@@ -12,6 +12,7 @@
   "activity_name",
   "activity_type",
   "notes",
+  "section_break_70njj",
   "geo_mitra",
   "session_started",
   "session_enddate"
@@ -60,11 +61,15 @@
    "fieldname": "session_enddate",
    "fieldtype": "Datetime",
    "label": "Session EndDate"
+  },
+  {
+   "fieldname": "section_break_70njj",
+   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-04-19 16:17:04.123988",
+ "modified": "2023-06-10 16:41:13.934180",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Daily Activity",

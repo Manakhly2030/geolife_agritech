@@ -19,7 +19,8 @@
   "farm_acre",
   "farm_acre_unit",
   "register_date",
-  "app_installed"
+  "app_installed",
+  "crop_added"
  ],
  "fields": [
   {
@@ -93,11 +94,16 @@
    "fieldtype": "Select",
    "label": "App Installed",
    "options": "\nInstalled\nNot Installed"
+  },
+  {
+   "fieldname": "crop_added",
+   "fieldtype": "Data",
+   "label": "Crop Added"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-04-11 14:22:45.029231",
+ "modified": "2023-06-05 18:21:42.501776",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "My Farmer",
