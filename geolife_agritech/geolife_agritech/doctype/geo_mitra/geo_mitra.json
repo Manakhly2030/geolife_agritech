@@ -16,6 +16,8 @@
   "geo_mitra_company",
   "linked_user",
   "dgo_code",
+  "geo_market",
+  "column_break_p3woe",
   "state",
   "date_of_joining",
   "reporting_person_name",
@@ -109,11 +111,21 @@
    "fieldname": "email",
    "fieldtype": "Data",
    "label": "Email"
+  },
+  {
+   "fieldname": "geo_market",
+   "fieldtype": "Link",
+   "label": "Geo Market",
+   "options": "Geo Market"
+  },
+  {
+   "fieldname": "column_break_p3woe",
+   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-04-14 11:36:26.928731",
+ "modified": "2023-07-07 18:56:11.372646",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Geo Mitra",

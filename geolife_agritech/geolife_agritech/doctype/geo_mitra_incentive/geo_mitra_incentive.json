@@ -1,0 +1,97 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:order_id",
+ "creation": "2023-07-15 11:43:24.151067",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "geo_mitra",
+  "order_id",
+  "dealer",
+  "incentive",
+  "crop_type",
+  "amended_from",
+  "posting_date",
+  "product_kit"
+ ],
+ "fields": [
+  {
+   "fieldname": "geo_mitra",
+   "fieldtype": "Link",
+   "label": "Geo Mitra",
+   "options": "Geo Mitra"
+  },
+  {
+   "fieldname": "order_id",
+   "fieldtype": "Link",
+   "label": "Order ID",
+   "options": "Geo Advance Booking",
+   "unique": 1
+  },
+  {
+   "fieldname": "dealer",
+   "fieldtype": "Link",
+   "label": "Dealer",
+   "options": "Dealer"
+  },
+  {
+   "fieldname": "incentive",
+   "fieldtype": "Currency",
+   "label": "Incentive"
+  },
+  {
+   "fieldname": "crop_type",
+   "fieldtype": "Data",
+   "label": "Crop Type"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Geo Mitra Incentive",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Posting Date"
+  },
+  {
+   "fieldname": "product_kit",
+   "fieldtype": "Link",
+   "label": "Product Kit",
+   "options": "Product Kit"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2023-07-15 13:38:37.229684",
+ "modified_by": "Administrator",
+ "module": "Geolife Agritech",
+ "name": "Geo Mitra Incentive",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

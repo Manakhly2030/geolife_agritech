@@ -6,19 +6,55 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "otp_valid_upto"
+  "otp_valid_upto",
+  "incentive_section",
+  "incentive_with_soil_kit",
+  "incentive_without_soil_kit",
+  "data_import_for_geo_market_section",
+  "import_geo_market_data",
+  "start_import"
  ],
  "fields": [
   {
    "fieldname": "otp_valid_upto",
    "fieldtype": "Data",
    "label": "OTP Valid Upto"
+  },
+  {
+   "fieldname": "incentive_section",
+   "fieldtype": "Section Break",
+   "label": "Incentive"
+  },
+  {
+   "fieldname": "incentive_with_soil_kit",
+   "fieldtype": "Currency",
+   "label": "Incentive With Soil Kit"
+  },
+  {
+   "fieldname": "incentive_without_soil_kit",
+   "fieldtype": "Currency",
+   "label": "Incentive Without Soil Kit"
+  },
+  {
+   "fieldname": "import_geo_market_data",
+   "fieldtype": "Attach",
+   "label": "import geo market data"
+  },
+  {
+   "fieldname": "data_import_for_geo_market_section",
+   "fieldtype": "Section Break",
+   "label": "Data Import for geo Market"
+  },
+  {
+   "fieldname": "start_import",
+   "fieldtype": "Button",
+   "label": "start Import"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-02-09 11:06:13.103349",
+ "modified": "2023-07-14 16:18:44.199884",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "GeoLife Setting",

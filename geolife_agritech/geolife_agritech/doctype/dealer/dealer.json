@@ -10,6 +10,7 @@
  "field_order": [
   "dealer_name",
   "contact_person",
+  "erp_dealer_name",
   "email_id",
   "linked_user",
   "mobile_number",
@@ -114,11 +115,16 @@
   {
    "fieldname": "section_break_lc4tc",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "erp_dealer_name",
+   "fieldtype": "Data",
+   "label": "ERP Dealer Name"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-05-27 13:49:11.880337",
+ "modified": "2023-06-19 21:56:36.039557",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Dealer",

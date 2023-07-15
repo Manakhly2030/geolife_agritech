@@ -1,29 +1,35 @@
 {
  "actions": [],
- "allow_import": 1,
  "allow_rename": 1,
- "autoname": "field:state_name",
- "creation": "2022-12-17 16:32:25.682961",
+ "autoname": "field:expense_type",
+ "creation": "2023-06-12 10:29:05.546288",
+ "default_view": "List",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "state_name"
+  "expense_type",
+  "json"
  ],
  "fields": [
   {
-   "fieldname": "state_name",
+   "fieldname": "expense_type",
    "fieldtype": "Data",
-   "label": "State Name",
+   "label": "Activity Type",
    "unique": 1
+  },
+  {
+   "fieldname": "json",
+   "fieldtype": "JSON",
+   "label": "Json"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-06-18 12:08:42.069695",
+ "modified": "2023-06-12 10:29:05.546288",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
- "name": "State",
+ "name": "Geo Activity Type",
  "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [

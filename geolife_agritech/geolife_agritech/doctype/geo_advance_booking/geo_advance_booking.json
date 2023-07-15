@@ -20,7 +20,9 @@
   "section_break_rrwsi",
   "product_kit",
   "naming_series",
-  "amended_from"
+  "amended_from",
+  "dealer_msg",
+  "farmer_msg"
  ],
  "fields": [
   {
@@ -56,7 +58,7 @@
    "fieldname": "naming_series",
    "fieldtype": "Select",
    "label": "Naming Series",
-   "options": "ADVB.-YYYY.-.#####"
+   "options": "ADVB-.YYYY.-.#####"
   },
   {
    "fieldname": "booking_date",
@@ -96,12 +98,22 @@
    "fieldtype": "Select",
    "label": "Payment Method",
    "options": "Cash\nUPI"
+  },
+  {
+   "fieldname": "dealer_msg",
+   "fieldtype": "Long Text",
+   "label": "Dealer msg"
+  },
+  {
+   "fieldname": "farmer_msg",
+   "fieldtype": "Long Text",
+   "label": "Farmer msg"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-04-14 17:12:28.869424",
+ "modified": "2023-07-15 08:27:13.252544",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Geo Advance Booking",
