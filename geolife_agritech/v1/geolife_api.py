@@ -1211,8 +1211,29 @@ def create_Advance_booking_order():
         doc.insert()
         for itm in _data['cart'] :
                 doc.append("product_kit",{"product_kit": itm.get('name'), "qty": itm.get('quantity')})
-        doc.farmer_msg = send_whatsapp(doc.farmer, f"HI {doc.farmer} your Advance booking order id is {doc.name}")
+        # doc.farmer_msg = send_whatsapp(doc.farmer, f"HI {doc.farmer} your Advance booking order id is {doc.name}")
         doc.dealer_msg = send_whatsapp(doc.dealer, f"HI {doc.dealer} your have a new Advance booking order id is {doc.name}")
+
+        if _data['payment_method'] == 'UPI' :
+            vdoc = frappe.get_doc({
+            "doctype":"Geo Payment Entry",
+            "posting_date": frappe.utils.nowdate(),
+            "amount":_data['amount'],
+            "payment_method":_data['payment_method'],
+            "ref_number":doc.name,
+            "geo_mitra":geo_mitra_id,
+            "dealer":_data['dealer_mobile'],
+            })
+            vdoc.insert()
+            if _data['image']:
+                data = _data['image']
+                filename = vdoc.name
+                docname = vdoc.name
+                doctype = "Geo Payment Entry"
+                image = ng_write_file(data, filename, docname, doctype, 'private')
+                vdoc.image = image
+            vdoc.save()
+
         doc.save()
         frappe.db.commit()
        
@@ -1548,8 +1569,15 @@ def search_farmer_orders():
         """, (text, text, text, geo_mitra_id,_data["from_date"],_data["to_date"]), as_dict=1)
 
         for m in geoOrders :
+            mn = frappe.db.get_list("Geo Payment Entry", filters={"ref_number":m.name},fields=["*"])
+            if mn :
+                image = get_doctype_images('Geo Payment Entry', mn[0].get('name'), 1)
+                if image :
+                    m.image=image[0].get("image")
+
             farmer_name = frappe.get_doc("My Farmer",m.farmer)
             m.farmer_name= farmer_name.first_name
+            m.last_name= farmer_name.last_name
             dealer_name = frappe.get_doc("Dealer", m.dealer)
             m.dealer_name=dealer_name.dealer_name
             mdata = frappe.db.sql(""" SELECT * FROM `tabGeo Advance Booking Details` WHERE parent = %s """, (m.name), as_dict=1)
@@ -1594,9 +1622,27 @@ def dealer_search_farmer_orders():
             LIMIT 10
         """, (text, text, text, dealer_id, _data["from_date"],_data["to_date"]), as_dict=1)
 
+        # for m in geoOrders :
+        #     farmer_name = frappe.get_doc("My Farmer",m.farmer)
+        #     m.farmer_name= farmer_name.first_name
+        #     dealer_name = frappe.get_doc("Dealer", m.dealer)
+        #     m.dealer_name=dealer_name.dealer_name
+        #     mdata = frappe.db.sql(""" SELECT * FROM `tabGeo Advance Booking Details` WHERE parent = %s """, (m.name), as_dict=1)
+        #     if mdata :
+        #         m.mdata=mdata
+        #     else :
+        #         m.mdata = 'not available'
+        
         for m in geoOrders :
+            mn = frappe.db.get_list("Geo Payment Entry", filters={"ref_number":m.name},fields=["*"])
+            if mn :
+                image = get_doctype_images('Geo Payment Entry', mn[0].get('name'), 1)
+                if image :
+                    m.image=image[0].get("image")
+
             farmer_name = frappe.get_doc("My Farmer",m.farmer)
             m.farmer_name= farmer_name.first_name
+            m.last_name= farmer_name.last_name
             dealer_name = frappe.get_doc("Dealer", m.dealer)
             m.dealer_name=dealer_name.dealer_name
             mdata = frappe.db.sql(""" SELECT * FROM `tabGeo Advance Booking Details` WHERE parent = %s """, (m.name), as_dict=1)
@@ -1634,10 +1680,18 @@ def submit_advance_booking():
         dealer_id = get_dealer_from_userid(user_email)
 
         doc = frappe.get_doc("Geo Advance Booking",_data.get('order_id'))
+        if doc.payment_method == "Cash" :
+            if doc.is_cash_received ==0 :
+                frappe.response["message"] = {
+                    "status":False,
+                    "message": "Order Payment Details Not Found",
+                }
+                return
+
         doc.submit()
 
         if doc :
-            incentive =0.00
+            incentive =0
 
             if _data.get('products') :
                 for itm in _data.get('products') :
@@ -1654,15 +1708,23 @@ def submit_advance_booking():
                                         "geo_mitra":doc.get('geo_mitra'),
                                         "crop_type":getProduct.get("cnp_kit_type"),
                                         "posting_date": frappe.utils.nowdate(),
-                                        "incentive":incentive
+                                        "incentive":incentive,
+                                        "qty":itm.get("percent")
                                         })
-                    mdoc.save()
+                    mdoc.insert()
+        farmer = frappe.get_doc("My Farmer",doc.farmer)
+        if farmer :
+            doc.farmer_msg = send_whatsapp(doc.farmer, f"HI {farmer.first_name} {farmer.last_name} your Advance booking order id is {doc.name} is Successfully completed ")
+        geoMitra = frappe.get_doc("Geo Mitra",doc.geo_mitra)
+        if geoMitra :
+            doc.geo_mitra_msg = send_whatsapp(doc.geo_mitra, f"Dear, {geoMitra.first_name}{geoMitra.last_name} your Advance booking order id {doc.name} is Successfully completed.  ")
         
         frappe.response["message"] = {
             "status":True,
             "message": "Order successfully completed",
         }
         return
+    
 
 
 
@@ -1979,6 +2041,7 @@ def dashboard_data(geo_mitra):
         Dashboard["present_days"] = f"{count_days}/{calendar.monthrange(2023, 1)[1]}"
 
         Dashboard["kit_booking"] = frappe.db.count("Geo Advance Booking", {"geo_mitra":geo_mitra})
+        Dashboard["incentive"] = frappe.db.count("Geo Mitra Incentive", {"geo_mitra":geo_mitra})
         Dealers_count=0
         Dealers = frappe.db.get_all("Dealer", fields=["*"])
         for dealer in Dealers :

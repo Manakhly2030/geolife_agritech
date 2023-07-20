@@ -7,7 +7,8 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "district_name"
+  "district_name",
+  "city"
  ],
  "fields": [
   {
@@ -15,11 +16,16 @@
    "fieldtype": "Data",
    "label": "District Name",
    "unique": 1
+  },
+  {
+   "fieldname": "city",
+   "fieldtype": "Data",
+   "label": "City"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-12-17 16:34:04.271303",
+ "modified": "2023-07-18 15:04:05.396959",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "District",

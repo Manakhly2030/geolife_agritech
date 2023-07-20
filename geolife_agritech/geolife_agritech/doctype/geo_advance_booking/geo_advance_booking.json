@@ -15,6 +15,7 @@
   "column_break_whbsl",
   "geo_mitra",
   "posting_date",
+  "geo_advance_booking",
   "booking_date",
   "amount",
   "section_break_rrwsi",
@@ -108,12 +109,18 @@
    "fieldname": "farmer_msg",
    "fieldtype": "Long Text",
    "label": "Farmer msg"
+  },
+  {
+   "fieldname": "geo_advance_booking",
+   "fieldtype": "Link",
+   "label": "Geo Advance Booking",
+   "options": "Geo Advance Booking"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-07-15 08:27:13.252544",
+ "modified": "2023-07-15 15:40:46.813090",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Geo Advance Booking",

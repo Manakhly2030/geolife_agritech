@@ -23,9 +23,8 @@
   },
   {
    "fieldname": "state",
-   "fieldtype": "Link",
-   "label": "State",
-   "options": "State"
+   "fieldtype": "Data",
+   "label": "State"
   },
   {
    "fieldname": "region",
@@ -47,7 +46,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-06-17 11:46:41.362874",
+ "modified": "2023-07-17 15:17:46.064644",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "City",
