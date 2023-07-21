@@ -26,6 +26,20 @@ def send_whatsapp(mobile_no, msg):
     return response.text
 
 @frappe.whitelist(allow_guest=True)
+def send_push_notification():
+    header = {"Content-Type": "application/json; charset=utf-8",
+            "Authorization": "Basic NGEwMGZmMjItY2NkNy0xMWUzLTk5ZDUtMDAwYzI5NDBlNjJj"}
+
+    payload = {"app_id": "2890622f-7504-4d49-a4ed-9e69becefa4a",
+            "include_player_ids": ["7ef10884-83c7-4b86-9564-d17ffc98711b"],
+            "channel_for_external_user_ids": "push",
+            "contents": {"en": "English Message"}}
+    
+    req = requests.post("https://onesignal.com/api/v1/notifications", headers=header, data=json.dumps(payload))
+    
+    print(req.status_code, req.reason)
+
+@frappe.whitelist(allow_guest=True)
 def generate_otp(mobile_no):
     if not mobile_no :
         frappe.local.response["message"] = {
@@ -674,7 +688,7 @@ def expenses():
             "posting_date": frappe.utils.nowdate(),
             "expense_type": _data['expense_type'],
             "amount" : _data.get('amount') if _data.get('amount') else 0,
-            "notes": _data['notes'],
+            "notes": data.get('notes') if _data.get('notes') else 0 ,
             "geo_mitra":geo_mitra_id,
             "vehical_type" : _data.get('vehical_type') if _data.get('vehical_type') else '',
             "fuel_type" : _data.get('fuel_type') if _data.get('fuel_type') else '',
@@ -1542,6 +1556,46 @@ def search_farmer():
 
 
 @frappe.whitelist(allow_guest=True)
+def search_pravakta_farmer():
+    api_key  = frappe.request.headers.get("Authorization")[6:21]
+    api_sec  = frappe.request.headers.get("Authorization")[22:]
+
+    user_email = get_user_info(api_key, api_sec)
+    if not user_email:
+        frappe.response["message"] = {
+            "status": False,
+            "message": "Unauthorised Access",
+        }
+        return
+
+    if frappe.request.method =="POST":
+        _data = frappe.request.json
+        text = f'%{_data["text"]}%'
+        geo_mitra_id = get_geomitra_from_userid(user_email)
+
+        
+        geomitras = frappe.db.sql("""
+            SELECT 
+                *
+            FROM
+                `tabMy Farmer`
+            WHERE (first_name like %s OR last_name like %s OR mobile_number like %s) AND geomitra_number = %s AND gpk=1
+            LIMIT 10
+        """, (text, text, text, geo_mitra_id), as_dict=1)
+        
+        for g in geomitras:
+           g.free_sample, g.free_sample_name = get_farmer_from_id(g.name)
+
+        frappe.response["message"] = {
+            "status":True,
+            "message": "",
+            "data" : geomitras,
+            "geo_mitra_id": geo_mitra_id
+        }
+        return
+
+
+@frappe.whitelist(allow_guest=True)
 def search_farmer_orders():
     api_key  = frappe.request.headers.get("Authorization")[6:21]
     api_sec  = frappe.request.headers.get("Authorization")[22:]
@@ -1582,6 +1636,11 @@ def search_farmer_orders():
             m.dealer_name=dealer_name.dealer_name
             mdata = frappe.db.sql(""" SELECT * FROM `tabGeo Advance Booking Details` WHERE parent = %s """, (m.name), as_dict=1)
             if mdata :
+                for md in mdata :
+                    product_kit = frappe.get_doc("Product Kit",md.get("product_kit"))
+                    if product_kit :
+                        m.kit_type =product_kit.get("cnp_kit_type")
+                        m.crop_bundle =product_kit.get("crop_bundle")
                 m.mdata=mdata
             else :
                 m.mdata = 'not available'
@@ -1647,6 +1706,11 @@ def dealer_search_farmer_orders():
             m.dealer_name=dealer_name.dealer_name
             mdata = frappe.db.sql(""" SELECT * FROM `tabGeo Advance Booking Details` WHERE parent = %s """, (m.name), as_dict=1)
             if mdata :
+                for md in mdata :
+                    product_kit = frappe.get_doc("Product Kit",md.get("product_kit"))
+                    if product_kit :
+                        m.kit_type =product_kit.get("cnp_kit_type")
+                        m.crop_bundle =product_kit.get("crop_bundle")
                 m.mdata=mdata
             else :
                 m.mdata = 'not available'
@@ -1708,10 +1772,12 @@ def submit_advance_booking():
                                         "geo_mitra":doc.get('geo_mitra'),
                                         "crop_type":getProduct.get("cnp_kit_type"),
                                         "posting_date": frappe.utils.nowdate(),
-                                        "incentive":incentive,
+                                        "incentive":incentive*itm.get("percent"),
                                         "qty":itm.get("percent")
                                         })
                     mdoc.insert()
+                    # mdoc.incentive = mdoc.incentive*mdoc.qty
+                    # mdoc.save()
         farmer = frappe.get_doc("My Farmer",doc.farmer)
         if farmer :
             doc.farmer_msg = send_whatsapp(doc.farmer, f"HI {farmer.first_name} {farmer.last_name} your Advance booking order id is {doc.name} is Successfully completed ")
@@ -2061,5 +2127,14 @@ def dashboard_data(geo_mitra):
         Dashboard["farmer_connected"] = frappe.db.count("My Farmer", {"geomitra_number":geo_mitra})
         Dashboard["new_dealer"] = Dealers_count
         Dashboard["target_achievement"] = ""
+
+        inc = frappe.db.get_list("Geo Mitra Incentive", filters={"geo_mitra":geo_mitra}, fields=["*"])
+        incentive =0
+        if inc :
+            for i in inc :
+                incentive =incentive+i.get('incentive')
+
+
+        Dashboard["incentive"] = incentive
       
         return Dashboard

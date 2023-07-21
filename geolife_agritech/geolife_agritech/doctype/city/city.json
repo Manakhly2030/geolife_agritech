@@ -9,10 +9,11 @@
  "engine": "InnoDB",
  "field_order": [
   "city",
+  "district",
   "state",
   "region",
-  "country",
-  "pincode"
+  "pincode",
+  "country"
  ],
  "fields": [
   {
@@ -42,11 +43,17 @@
    "fieldname": "pincode",
    "fieldtype": "Data",
    "label": "Pincode"
+  },
+  {
+   "fieldname": "district",
+   "fieldtype": "Link",
+   "label": "District",
+   "options": "District"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-07-17 15:17:46.064644",
+ "modified": "2023-07-21 13:18:01.467062",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "City",

@@ -113,13 +113,13 @@ app_license = "MIT"
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
+scheduler_events = {
 #	"all": [
 #		"geolife_agritech.tasks.all"
 #	],
-#	"daily": [
-#		"geolife_agritech.tasks.daily"
-#	],
+	"daily": [
+		"geolife_agritech.v1.geolife_api.send_push_notification"
+	],
 #	"hourly": [
 #		"geolife_agritech.tasks.hourly"
 #	],
@@ -129,7 +129,7 @@ app_license = "MIT"
 #	"monthly": [
 #		"geolife_agritech.tasks.monthly"
 #	],
-# }
+}
 
 # Testing
 # -------

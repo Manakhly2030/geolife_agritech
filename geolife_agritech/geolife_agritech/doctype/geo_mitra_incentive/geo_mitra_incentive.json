@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:order_id",
+ "autoname": "naming_series:",
  "creation": "2023-07-15 11:43:24.151067",
  "default_view": "List",
  "doctype": "DocType",
@@ -15,7 +15,8 @@
   "crop_type",
   "amended_from",
   "posting_date",
-  "product_kit"
+  "product_kit",
+  "naming_series"
  ],
  "fields": [
   {
@@ -28,8 +29,7 @@
    "fieldname": "order_id",
    "fieldtype": "Link",
    "label": "Order ID",
-   "options": "Geo Advance Booking",
-   "unique": 1
+   "options": "Geo Advance Booking"
   },
   {
    "fieldname": "dealer",
@@ -39,7 +39,7 @@
   },
   {
    "fieldname": "incentive",
-   "fieldtype": "Currency",
+   "fieldtype": "Int",
    "label": "Incentive"
   },
   {
@@ -66,16 +66,22 @@
    "fieldtype": "Link",
    "label": "Product Kit",
    "options": "Product Kit"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Naming Series",
+   "options": "Incentive-.YYYY.-.#####"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-07-15 13:38:37.229684",
+ "modified": "2023-07-20 17:27:48.763835",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Geo Mitra Incentive",
- "naming_rule": "By fieldname",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {

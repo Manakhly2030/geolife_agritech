@@ -36,7 +36,7 @@
   },
   {
    "fieldname": "amount",
-   "fieldtype": "Float",
+   "fieldtype": "Data",
    "label": "Amount"
   },
   {
@@ -123,7 +123,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-14 13:09:50.620460",
+ "modified": "2023-07-21 17:56:41.825927",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Geo Expenses",

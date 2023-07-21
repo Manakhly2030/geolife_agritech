@@ -1,29 +1,72 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
- "autoname": "field:village_name",
+ "autoname": "hash",
  "creation": "2022-12-20 11:28:29.342976",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "village_name"
+  "village_name",
+  "city",
+  "district",
+  "state",
+  "pin_code",
+  "disable"
  ],
  "fields": [
   {
    "fieldname": "village_name",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Village Name",
-   "unique": 1
+   "reqd": 1
+  },
+  {
+   "fieldname": "city",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "City",
+   "options": "City",
+   "reqd": 1
+  },
+  {
+   "fieldname": "district",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "District",
+   "options": "District",
+   "reqd": 1
+  },
+  {
+   "fieldname": "state",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "State",
+   "options": "State",
+   "reqd": 1
+  },
+  {
+   "fieldname": "pin_code",
+   "fieldtype": "Data",
+   "label": "PIN Code",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "disable",
+   "fieldtype": "Check",
+   "label": "Disable"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-12-20 11:28:29.342976",
+ "modified": "2023-07-21 16:07:33.146038",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Village",
- "naming_rule": "By fieldname",
+ "naming_rule": "Random",
  "owner": "Administrator",
  "permissions": [
   {
@@ -39,7 +82,9 @@
    "write": 1
   }
  ],
+ "show_title_field_in_link": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "title_field": "village_name"
 }
