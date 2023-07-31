@@ -1,0 +1,60 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2023-07-27 15:51:50.545456",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "import_item_data_section",
+  "import_data",
+  "import_dealer_data_from_erp_section",
+  "import_dealer_data"
+ ],
+ "fields": [
+  {
+   "fieldname": "import_item_data_section",
+   "fieldtype": "Section Break",
+   "label": "Import Item Data From ERP"
+  },
+  {
+   "fieldname": "import_data",
+   "fieldtype": "Button",
+   "label": "Import Data"
+  },
+  {
+   "fieldname": "import_dealer_data_from_erp_section",
+   "fieldtype": "Section Break",
+   "label": "Import Dealer Data From ERP"
+  },
+  {
+   "fieldname": "import_dealer_data",
+   "fieldtype": "Button",
+   "label": "Import Dealer Data"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2023-07-27 15:52:57.717164",
+ "modified_by": "Administrator",
+ "module": "Geolife Agritech",
+ "name": "Geolife Data Import From ERP",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

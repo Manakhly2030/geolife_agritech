@@ -40,7 +40,7 @@ def send_push_notification():
     print(req.status_code, req.reason)
 
 @frappe.whitelist(allow_guest=True)
-def generate_otp(mobile_no):
+def generate_otp(mobile_no,hashcode):
     if not mobile_no :
         frappe.local.response["message"] = {
             "status": False,
@@ -67,7 +67,7 @@ def generate_otp(mobile_no):
             "accept": "application/json",
             "content-type": "application/json"
         }
-        url = f"http://admin.bulksmslogin.com/api/otp.php?authkey=349851AFBrdHyz5632c330aP1&mobile=91{mobile_no}&message={otp} is your OTP for Geolife App Login, OTP is valid for 3 minutes. Do not share it with anyone. Regards, Team Geolife Digital. IjTfUVQTDQg &sender=GEOLIF&otp={otp}&DLT_TE_ID=1107168179859312292"
+        url = f"http://admin.bulksmslogin.com/api/otp.php?authkey=349851AFBrdHyz5632c330aP1&mobile=91{mobile_no}&message={otp} is your OTP for Geolife App Login, OTP is valid for 3 minutes. Do not share it with anyone. Regards, Team Geolife Digital. {hashcode}&sender=GEOLIF&otp={otp}&DLT_TE_ID=1107169060755325316"
         r = requests.get(url, headers=sms_headers)
         
         doc = frappe.get_doc({
@@ -321,7 +321,38 @@ def Upload_image_in_dealer():
         }
         return
     
+@frappe.whitelist(allow_guest=True)
+def Evening_7pm_Notifications():
+    url = "https://onesignal.com/api/v1/notifications"
 
+    payload = "{\"app_id\": \"2890622f-7504-4d49-a4ed-9e69becefa4a\",\r\n            \"included_segments\": [\"Subscribed Users\"],\r\n            \"contents\": {\"en\": \"Dear Geo Mitra, Please End Your Day Today In Geolife App When Your Today's work is done\"}}"
+    headers = {
+    'Authorization': 'Basic OTVjY2YyZmUtODA0Zi00ZDZmLWI5ZWMtNGNmNDMyNDZiNzMw',
+    'Content-Type': 'application/json; charset=utf-8'
+    }
+
+    response = requests.request("POST", url, headers=headers, data=payload)
+
+    frappe.log_error(response.text)
+    
+    return
+    
+@frappe.whitelist(allow_guest=True)
+def daily_day_end():
+    url = "https://onesignal.com/api/v1/notifications"
+
+    payload = "{\"app_id\": \"2890622f-7504-4d49-a4ed-9e69becefa4a\",\r\n            \"included_segments\": [\"Subscribed Users\"],\r\n            \"contents\": {\"en\": \"Dear Geo Mitra, please start sew sessoin on your Geolife App your previous session is closed\"}}"
+    headers = {
+    'Authorization': 'Basic OTVjY2YyZmUtODA0Zi00ZDZmLWI5ZWMtNGNmNDMyNDZiNzMw',
+    'Content-Type': 'application/json; charset=utf-8'
+    }
+
+    response = requests.request("POST", url, headers=headers, data=payload)
+
+    # print(req.status_code, req.reason)
+    frappe.log_error(response.text)
+
+    return
     
 
 @frappe.whitelist(allow_guest=True)
@@ -456,6 +487,9 @@ def activity_list():
         home_data = frappe.db.get_list("Daily Activity", filters={"posting_date": frappe.utils.nowdate(), "geo_mitra":geo_mitra_id}, fields=["posting_date","activity_name","activity_type","notes"])
         for h in home_data:
             image = get_doctype_images('Daily Activity', h.name, 1)  
+            icon = frappe.get_doc("Activity Type", h.activity_type)
+            if icon :
+                h.icon=icon.icon
 
             if image:
                 h.image = image[0]['image']
@@ -479,8 +513,6 @@ def activity_list():
                 "user_email": user_email
             }
             return
-        # if Crop_data['image']:
-        #     ng_write_file(Crop_data['image'], 'demo.jpg', "", "Pet")
         doc = frappe.get_doc({
             "doctype":"Daily Activity",
             "posting_date": frappe.utils.nowdate(),
@@ -491,6 +523,11 @@ def activity_list():
 
         })
         doc.insert()
+        if _data.get('activity_type') == "Multi Activity" :
+            if _data.get('multi_activity_types'):
+                for itm in _data.get('multi_activity_types') :
+                    doc.multi_activity_types.append({"activity_type":itm})
+
         
         if _data['image']:
             data = _data['image'][0]
@@ -588,7 +625,7 @@ def activity_type():
         return
 
     if frappe.request.method =="GET":
-        home_data = frappe.db.get_list("Activity Type", fields=["activity_type","name"], filters={"type":"Show"})
+        home_data = frappe.db.get_list("Activity Type", fields=["activity_type","name","icon"], filters={"type":"Show"})
         frappe.response["message"] = {
             "status":True,
             "message": "",

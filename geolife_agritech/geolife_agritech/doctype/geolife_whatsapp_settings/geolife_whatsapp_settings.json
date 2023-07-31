@@ -1,0 +1,93 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2023-07-28 11:37:00.160344",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "whatsapp_setting_section",
+  "url",
+  "column_break_rsl7e",
+  "version",
+  "section_break_ryepw",
+  "phone_number_id",
+  "column_break_e1tba",
+  "business_account_id",
+  "whatsapp_token_section",
+  "token"
+ ],
+ "fields": [
+  {
+   "fieldname": "whatsapp_setting_section",
+   "fieldtype": "Section Break",
+   "label": "Whatsapp Setting"
+  },
+  {
+   "fieldname": "url",
+   "fieldtype": "Data",
+   "label": "URL"
+  },
+  {
+   "fieldname": "column_break_rsl7e",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "version",
+   "fieldtype": "Data",
+   "label": "Version"
+  },
+  {
+   "fieldname": "whatsapp_token_section",
+   "fieldtype": "Section Break",
+   "label": "Whatsapp Token"
+  },
+  {
+   "fieldname": "token",
+   "fieldtype": "Long Text",
+   "label": "Token"
+  },
+  {
+   "fieldname": "phone_number_id",
+   "fieldtype": "Data",
+   "label": "Phone Number ID"
+  },
+  {
+   "fieldname": "business_account_id",
+   "fieldtype": "Data",
+   "label": "Business Account ID"
+  },
+  {
+   "fieldname": "section_break_ryepw",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_e1tba",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2023-07-28 11:38:41.177246",
+ "modified_by": "Administrator",
+ "module": "Geolife Agritech",
+ "name": "Geolife Whatsapp Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

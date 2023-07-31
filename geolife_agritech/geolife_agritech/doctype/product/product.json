@@ -30,12 +30,14 @@
   {
    "fieldname": "product_id",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Product Id",
    "unique": 1
   },
   {
    "fieldname": "product_name",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Product Name"
   },
   {
@@ -61,11 +63,13 @@
   {
    "fieldname": "dosage",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Dosage"
   },
   {
    "fieldname": "dosage_unit",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Dosage Unit"
   },
   {
@@ -109,18 +113,20 @@
   {
    "fieldname": "rate",
    "fieldtype": "Float",
+   "in_list_view": 1,
    "label": "Rate"
   },
   {
    "fieldname": "item_code",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "item_code",
    "unique": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-03-17 13:29:40.803104",
+ "modified": "2023-07-21 19:21:45.732058",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Product",

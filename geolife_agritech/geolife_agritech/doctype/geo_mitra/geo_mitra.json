@@ -1,9 +1,9 @@
 {
  "actions": [],
  "allow_import": 1,
- "allow_rename": 1,
  "autoname": "field:mobile_number",
  "creation": "2023-02-04 21:43:34.226615",
+ "default_view": "List",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
@@ -25,13 +25,22 @@
   "designation",
   "resignation_date",
   "under_crop_project__non_crop_project",
-  "email"
+  "email",
+  "lft",
+  "rgt",
+  "is_group",
+  "old_parent",
+  "parent_geo_mitra",
+  "sales_person_name",
+  "parent_geo_mitra2",
+  "is_dgo"
  ],
  "fields": [
   {
    "fieldname": "first_name",
    "fieldtype": "Data",
-   "label": "First Name"
+   "label": "First Name",
+   "unique": 1
   },
   {
    "fieldname": "last_name",
@@ -121,15 +130,66 @@
   {
    "fieldname": "column_break_p3woe",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "lft",
+   "fieldtype": "Int",
+   "hidden": 1,
+   "label": "Left",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "rgt",
+   "fieldtype": "Int",
+   "hidden": 1,
+   "label": "Right",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "is_group",
+   "fieldtype": "Check",
+   "label": "Is Group"
+  },
+  {
+   "fieldname": "old_parent",
+   "fieldtype": "Link",
+   "label": "Old Parent",
+   "options": "Geo Mitra"
+  },
+  {
+   "fieldname": "parent_geo_mitra",
+   "fieldtype": "Data",
+   "label": "Parent Geo Mitra"
+  },
+  {
+   "fieldname": "sales_person_name",
+   "fieldtype": "Data",
+   "label": "Sales Person Name"
+  },
+  {
+   "fieldname": "parent_geo_mitra2",
+   "fieldtype": "Data",
+   "label": "Parent Geo Mitra2"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_dgo",
+   "fieldtype": "Check",
+   "label": "Is DGO"
   }
  ],
  "index_web_pages_for_search": 1,
+ "is_tree": 1,
  "links": [],
- "modified": "2023-07-07 18:56:11.372646",
+ "modified": "2023-07-31 14:20:00.349036",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Geo Mitra",
  "naming_rule": "By fieldname",
+ "nsm_parent_field": "parent_geo_mitra",
  "owner": "Administrator",
  "permissions": [
   {

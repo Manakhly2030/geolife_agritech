@@ -118,11 +118,16 @@ scheduler_events = {
 #		"geolife_agritech.tasks.all"
 #	],
 	"daily": [
-		"geolife_agritech.v1.geolife_api.send_push_notification"
+		"geolife_agritech.v1.geolife_api.daily_day_end"
 	],
-#	"hourly": [
-#		"geolife_agritech.tasks.hourly"
-#	],
+    "cron":
+		{"01 19 * * 1-7": [
+			"geolife_agritech.v1.geolife_api.Evening_7pm_Notifications"
+			]
+		},
+	# "hourly": [
+	# 	"geolife_agritech.v1.geolife_api.Evening_7pm_Notifications"
+	# ],
 #	"weekly": [
 #		"geolife_agritech.tasks.weekly"
 #	],

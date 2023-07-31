@@ -11,11 +11,13 @@
   "posting_date",
   "activity_name",
   "activity_type",
+  "multi_activity_types",
   "notes",
   "section_break_70njj",
   "geo_mitra",
   "session_started",
-  "session_enddate"
+  "session_enddate",
+  "icon"
  ],
  "fields": [
   {
@@ -65,11 +67,25 @@
   {
    "fieldname": "section_break_70njj",
    "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "activity_type.icon",
+   "fetch_if_empty": 1,
+   "fieldname": "icon",
+   "fieldtype": "Attach Image",
+   "label": "Icon"
+  },
+  {
+   "depends_on": "eval:doc.activity_type==\"Multi Activity\"",
+   "fieldname": "multi_activity_types",
+   "fieldtype": "Table MultiSelect",
+   "label": "Multi Activity Types",
+   "options": "Activity Type Multiselect"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-06-10 16:41:13.934180",
+ "modified": "2023-07-29 17:07:40.644068",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Daily Activity",

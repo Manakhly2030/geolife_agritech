@@ -8,7 +8,8 @@
  "engine": "InnoDB",
  "field_order": [
   "activity_type",
-  "type"
+  "type",
+  "icon"
  ],
  "fields": [
   {
@@ -22,11 +23,16 @@
    "fieldtype": "Select",
    "label": "Type",
    "options": "Show\nHide"
+  },
+  {
+   "fieldname": "icon",
+   "fieldtype": "Attach Image",
+   "label": "Icon"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-03-15 11:52:18.674785",
+ "modified": "2023-07-21 19:03:28.075068",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Activity Type",
