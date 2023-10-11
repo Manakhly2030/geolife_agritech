@@ -12,6 +12,7 @@
   {
    "fieldname": "activity_type",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Activity Type",
    "options": "Activity Type"
   }
@@ -19,7 +20,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2023-07-29 16:52:47.028847",
+ "modified": "2023-08-03 15:51:33.940068",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Activity Type Multiselect",

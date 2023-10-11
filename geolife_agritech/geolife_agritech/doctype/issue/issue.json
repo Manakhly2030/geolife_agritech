@@ -1,44 +1,46 @@
 {
  "actions": [],
- "allow_import": 1,
- "autoname": "format:{district_name}-{state}",
- "creation": "2022-12-17 16:34:04.271303",
+ "allow_rename": 1,
+ "creation": "2023-08-24 10:56:06.681191",
+ "default_view": "List",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "district_name",
-  "state",
-  "old_name"
+  "title",
+  "description",
+  "error",
+  "user"
  ],
  "fields": [
   {
-   "fieldname": "district_name",
+   "fieldname": "title",
    "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "District Name"
+   "label": "Title"
   },
   {
-   "fieldname": "state",
+   "fieldname": "description",
+   "fieldtype": "Long Text",
+   "label": "Description"
+  },
+  {
+   "fieldname": "error",
+   "fieldtype": "JSON",
+   "label": "Error"
+  },
+  {
+   "fieldname": "user",
    "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "State",
-   "options": "State"
-  },
-  {
-   "fieldname": "old_name",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "old name"
+   "label": "User",
+   "options": "User"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-09-02 16:03:17.866901",
+ "modified": "2023-08-24 10:56:59.985708",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
- "name": "District",
- "naming_rule": "Expression",
+ "name": "Issue",
  "owner": "Administrator",
  "permissions": [
   {

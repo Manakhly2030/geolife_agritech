@@ -39,8 +39,7 @@
   {
    "fieldname": "first_name",
    "fieldtype": "Data",
-   "label": "First Name",
-   "unique": 1
+   "label": "First Name"
   },
   {
    "fieldname": "last_name",
@@ -184,7 +183,7 @@
  "index_web_pages_for_search": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2023-07-31 14:20:00.349036",
+ "modified": "2023-07-31 14:57:14.512527",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Geo Mitra",
@@ -208,5 +207,6 @@
  "search_fields": "first_name, last_name",
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "title_field": "sales_person_name"
 }

@@ -1,42 +1,41 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2023-02-03 16:52:16.468275",
+ "creation": "2023-09-04 13:23:01.000459",
+ "default_view": "List",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "farmer",
   "image",
+  "image_location",
   "posting_date"
  ],
  "fields": [
-  {
-   "fieldname": "farmer",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Farmer",
-   "options": "My Farmer"
-  },
   {
    "fieldname": "image",
    "fieldtype": "Attach Image",
    "label": "Image"
   },
   {
+   "fieldname": "image_location",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Image location"
+  },
+  {
    "fieldname": "posting_date",
    "fieldtype": "Date",
-   "in_list_view": 1,
    "label": "Posting Date"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2023-09-04 13:14:43.534617",
+ "modified": "2023-09-04 17:57:11.489171",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
- "name": "Crop Seminar Attendance",
+ "name": "Farmer Meeting Images",
  "owner": "Administrator",
  "permissions": [],
  "sort_field": "modified",

@@ -13,7 +13,13 @@
   "notes",
   "image",
   "employee_location",
-  "posting_date"
+  "posting_date",
+  "farmer_attendance",
+  "farmer_list_image",
+  "dealer_image",
+  "so_image",
+  "farmers_image",
+  "geo_mitra"
  ],
  "fields": [
   {
@@ -48,13 +54,46 @@
   },
   {
    "fieldname": "notes",
-   "fieldtype": "Data",
+   "fieldtype": "Long Text",
    "label": "Note"
+  },
+  {
+   "fieldname": "farmer_attendance",
+   "fieldtype": "Table",
+   "label": "Farmer Attendance",
+   "options": "Crop Seminar Attendance"
+  },
+  {
+   "fieldname": "farmer_list_image",
+   "fieldtype": "Attach Image",
+   "label": "Farmer List Image"
+  },
+  {
+   "fieldname": "dealer_image",
+   "fieldtype": "Attach Image",
+   "label": "Dealer Image"
+  },
+  {
+   "fieldname": "so_image",
+   "fieldtype": "Attach Image",
+   "label": "So Image"
+  },
+  {
+   "fieldname": "farmers_image",
+   "fieldtype": "Table",
+   "label": "Farmers Image",
+   "options": "Farmer Meeting Images"
+  },
+  {
+   "fieldname": "geo_mitra",
+   "fieldtype": "Link",
+   "label": "Geo Mitra",
+   "options": "Geo Mitra"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-06-03 17:37:59.714187",
+ "modified": "2023-09-04 18:36:54.156616",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Farmer Meeting",

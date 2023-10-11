@@ -2,6 +2,7 @@
  "actions": [],
  "allow_import": 1,
  "allow_rename": 1,
+ "autoname": "format:MKT-{market_name}-{district}",
  "creation": "2023-07-03 12:35:45.849960",
  "default_view": "List",
  "doctype": "DocType",
@@ -42,13 +43,15 @@
   },
   {
    "fieldname": "city",
-   "fieldtype": "Data",
-   "label": "City"
+   "fieldtype": "Link",
+   "label": "City",
+   "options": "City"
   },
   {
    "fieldname": "state",
-   "fieldtype": "Data",
-   "label": "State"
+   "fieldtype": "Link",
+   "label": "State",
+   "options": "State"
   },
   {
    "fieldname": "taluka",
@@ -61,16 +64,18 @@
   },
   {
    "fieldname": "district",
-   "fieldtype": "Data",
-   "label": "District"
+   "fieldtype": "Link",
+   "label": "District",
+   "options": "District"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-07-17 13:14:30.501222",
+ "modified": "2023-09-08 15:27:32.491763",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Geo Market",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {

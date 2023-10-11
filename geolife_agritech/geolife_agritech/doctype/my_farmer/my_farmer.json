@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
  "autoname": "field:mobile_number",
  "creation": "2023-02-04 21:22:27.955917",
@@ -20,7 +21,17 @@
   "farm_acre_unit",
   "register_date",
   "app_installed",
-  "crop_added"
+  "crop_added",
+  "crop",
+  "date_of_sowing",
+  "crop_farm_area",
+  "market",
+  "village",
+  "post_office",
+  "block",
+  "district",
+  "state",
+  "address_data"
  ],
  "fields": [
   {
@@ -99,11 +110,63 @@
    "fieldname": "crop_added",
    "fieldtype": "Data",
    "label": "Crop Added"
+  },
+  {
+   "fieldname": "crop",
+   "fieldtype": "Link",
+   "label": "Crop",
+   "options": "Crop"
+  },
+  {
+   "fieldname": "date_of_sowing",
+   "fieldtype": "Date",
+   "label": "Date Of Sowing"
+  },
+  {
+   "fieldname": "crop_farm_area",
+   "fieldtype": "Float",
+   "label": "Crop Farm Area (In Acre)"
+  },
+  {
+   "fieldname": "market",
+   "fieldtype": "Link",
+   "label": "Nearest Market",
+   "options": "Geo Market"
+  },
+  {
+   "fieldname": "village",
+   "fieldtype": "Data",
+   "label": "Village"
+  },
+  {
+   "fieldname": "post_office",
+   "fieldtype": "Data",
+   "label": "Post Office"
+  },
+  {
+   "fieldname": "block",
+   "fieldtype": "Data",
+   "label": "Block"
+  },
+  {
+   "fieldname": "district",
+   "fieldtype": "Data",
+   "label": "District"
+  },
+  {
+   "fieldname": "state",
+   "fieldtype": "Data",
+   "label": "State"
+  },
+  {
+   "fieldname": "address_data",
+   "fieldtype": "JSON",
+   "label": "Address Data"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-06-05 18:21:42.501776",
+ "modified": "2023-09-06 17:28:21.095474",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "My Farmer",
