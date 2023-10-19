@@ -85,7 +85,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-07-29 17:07:40.644068",
+ "modified": "2023-10-13 18:00:05.735784",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Daily Activity",
@@ -107,5 +107,6 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "track_changes": 1
 }

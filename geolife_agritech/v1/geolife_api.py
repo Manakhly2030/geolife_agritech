@@ -504,7 +504,7 @@ def activity_list():
     geo_mitra_id = get_geomitra_from_userid(user_email)
 
     if frappe.request.method =="GET":
-        home_data = frappe.db.get_list("Daily Activity", filters={"posting_date": frappe.utils.nowdate(), "geo_mitra":geo_mitra_id}, fields=["posting_date","activity_name","activity_type","notes"])
+        home_data = frappe.db.get_list("Daily Activity", filters={"posting_date": frappe.utils.nowdate(), "geo_mitra":geo_mitra_id}, fields=["posting_date","activity_name","activity_type","notes","creation"])
         for h in home_data:
             image = get_doctype_images('Daily Activity', h.name, 1)  
             icon = frappe.get_doc("Activity Type", h.activity_type)
@@ -537,26 +537,36 @@ def activity_list():
             "doctype":"Daily Activity",
             "posting_date": frappe.utils.nowdate(),
             "activity_name":  _data.get('activity_name') if _data.get('activity_type') else '',
-            "activity_type": "Multi Activity" if _data.get('multi_activity_types') else _data.get('activity_type'),
+            "activity_type": "Dealer Visit" if _data.get('multi_activity_types') else _data.get('activity_type'),
             "notes": _data.get('notes') if _data.get('notes') else '',
-            "geo_mitra":geo_mitra_id
+            "dealer": _data.get('dealer') if _data.get('dealer') else '',
+            "geo_mitra":geo_mitra_id,
+            "my_location": _data.get('mylocation') if _data.get('mylocation') else '',
+
 
         })
         doc.insert()
-        if doc.get('activity_type') == "Multi Activity" :
+        if doc.get('activity_type') == "Dealer Visit" :
             if _data.get('multi_activity_types'):
+                inserted=[]
                 for itm in _data.get('multi_activity_types') :
+                    
+                    if itm not in inserted:
+                        inserted.append(itm)
                     # doc.multi_activity_types.append({"activity_type":itm,"modified":frappe.utils.nowdate()})
-                    doc = frappe.get_doc({
-                        "doctype":"Daily Activity",
-                        "posting_date": frappe.utils.nowdate(),
-                        "activity_name":  _data.get('activity_name') if _data.get('activity_type') else '',
-                        "activity_type": itm,
-                        "notes": _data['notes'],
-                        "geo_mitra":geo_mitra_id
+                        doc = frappe.get_doc({
+                            "doctype":"Daily Activity",
+                            "posting_date": frappe.utils.nowdate(),
+                            "activity_name":  _data.get('activity_name') if _data.get('activity_type') else 'Dealer visit',
+                            "activity_type": itm,
+                            "notes": _data['notes'],
+                            "dealer": _data.get('dealer') if _data.get('dealer') else '',
+                            "geo_mitra":geo_mitra_id,
+                            "my_location": _data['mylocation'],
 
-                    })
-                    doc.insert()
+
+                        })
+                        doc.insert()
 
         
         if _data.get('image'):
@@ -622,21 +632,25 @@ def get_attendance():
         count_days=[]
         home_data = frappe.db.get_list("Daily Activity", filters=[["creation",">=",datetime.today().replace(day=1)],["activity_type","=","End Day"],["activity_name" ,"=","End Day"], ["geo_mitra" ,"=", geo_mitra_id]], fields=["*"])
         for h in home_data:
-            if h.session_enddate is not None:
-                start_time_str = h.session_started.strftime("%Y-%m-%d %H:%M:%S")
-                start_time = datetime.strptime(start_time_str, "%Y-%m-%d %H:%M:%S")
-                end_time_str = h.session_enddate.strftime("%Y-%m-%d %H:%M:%S")
-                end_time = datetime.strptime(end_time_str, "%Y-%m-%d %H:%M:%S")
-                time_difference = end_time - start_time
-                if time_difference :
-                    value = time_difference.total_seconds() / 3600
-                    if value > 8 :
-                        count_days.append({ "value": value, "label": start_time.strftime("%d-%b")})
-                        h.value = count_days
+            if h.creation >= datetime.today().replace(day=1):
+                if h.session_enddate is not None:
+                    start_time_str = h.session_started.strftime("%Y-%m-%d %H:%M:%S")
+                    start_time = datetime.strptime(start_time_str, "%Y-%m-%d %H:%M:%S")
+                    end_time_str = h.session_enddate.strftime("%Y-%m-%d %H:%M:%S")
+                    end_time = datetime.strptime(end_time_str, "%Y-%m-%d %H:%M:%S")
+                    time_difference = end_time - start_time
+                    if time_difference :
+                        value = time_difference.total_seconds() / 3600
+                        if value > 8 :
+                            count_days.append({ "value": value, "label": start_time.strftime("%d-%b")})
+                            h.value = count_days
         frappe.response["message"] = {
             "status":True,
             "message": "",
-            "data" : home_data[0].value
+            "data" : count_days,
+            "data1" : datetime.today().replace(day=1),
+            "homedata" : home_data[0].creation,
+
         }
         return
 
@@ -677,24 +691,28 @@ def checkuser():
                     if time_difference :
                         value = time_difference.total_seconds() / 3600
                         count_time = count_time+value
-                        if value >= 8 :
+                        if h.session_started.strftime("%Y-%m-%d") != frappe.utils.nowdate():
                             frappe.response["message"] = {
                                 "status":False,
-                                "message": "",
+                                "message": "big date",
                             }
                             return
-            if count_time >= 8 :
-                frappe.response["message"] = {
-                    "status":False,
-                    "message": "",
-                }
-                return
+            # if count_time >= 8 :
+            #     frappe.response["message"] = {
+            #         "status":False,
+            #         "message": "small",
+            #     }
+            #     return
             frappe.response["message"] = {
                 "status":True,
                 "message": "",
             }
             return
-
+        frappe.response["message"] = {
+                "status":False,
+                "message": "small",
+            }
+        return
 
 @frappe.whitelist(allow_guest=True)
 def activity_type():
@@ -1866,7 +1884,6 @@ def search_pravakta_farmer():
         }
         return
 
-
 @frappe.whitelist(allow_guest=True)
 def search_farmer_orders():
     api_key  = frappe.request.headers.get("Authorization")[6:21]
@@ -2064,9 +2081,6 @@ def submit_advance_booking():
         return
     
 
-
-
-
 @frappe.whitelist(allow_guest=True)
 def search_dealer():
 
@@ -2097,12 +2111,13 @@ def search_dealer():
 
         mdealers = frappe.db.sql("""
             SELECT 
-                *
+                dm.parent, dm.name
             FROM
-                `tabDealer Geo Mitra`
-            WHERE geo_mitra = %s
-            LIMIT 250
-        """, (geo_mitra_id), as_dict=1)
+                `tabDealer Geo Mitra` dm
+            LEFT JOIN `tabDealer` d ON d.name=dm.parent
+            WHERE (d.dealer_name like %s OR d.contact_person like %s OR d.mobile_number like %s) AND dm.geo_mitra = %s
+            LIMIT 500
+        """, (text, text, text,geo_mitra_id), as_dict=1)
 
         dealers=[]
         for md in mdealers :
