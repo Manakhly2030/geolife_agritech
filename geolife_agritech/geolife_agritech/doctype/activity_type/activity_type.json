@@ -9,7 +9,8 @@
  "field_order": [
   "activity_type",
   "type",
-  "icon"
+  "icon",
+  "activity_for"
  ],
  "fields": [
   {
@@ -28,11 +29,17 @@
    "fieldname": "icon",
    "fieldtype": "Attach Image",
    "label": "Icon"
+  },
+  {
+   "fieldname": "activity_for",
+   "fieldtype": "Select",
+   "label": "Activity For",
+   "options": "\nFarmer\nDealer"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-07-21 19:03:28.075068",
+ "modified": "2023-10-20 14:17:41.600629",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Activity Type",

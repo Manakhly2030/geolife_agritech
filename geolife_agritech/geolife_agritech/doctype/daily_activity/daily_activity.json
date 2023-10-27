@@ -76,7 +76,6 @@
    "label": "Icon"
   },
   {
-   "depends_on": "eval:doc.activity_type==\"Multi Activity\"",
    "fieldname": "multi_activity_types",
    "fieldtype": "Table MultiSelect",
    "label": "Multi Activity Types",
@@ -85,7 +84,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-10-13 18:00:05.735784",
+ "modified": "2023-10-21 15:27:52.297663",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Daily Activity",
