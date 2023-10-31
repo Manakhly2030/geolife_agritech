@@ -504,7 +504,8 @@ def activity_list():
     geo_mitra_id = get_geomitra_from_userid(user_email)
 
     if frappe.request.method =="GET":
-        home_data = frappe.db.get_list("Daily Activity", filters={"posting_date": frappe.utils.nowdate(), "geo_mitra":geo_mitra_id}, fields=["posting_date","name","activity_name","activity_type","notes","creation"])
+        _data = frappe.form_dict
+        home_data = frappe.db.get_list("Daily Activity", filters=[["posting_date",'between', [_data.get('from_date'),_data.get('to_date')]],{"geo_mitra":geo_mitra_id}], fields=["*"])
         for h in home_data:
             activity = frappe.get_doc("Daily Activity", h.get('name'))
             h.activity_type=[]
@@ -519,7 +520,7 @@ def activity_list():
             if image:
                 h.image = image[0]['image']
             else:
-                h.image = "https://winaero.com/blog/wp-content/uploads/2019/11/Photos-new-icon.png"
+                h.image = ""
         
         frappe.response["message"] = {
             "status":True,
@@ -541,13 +542,15 @@ def activity_list():
         doc = frappe.get_doc({
             "doctype":"Daily Activity",
             "posting_date": frappe.utils.nowdate(),
-            "activity_name":  f" {_data.get('party')} Visit" if _data.get('party') else '',
+            "activity_name":  f" {_data.get('type')} Visit" if _data.get('type') else '',
             "notes": _data.get('notes') if _data.get('notes') else '',
             "party_type": _data.get('type') if _data.get('type') else '',
             "dealer": _data.get('party') if _data.get('type')=='Dealer' else '',
             "farmer": _data.get('party') if _data.get('type')=='Farmer' else '',
             "geo_mitra":geo_mitra_id,
-            "my_location": _data.get('mylocation') if _data.get('mylocation') else ''
+            "my_location": _data.get('mylocation') if _data.get('mylocation') else '',
+            "longitude": _data.get('longitude') if _data.get('longitude') else '',
+            "latitude": _data.get('latitude') if _data.get('latitude') else ''
                             })
         
         doc.insert()
@@ -875,7 +878,9 @@ def expenses():
             "odometer_end" : _data.get('odometer_end') if _data.get('odometer_end') else '',
             "liters" : _data.get('liters') if _data.get('liters') else '',
             "employee_location": _data['mylocation'],
-            "vehicale_type":_data.get('vehicale_type') if _data.get('vehicale_type') else ''
+            "vehicale_type":_data.get('vehicale_type') if _data.get('vehicale_type') else '',
+            "longitude": _data.get('longitude') if _data.get('longitude') else '',
+            "latitude": _data.get('latitude') if _data.get('latitude') else ''
 
         })
         doc.insert()        
@@ -1008,6 +1013,8 @@ def dayplan_list():
             "sales": _data.get('sales_in_lakhs') if _data.get('sales_in_lakhs') else 0 ,
             "geo_mitra":geo_mitra_id,
             "my_location": _data['mylocation'],
+            "longitude": _data.get('longitude') if _data.get('longitude') else '',
+            "latitude": _data.get('latitude') if _data.get('latitude') else ''
 
         })
         doc.insert()        
@@ -2162,7 +2169,7 @@ def search_dealer():
                 SELECT
                     dgm.parent as dealer,
                     dgm.geo_mitra,
-                    d.dealer_name, d.mobile_number,
+                    d.dealer_name,d.qr_code, d.mobile_number,
                     gm.sales_person_name, gm.parent_geo_mitra as parent,
                     gm.name as id
                     
@@ -2178,7 +2185,13 @@ def search_dealer():
 
         
         # dealers = frappe.db.get_list("Dealer", filters= [['DGO List', 'geo_mitra', 'in', geo_mitra_id]], fields=["*"])
-        for m in dealers :
+        for m in result :
+            check_activity= frappe.db.get_list('Daily Activity',filters=[['geo_mitra','=',m.geo_mitra],['dealer','=',m.dealer],['posting_date', 'between', [add_to_date(datetime.now(), days=-30, as_string=True),datetime.now().strftime('%Y-%m-%d')]]], fields=["count(name) as count", "posting_date","geo_mitra","geo_mitra_name"])
+
+            if check_activity:
+                m.activity = check_activity
+            
+
             if m.qr_code:
                 m.qr_code = frappe.utils.get_url(m.qr_code)
         frappe.response["message"] = {
