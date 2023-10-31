@@ -81,8 +81,9 @@
   },
   {
    "fieldname": "state",
-   "fieldtype": "Data",
-   "label": "State"
+   "fieldtype": "Link",
+   "label": "State",
+   "options": "State"
   },
   {
    "fieldname": "date_of_joining",
@@ -160,8 +161,9 @@
   },
   {
    "fieldname": "parent_geo_mitra",
-   "fieldtype": "Data",
-   "label": "Parent Geo Mitra"
+   "fieldtype": "Link",
+   "label": "Parent Geo Mitra",
+   "options": "Geo Mitra"
   },
   {
    "fieldname": "sales_person_name",
@@ -183,7 +185,7 @@
  "index_web_pages_for_search": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2023-07-31 14:57:14.512527",
+ "modified": "2023-10-31 15:28:13.922220",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Geo Mitra",

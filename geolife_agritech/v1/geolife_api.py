@@ -504,17 +504,30 @@ def activity_list():
     geo_mitra_id = get_geomitra_from_userid(user_email)
 
     if frappe.request.method =="GET":
-        home_data = frappe.db.get_list("Daily Activity", filters={"posting_date": frappe.utils.nowdate(), "geo_mitra":geo_mitra_id}, fields=["posting_date","activity_name","activity_type","notes","creation"])
+        _data = frappe.form_dict
+        home_data = frappe.db.get_list("Daily Activity", filters=[["posting_date",'between', [_data.get('from_date'),_data.get('to_date')]],{"geo_mitra":geo_mitra_id}], fields=["*"])
         for h in home_data:
+            activity = frappe.get_doc("Daily Activity", h.get('name'))
+            h.activity_type=[]
+            for d in activity.multi_activity_types :
+                h.activity_type.append(d.activity_type) 
             image = get_doctype_images('Daily Activity', h.name, 1)  
-            icon = frappe.get_doc("Activity Type", h.activity_type)
-            if icon :
-                h.icon=icon.icon
+            if h.dealer:
+                dealer = frappe.get_doc("Dealer",h.dealer)
+                h.dealer = dealer.dealer_name
+
+            if h.farmer:
+                farmer = frappe.get_doc("My Farmer",h.farmer)
+                h.farmer = f"{farmer.first_name} {farmer.last_name or ''}"
+            # if h.multi_activity_types:
+            #     icon = frappe.get_doc("Activity Type", h.multi_activity_types[0].activity_type)
+            # if icon :
+            #     h.icon=icon.icon
 
             if image:
                 h.image = image[0]['image']
             else:
-                h.image = "https://winaero.com/blog/wp-content/uploads/2019/11/Photos-new-icon.png"
+                h.image = ""
         
         frappe.response["message"] = {
             "status":True,
@@ -536,82 +549,115 @@ def activity_list():
         doc = frappe.get_doc({
             "doctype":"Daily Activity",
             "posting_date": frappe.utils.nowdate(),
-            "activity_name":  _data.get('activity_name') if _data.get('activity_type') else '',
-            "activity_type": "Dealer Visit" if _data.get('multi_activity_types') else _data.get('activity_type'),
+            "activity_name":  f" {_data.get('type')} Visit" if _data.get('type') else '',
             "notes": _data.get('notes') if _data.get('notes') else '',
-            "dealer": _data.get('dealer') if _data.get('dealer') else '',
+            "party_type": _data.get('type') if _data.get('type') else '',
+            "dealer": _data.get('party') if _data.get('type')=='Dealer' else '',
+            "farmer": _data.get('party') if _data.get('type')=='Farmer' else '',
             "geo_mitra":geo_mitra_id,
             "my_location": _data.get('mylocation') if _data.get('mylocation') else '',
-
-
-        })
+            "longitude": _data.get('longitude') if _data.get('longitude') else '',
+            "latitude": _data.get('latitude') if _data.get('latitude') else ''
+                            })
+        
         doc.insert()
-        if doc.get('activity_type') == "Dealer Visit" :
-            if _data.get('multi_activity_types'):
-                inserted=[]
-                for itm in _data.get('multi_activity_types') :
+        if _data.get('activity_type'):
+            doc.multi_activity_types=[]
+            if type(_data.get('activity_type')) is list:
+                for itm in _data.get('activity_type'):
+                    cdoc =frappe.get_doc({
+                        "doctype":"Activity Type Multiselect",
+                        "posting_date": frappe.utils.nowdate(),
+                        "activity_name":  _data.get('party') if _data.get('party') else '',
+                        "notes": _data.get('notes') if _data.get('notes') else '',
+                        "parent": doc.name,
+                        "parentfield":"multi_activity_types",
+                        "parenttype": "Daily Activity",
+                        "activity_type":itm
+                    }).insert()
+                    cdoc.save()
+                    doc.multi_activity_types.append(cdoc)
+
+                    if itm =='Start Day' :
+                        doc.save()
+                        frappe.db.commit()
+                        videoData = frappe.db.get_list('Session Videos', filters={"session_date":frappe.utils.nowdate()}, fields=["name","session_date","youtube_video"])
+                        if videoData :
+                            faq = frappe.get_doc('Session Videos',videoData[0].name)
+                            videoData[0].faq = faq
+                            frappe.response["message"] = {
+                                "status":True,
+                                "message": "Daily Activity Added Successfully",
+                                "video":faq
+                            }
+                            return
+                    if itm == 'End Day':
+                        doc.session_started = _data['session']
+                        doc.session_enddate = now()
+                        doc.save()
+                        frappe.db.commit()
+                        
+                        frappe.response["message"] = {
+                                "status":True,
+                                "message": "Session Successfully End",
+                            }
+                        return
+
+            else:
+                cdoc =frappe.get_doc({
+                        "doctype":"Activity Type Multiselect",
+                        "posting_date": frappe.utils.nowdate(),
+                        "activity_name":  _data.get('party') if _data.get('party') else '',
+                        "notes": _data.get('notes') if _data.get('notes') else '',
+                        "parent": doc.name,
+                        "parentfield":"multi_activity_types",
+                        "parenttype": "Daily Activity",
+                        "activity_type":itm
+                }).insert()
+                cdoc.save()
+                doc.multi_activity_types.append(cdoc)
+        # if doc.get('activity_type') == "Dealer Visit" :
+        #     if _data.get('multi_activity_types'):
+        #         inserted=[]
+        #         for itm in _data.get('multi_activity_types') :
                     
-                    if itm not in inserted:
-                        inserted.append(itm)
-                    # doc.multi_activity_types.append({"activity_type":itm,"modified":frappe.utils.nowdate()})
-                        doc = frappe.get_doc({
-                            "doctype":"Daily Activity",
-                            "posting_date": frappe.utils.nowdate(),
-                            "activity_name":  _data.get('activity_name') if _data.get('activity_type') else 'Dealer visit',
-                            "activity_type": itm,
-                            "notes": _data['notes'],
-                            "dealer": _data.get('dealer') if _data.get('dealer') else '',
-                            "geo_mitra":geo_mitra_id,
-                            "my_location": _data['mylocation'],
+        #             if itm not in inserted:
+        #                 inserted.append(itm)
+        #             # doc.multi_activity_types.append({"activity_type":itm,"modified":frappe.utils.nowdate()})
+        #                 doc = frappe.get_doc({
+        #                     "doctype":"Daily Activity",
+        #                     "posting_date": frappe.utils.nowdate(),
+        #                     "activity_name":  _data.get('activity_name') if _data.get('activity_type') else 'Dealer visit',
+        #                     "activity_type": itm,
+        #                     "notes": _data['notes'],
+        #                     "dealer": _data.get('dealer') if _data.get('dealer') else '',
+        #                     "geo_mitra":geo_mitra_id,
+        #                     "my_location": _data['mylocation'],
 
 
-                        })
-                        doc.insert()
+        #                 })
+        #                 doc.insert()
 
         
-        if _data.get('image'):
-            data = _data['image'][0]
-            filename = doc.name
-            docname = doc.name
-            doctype = "Daily Activity"
-            image = ng_write_file(data, filename, docname, doctype, 'private')
+            if _data.get('image'):
+                data = _data['image'][0]
+                filename = doc.name
+                docname = doc.name
+                doctype = "Daily Activity"
+                image = ng_write_file(data, filename, docname, doctype, 'private')
+                doc.image = image
 
-            doc.image = image
-        
-        if doc.activity_type == 'Start Day' :
-            doc.save()
-            frappe.db.commit()
-            videoData = frappe.db.get_list('Session Videos', filters={"session_date":frappe.utils.nowdate()}, fields=["name","session_date","youtube_video"])
-            if videoData :
-                faq = frappe.get_doc('Session Videos',videoData[0].name)
-                videoData[0].faq = faq
-                frappe.response["message"] = {
-                    "status":True,
-                    "message": "Daily Activity Added Successfully",
-                    "video":faq
-                }
-                return
-        if doc.activity_type == 'End Day' :
-            doc.session_started = _data['session']
-            doc.session_enddate = now()
-            doc.save()
-            frappe.db.commit()
             
+            
+            doc.save()
+            frappe.db.commit()
+
             frappe.response["message"] = {
-                    "status":True,
-                    "message": "Session Successfully End",
-                }
+                "status":True,
+                "message": "Daily Activity Added Successfully",
+                "video":False
+            }
             return
-
-        doc.save()
-        frappe.db.commit()
-
-        frappe.response["message"] = {
-            "status":True,
-            "message": "Daily Activity Added Successfully",
-            "video":False
-        }
-        return
 
 @frappe.whitelist(allow_guest=True)
 def get_attendance():
@@ -678,7 +724,7 @@ def checkuser():
     if frappe.request.method =="POST":
         mdata =[]
         count_time=0
-        home_data = frappe.db.get_list("Daily Activity", filters={"posting_date":frappe.utils.nowdate(),"activity_type":"Start Day","activity_name":"Start Day", "geo_mitra":geo_mitra_id}, fields=["*"])
+        home_data = frappe.db.get_list("Daily Activity", filters=[["Activity Type Multiselect","activity_type","=","Start Day"],["Daily Activity","posting_date","=", frappe.utils.nowdate()], ["Daily Activity", "geo_mitra" ,"=", geo_mitra_id]], fields=["*"])
         
         if home_data:
             for h in home_data:
@@ -711,6 +757,7 @@ def checkuser():
         frappe.response["message"] = {
                 "status":False,
                 "message": "small",
+                "data":home_data
             }
         return
 
@@ -838,7 +885,9 @@ def expenses():
             "odometer_end" : _data.get('odometer_end') if _data.get('odometer_end') else '',
             "liters" : _data.get('liters') if _data.get('liters') else '',
             "employee_location": _data['mylocation'],
-            "vehicale_type":_data.get('vehicale_type') if _data.get('vehicale_type') else ''
+            "vehicale_type":_data.get('vehicale_type') if _data.get('vehicale_type') else '',
+            "longitude": _data.get('longitude') if _data.get('longitude') else '',
+            "latitude": _data.get('latitude') if _data.get('latitude') else ''
 
         })
         doc.insert()        
@@ -882,10 +931,13 @@ def expenses():
         doc.odometer_start = _data.get('odometer_start')
         doc.odometer_end = _data.get('odometer_end')
         doc.notes = _data.get('notes') if _data.get('notes') else ''
+        doc.end_longitude =_data.get('longitude') if _data.get('longitude') else ''
+        doc.end_latitude = _data.get('latitude') if _data.get('latitude') else ''
 
         # km = doc.odometer_end-doc.odometer_start
         # petrol= 10 if doc.vehicle=='Four Wheeler' else 3.5
         doc.amount = _data.get('amount') if _data.get('amount') else ''
+        
 
         # if _data['odometer_start_image']:
         #     data = _data['odometer_start_image'][0]
@@ -971,6 +1023,8 @@ def dayplan_list():
             "sales": _data.get('sales_in_lakhs') if _data.get('sales_in_lakhs') else 0 ,
             "geo_mitra":geo_mitra_id,
             "my_location": _data['mylocation'],
+            "longitude": _data.get('longitude') if _data.get('longitude') else '',
+            "latitude": _data.get('latitude') if _data.get('latitude') else ''
 
         })
         doc.insert()        
@@ -2099,41 +2153,72 @@ def search_dealer():
         _data = frappe.request.json
         text = f'%{_data["text"]}%'
         geo_mitra_id = get_geomitra_from_userid(user_email)
+        search_able_geo_mitra =  _data.get("child_geo_mitra") if _data.get("child_geo_mitra") else geo_mitra_id
 
-        # dealers = frappe.db.sql("""
+
+        
+
+        # mdealers = frappe.db.sql("""
         #     SELECT 
-        #         *
+        #         dm.parent, dm.name
         #     FROM
-        #         `tabDealer`
-        #     WHERE (dealer_name like %s OR contact_person like %s OR mobile_number like %s) AND geomitra_number = %s
-        #     LIMIT 10
-        # """, (text, text, text, geo_mitra_id), as_dict=1)
-
-        mdealers = frappe.db.sql("""
-            SELECT 
-                dm.parent, dm.name
-            FROM
-                `tabDealer Geo Mitra` dm
-            LEFT JOIN `tabDealer` d ON d.name=dm.parent
-            WHERE (d.dealer_name like %s OR d.contact_person like %s OR d.mobile_number like %s) AND dm.geo_mitra = %s
-            LIMIT 500
-        """, (text, text, text,geo_mitra_id), as_dict=1)
+        #         `tabDealer Geo Mitra` dm
+        #     LEFT JOIN `tabDealer` d ON d.name=dm.parent
+        #     WHERE (d.dealer_name like %s OR d.contact_person like %s OR d.mobile_number like %s) AND dm.geo_mitra = %s
+        #     LIMIT 500
+        # """, (text, text, text,geo_mitra_id), as_dict=1)
 
         dealers=[]
-        for md in mdealers :
-            dealers.append(frappe.get_doc("Dealer",md.parent))
+        # for md in mdealers :
+        #     dealers.append(frappe.get_doc("Dealer",md.parent))
 
+        lft = frappe.db.get_value("Geo Mitra", search_able_geo_mitra, "lft")
+        rgt = frappe.db.get_value("Geo Mitra", search_able_geo_mitra, "rgt")       
+
+        result = frappe.db.sql("""
+                SELECT
+                    dgm.parent as dealer,
+                    dgm.geo_mitra,
+                    d.dealer_name,d.qr_code, d.mobile_number,
+                    gm.sales_person_name, gm.parent_geo_mitra as parent,
+                    gm.name as id
+                    
+                FROM
+                    `tabDealer Geo Mitra` dgm
+                LEFT JOIN `tabDealer` d ON d.name = dgm.parent
+                LEFT JOIN `tabGeo Mitra` gm ON gm.name = dgm.geo_mitra
+                WHERE
+                (d.dealer_name like %s OR d.contact_person like %s OR d.mobile_number like %s) AND
+                gm.lft >= %s AND gm.rgt <= %s
+                Group By d.dealer_name
+            """, (text, text, text, lft, rgt), as_dict=1)    
+
+        
         # dealers = frappe.db.get_list("Dealer", filters= [['DGO List', 'geo_mitra', 'in', geo_mitra_id]], fields=["*"])
-        for m in dealers :
+        for m in result :
+            check_activity= frappe.db.get_list('Daily Activity',filters=[['geo_mitra','=',m.geo_mitra],['dealer','=',m.dealer],['posting_date', 'between', [add_to_date(datetime.now(), days=-30, as_string=True),datetime.now().strftime('%Y-%m-%d')]]], fields=["count(name) as count","name", "posting_date","geo_mitra","geo_mitra_name"], order_by='creation asc',)
+
+            if check_activity:
+                if check_activity[0].name:
+                    activity = frappe.get_doc('Daily Activity',check_activity[0].name)
+                    check_activity[0].last_visit=activity.get('multi_activity_types')
+
+                m.activity = check_activity
+            
+
             if m.qr_code:
                 m.qr_code = frappe.utils.get_url(m.qr_code)
         frappe.response["message"] = {
             "status":True,
             "message": "",
-            "data" : dealers,
+            "data" : result,
             "geo_mitra_id": geo_mitra_id
         }
         return
+
+
+
+
 
 @frappe.whitelist(allow_guest=True)
 def search_geomitra():
@@ -2551,13 +2636,37 @@ def dashboard_data(geo_mitra):
         Dashboard["kit_booking"] = frappe.db.count("Geo Advance Booking", {"geo_mitra":geo_mitra})
         Dashboard["incentive"] = frappe.db.count("Geo Mitra Incentive", {"geo_mitra":geo_mitra})
         Dealers_count=0
-        Dealers = frappe.db.get_all("Dealer Geo Mitra",filters={"geo_mitra":geo_mitra}, fields=["parent"])
-        for dealer in Dealers :
-            ddealer = frappe.get_doc("Dealer",dealer.parent)
-            if ddealer.dgo_list:
-                for d in ddealer.dgo_list :
-                    if d.geo_mitra == geo_mitra :
-                        Dealers_count = Dealers_count+1
+        # Dealers = frappe.db.get_all("Dealer Geo Mitra",filters={"geo_mitra":geo_mitra}, fields=["parent"])
+        # for dealer in Dealers :
+        #     ddealer = frappe.get_doc("Dealer",dealer.parent)
+        #     if ddealer.dgo_list:
+        #         for d in ddealer.dgo_list :
+        #             if d.geo_mitra == geo_mitra :
+        #                 Dealers_count = Dealers_count+1
+
+        lft = frappe.db.get_value("Geo Mitra", geo_mitra, "lft")
+        rgt = frappe.db.get_value("Geo Mitra", geo_mitra, "rgt") 
+        result = frappe.db.sql("""
+                SELECT
+                    dgm.parent as dealer,
+                    dgm.geo_mitra,
+                    d.dealer_name,d.qr_code, d.mobile_number,
+                    gm.sales_person_name, gm.parent_geo_mitra as parent,
+                    gm.name as id       
+                FROM
+                    `tabDealer Geo Mitra` dgm
+                LEFT JOIN `tabDealer` d ON d.name = dgm.parent
+                LEFT JOIN `tabGeo Mitra` gm ON gm.name = dgm.geo_mitra
+                WHERE
+                gm.lft >= %s AND gm.rgt <= %s
+                Group By d.dealer_name
+            """, (lft, rgt), as_dict=1) 
+
+        frappe.log_error("Dash board", result)
+        if result:
+            Dealers_count=len(result)
+
+
         dealer_visit_data = frappe.db.count("Daily Activity", {"activity_type":"Dealer Appointment", "geo_mitra":geo_mitra})
         if dealer_visit_data :
             dealer_not_visit = Dealers_count-dealer_visit_data
