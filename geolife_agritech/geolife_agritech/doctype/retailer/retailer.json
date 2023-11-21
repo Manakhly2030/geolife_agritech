@@ -1,43 +1,49 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:territory_name",
- "creation": "2022-12-17 16:35:05.398286",
+ "creation": "2023-11-03 17:14:19.613333",
+ "default_view": "List",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "territory_name",
-  "area",
-  "zone"
+  "retailer_name",
+  "mobile_no",
+  "geo_mitra",
+  "posting_date"
  ],
  "fields": [
   {
-   "fieldname": "territory_name",
+   "fieldname": "retailer_name",
    "fieldtype": "Data",
-   "label": "Territory Name",
-   "unique": 1
+   "in_list_view": 1,
+   "label": "Retailer Name"
   },
   {
-   "fieldname": "area",
-   "fieldtype": "Link",
-   "label": "Area",
-   "options": "Area"
+   "fieldname": "mobile_no",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Mobile Number"
   },
   {
-   "fieldname": "zone",
+   "fieldname": "geo_mitra",
    "fieldtype": "Link",
-   "label": "Zone",
-   "options": "Zone"
+   "in_list_view": 1,
+   "label": "Geo Mitra",
+   "options": "Geo Mitra"
+  },
+  {
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Posting Date"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-11-10 15:36:19.603758",
+ "modified": "2023-11-03 17:29:30.057558",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
- "name": "Territory",
- "naming_rule": "By fieldname",
+ "name": "Retailer",
  "owner": "Administrator",
  "permissions": [
   {

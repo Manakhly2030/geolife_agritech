@@ -34,12 +34,12 @@
    "fieldname": "activity_for",
    "fieldtype": "Select",
    "label": "Activity For",
-   "options": "\nFarmer\nDealer"
+   "options": "\nFarmer\nDealer\nOther"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-10-20 14:17:41.600629",
+ "modified": "2023-11-06 13:01:14.060243",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Activity Type",

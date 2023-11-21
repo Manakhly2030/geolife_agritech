@@ -1,30 +1,46 @@
 {
  "actions": [],
- "allow_import": 1,
  "allow_rename": 1,
- "autoname": "field:zone_name",
- "creation": "2022-12-17 16:33:02.555017",
+ "creation": "2023-11-03 17:26:58.729775",
+ "default_view": "List",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "zone_name"
+  "posting_date",
+  "person_name",
+  "geo_mitra",
+  "mobile_no"
  ],
  "fields": [
   {
-   "fieldname": "zone_name",
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Posting Date"
+  },
+  {
+   "fieldname": "person_name",
    "fieldtype": "Data",
-   "label": "Zone Name",
-   "unique": 1
+   "label": "Person Name"
+  },
+  {
+   "fieldname": "geo_mitra",
+   "fieldtype": "Link",
+   "label": "Geo Mitra",
+   "options": "Geo Mitra"
+  },
+  {
+   "fieldname": "mobile_no",
+   "fieldtype": "Data",
+   "label": "Mobile Number"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-11-10 14:42:12.807915",
+ "modified": "2023-11-03 17:37:46.026905",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
- "name": "Zone",
- "naming_rule": "By fieldname",
+ "name": "Geo Other",
  "owner": "Administrator",
  "permissions": [
   {

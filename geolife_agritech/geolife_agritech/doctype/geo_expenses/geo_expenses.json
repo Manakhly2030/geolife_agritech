@@ -7,6 +7,15 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "manager_approval_section",
+  "manager_approved",
+  "column_break_hkbyy",
+  "remarks",
+  "hr_approval_section",
+  "hr_approved",
+  "column_break_fwh7t",
+  "hr_remarks",
+  "section_break_qvcrb",
   "expense_type",
   "amount",
   "against_expense",
@@ -23,7 +32,13 @@
   "fuel_type",
   "liters",
   "amended_from",
-  "employee_location"
+  "employee_location",
+  "latitude",
+  "location_address",
+  "longitude",
+  "end_longitude",
+  "end_latitude",
+  "end_location_address"
  ],
  "fields": [
   {
@@ -36,7 +51,7 @@
   },
   {
    "fieldname": "amount",
-   "fieldtype": "Data",
+   "fieldtype": "Int",
    "label": "Amount"
   },
   {
@@ -118,12 +133,90 @@
    "fieldname": "employee_location",
    "fieldtype": "Geolocation",
    "label": "Employee Location"
+  },
+  {
+   "fieldname": "manager_approval_section",
+   "fieldtype": "Section Break",
+   "label": "Manager Approval"
+  },
+  {
+   "fieldname": "manager_approved",
+   "fieldtype": "Int",
+   "label": "Manager Approved",
+   "read_only_depends_on": "eval: !frappe.user_roles.includes(\"Manager\")"
+  },
+  {
+   "fieldname": "column_break_hkbyy",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Text",
+   "label": "Remarks",
+   "max_height": "70px",
+   "read_only_depends_on": "eval: !frappe.user_roles.includes(\"Manager\")"
+  },
+  {
+   "fieldname": "hr_approval_section",
+   "fieldtype": "Section Break",
+   "label": "HR Approval"
+  },
+  {
+   "fieldname": "hr_approved",
+   "fieldtype": "Int",
+   "label": "HR Approved",
+   "read_only_depends_on": "eval: !frappe.user_roles.includes(\"HR\")"
+  },
+  {
+   "fieldname": "column_break_fwh7t",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "hr_remarks",
+   "fieldtype": "Text",
+   "label": "Remarks",
+   "max_height": "70px",
+   "read_only_depends_on": "eval: !frappe.user_roles.includes(\"HR\")"
+  },
+  {
+   "fieldname": "section_break_qvcrb",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "latitude",
+   "fieldtype": "Data",
+   "label": "Latitude"
+  },
+  {
+   "fieldname": "location_address",
+   "fieldtype": "Text",
+   "label": "Location Address"
+  },
+  {
+   "fieldname": "longitude",
+   "fieldtype": "Data",
+   "label": "longitude"
+  },
+  {
+   "fieldname": "end_longitude",
+   "fieldtype": "Data",
+   "label": "End longitude"
+  },
+  {
+   "fieldname": "end_latitude",
+   "fieldtype": "Data",
+   "label": "End Latitude"
+  },
+  {
+   "fieldname": "end_location_address",
+   "fieldtype": "Text",
+   "label": "End Location Address"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-08-29 08:03:04.813525",
+ "modified": "2023-11-21 12:26:50.949603",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Geo Expenses",

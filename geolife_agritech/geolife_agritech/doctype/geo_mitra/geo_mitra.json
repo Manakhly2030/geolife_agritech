@@ -18,6 +18,9 @@
   "dgo_code",
   "geo_market",
   "column_break_p3woe",
+  "zone",
+  "area",
+  "headquarter",
   "state",
   "date_of_joining",
   "reporting_person_name",
@@ -180,12 +183,30 @@
    "fieldname": "is_dgo",
    "fieldtype": "Check",
    "label": "Is DGO"
+  },
+  {
+   "fieldname": "zone",
+   "fieldtype": "Link",
+   "label": "Zone",
+   "options": "Zone"
+  },
+  {
+   "fieldname": "area",
+   "fieldtype": "Link",
+   "label": "Area",
+   "options": "Area"
+  },
+  {
+   "fieldname": "headquarter",
+   "fieldtype": "Link",
+   "label": "Headquarter",
+   "options": "Headquarter"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2023-10-31 15:28:13.922220",
+ "modified": "2023-11-10 14:38:04.986967",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Geo Mitra",
