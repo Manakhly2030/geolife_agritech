@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"W3bcONwHwI\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Geolife</span>\",\"col\":12}},{\"id\":\"sYJ5RzbWtc\",\"type\":\"card\",\"data\":{\"card_name\":\"activity\",\"col\":4}},{\"id\":\"FUSGc1E_lU\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Crop Project\",\"col\":4}},{\"id\":\"ZGAVLmSFkT\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"rrrrrrrr\",\"col\":3}},{\"id\":\"zSCO2EJZ9j\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Crop\",\"col\":4}},{\"id\":\"ieFoYmFJLu\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Crop Cycle\",\"col\":4}},{\"id\":\"VNvy6EvlV3\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Crop</b></span>\",\"col\":12}},{\"id\":\"3BID0Hdmfw\",\"type\":\"card\",\"data\":{\"card_name\":\"Master\",\"col\":4}},{\"id\":\"Cetz0OUjs0\",\"type\":\"card\",\"data\":{\"card_name\":\"Transactions\",\"col\":4}},{\"id\":\"CdIFXFkouB\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}}]",
+ "content": "[{\"id\":\"W3bcONwHwI\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Geolife</span>\",\"col\":12}},{\"id\":\"FUSGc1E_lU\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Crop Project\",\"col\":4}},{\"id\":\"zSCO2EJZ9j\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Crop\",\"col\":4}},{\"id\":\"ieFoYmFJLu\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Crop Cycle\",\"col\":4}},{\"id\":\"VNvy6EvlV3\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Crop</b></span>\",\"col\":12}},{\"id\":\"3BID0Hdmfw\",\"type\":\"card\",\"data\":{\"card_name\":\"Master\",\"col\":4}},{\"id\":\"Cetz0OUjs0\",\"type\":\"card\",\"data\":{\"card_name\":\"Transactions\",\"col\":4}},{\"id\":\"CdIFXFkouB\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}}]",
  "creation": "2022-12-27 15:12:43.614810",
  "docstatus": 0,
  "doctype": "Workspace",
@@ -134,28 +134,10 @@
    "link_type": "Report",
    "onboard": 0,
    "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "activity",
-   "link_count": 1,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "act",
-   "link_count": 0,
-   "link_to": "Daily Activity Type",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
   }
  ],
- "modified": "2023-11-21 13:41:27.821091",
- "modified_by": "Administrator",
+ "modified": "2023-11-21 14:08:41.161290",
+ "modified_by": "sawan@erpdesks.in",
  "module": "Geolife Agritech",
  "name": "Geolife",
  "owner": "Administrator",
@@ -177,14 +159,6 @@
  ],
  "roles": [],
  "sequence_id": 1.0,
- "shortcuts": [
-  {
-   "color": "Grey",
-   "doc_view": "List",
-   "label": "rrrrrrrr",
-   "link_to": "Daily Activity Type",
-   "type": "Report"
-  }
- ],
+ "shortcuts": [],
  "title": "Geolife"
 }
