@@ -72,7 +72,7 @@ def generate_otp(mobile_no,hashcode):
         }
         return
     
-    user_email = frappe.db.get_all('User', filters={'mobile_no': mobile_no}, fields=['email'])
+    user_email = frappe.db.get_all('User', filters={'mobile_no': mobile_no,'enabled':1}, fields=['email'])
     if not user_email:
         frappe.local.response["message"] = {
             "status": False,
@@ -365,7 +365,7 @@ def Evening_7pm_Notifications():
 def daily_day_end():
     url = "https://onesignal.com/api/v1/notifications"
 
-    payload = "{\"app_id\": \"2890622f-7504-4d49-a4ed-9e69becefa4a\",\r\n            \"included_segments\": [\"Subscribed Users\"],\r\n            \"contents\": {\"en\": \"Dear Geo Mitra, please start sew sessoin on your Geolife App your previous session is closed\"}}"
+    payload = "{\"app_id\": \"2890622f-7504-4d49-a4ed-9e69becefa4a\",\r\n            \"included_segments\": [\"Subscribed Users\"],\r\n            \"contents\": {\"en\": \"Dear Geo Mitra, please start new sessoin on your Geolife App your previous session is closed\"}}"
     headers = {
     'Authorization': 'Basic OTVjY2YyZmUtODA0Zi00ZDZmLWI5ZWMtNGNmNDMyNDZiNzMw',
     'Content-Type': 'application/json; charset=utf-8'
@@ -724,7 +724,7 @@ def checkuser():
     if not geo_mitra_id :
         frappe.response["message"] = {
             "status": True,
-            "message": "Geo Mitra Ni Hai",
+            "message": "Geo Mitra not found",
         }
         return
 
@@ -976,6 +976,208 @@ def expenses():
         frappe.response["message"] = {
             "status":True,
             "message": "Expense Updated Successfully",
+        }
+        return
+
+@frappe.whitelist(allow_guest=True)
+def update_geo_ledger_report():
+    frappe.log_error('update_geo_ledger_report',frappe.request.headers.get("Authorization"))
+    api_key  = frappe.request.headers.get("Authorization")[6:21]
+    api_sec  = frappe.request.headers.get("Authorization")[22:]
+    user_email = get_user_info(api_key, api_sec)
+    if not user_email:
+        frappe.response["message"] = {
+            "status": False,
+            "message": "Unauthorised Access",
+        }
+        return
+    
+    if frappe.request.method =="GET":
+        try:
+            _data = frappe.form_dict
+            doc = frappe.get_doc("Geo Mitra Ledger Report", _data.get('name'))
+            doc.workflow_state = _data.get('workflow_state') if _data.get('workflow_state') else ''
+            doc.save()
+            frappe.db.commit()
+            frappe.response["message"] = {
+                "status": True,
+                "message": "Updated report",
+                }
+            return 
+        except:
+            frappe.log_error('error update_geo_ledger_report')
+
+    
+
+@frappe.whitelist(allow_guest=True)
+def geo_ledger_report():
+    api_key  = frappe.request.headers.get("Authorization")[6:21]
+    api_sec  = frappe.request.headers.get("Authorization")[22:]
+    
+    url = frappe.db.get_single_value('GeoLife Setting', 'url')
+    apikey = frappe.db.get_single_value('GeoLife Setting', 'api_key')
+    apisec = frappe.db.get_single_value('GeoLife Setting', 'api_secret')
+    headers = {'Authorization': f'token {apikey}:{apisec}','Content-Type': 'application/json'}
+
+    user_email = get_user_info(api_key, api_sec)
+    if not user_email:
+        frappe.response["message"] = {
+            "status": False,
+            "message": "Unauthorised Access",
+        }
+        return
+    geo_mitra_id = get_geomitra_from_userid(user_email)
+
+    if frappe.request.method =="GET":
+        _data = frappe.form_dict
+        # home_data = frappe.db.get_list("Geo Mitra Ledger Report",filters=[["posting_date",'between', [_data.get('from_date'),_data.get('to_date')]],{"geo_mitra":geo_mitra_id, "dealer":_data.get('dealer')}], fields=["*"])
+        home_data = frappe.db.get_list("Geo Mitra Ledger Report", filters={"geo_mitra":geo_mitra_id, "dealer":_data.get('dealer')}, fields=["*"])
+
+        for hd in home_data:
+            hd.images=[]
+            images = get_doctype_images("Geo Mitra Ledger Report", hd.name,1)
+            for img in images:
+                hd.images.append(img.get('image'))
+            
+        #     if hd.amount:
+        #         hd.amount = float(hd.get('amount'))
+            # if himage :
+            #     hd.image = himage
+
+        frappe.response["message"] = {
+            "status":True,
+            "message": "",
+            "data" : home_data
+        }
+        return
+    
+    elif frappe.request.method == "POST":
+        _data = frappe.request.json
+        geo_mitra_id = get_geomitra_from_userid(user_email)
+        
+        if geo_mitra_id == False:
+            frappe.response["message"] = {
+                "status": False,
+                "message": "Please map a geo mitra with this user",
+                "user_email": user_email
+            }
+            return                    
+                
+        try:
+            doc = frappe.get_doc({
+            "doctype":"Geo Mitra Ledger Report",
+            "posting_date": frappe.utils.nowdate(),
+            "notes": _data.get('notes') if _data.get('notes') else '' ,
+            "geo_mitra":geo_mitra_id,
+            "workflow_state":'Pending',
+            "dealer" : _data.get('dealer') if _data.get('dealer') else '',
+            "from_date" : add_to_date(_data.get('from_date'), days=0, as_string=True, as_datetime=True)if _data.get('from_date') else '',
+            "to_date" : add_to_date(_data.get('to_date'), days=0, as_string=True, as_datetime=True) if _data.get('to_date') else ''
+            # "employee_location": _data['mylocation'],
+            # "longitude": _data.get('longitude') if _data.get('longitude') else '',
+            # "latitude": _data.get('latitude') if _data.get('latitude') else ''
+
+            })
+            doc.insert()        
+            if _data['image']:
+                for img in _data['image']:
+                    data = img
+                    filename = doc.name
+                    docname = doc.name
+                    doctype = "Geo Mitra Ledger Report"
+                    image = ng_write_file(data, filename, docname, doctype, 'private')
+            doc.save()
+            frappe.db.commit()
+            dealer=frappe.get_doc("Dealer", _data.get('dealer'))
+            geo_mitra_doc=frappe.get_doc("Geo Mitra", geo_mitra_id)
+
+            payload={
+            "posting_date": frappe.utils.nowdate(),
+            "crop_doc_name":doc.name,
+            "notes": _data.get('notes') if _data.get('notes') else '' ,
+            "geo_mitra":geo_mitra_id,
+            'sales_person':geo_mitra_doc.get('sales_person_name') if geo_mitra_doc.get('sales_person_name') else '' ,
+            "dealer" : _data.get('dealer') if _data.get('dealer') else '',
+            "customer" : dealer.get('dealer_code') if dealer.get('dealer_code') else '',
+            "from_date" : add_to_date(_data.get('from_date'), days=0, as_string=True, as_datetime=True)if _data.get('from_date') else '',
+            "to_date" : add_to_date(_data.get('to_date'), days=0, as_string=True, as_datetime=True) if _data.get('to_date') else ''
+            }
+
+           
+            response11 = requests.request("POST", f"{url}/api/resource/Geo%20Mitra%20Ledger%20Report", data=json.dumps(payload), headers=headers)
+            result = json.loads(response11.text)
+            frappe.log_error("api responsedd1", result)
+
+            if(result):
+                frappe.log_error("api response11", result['data']['name'])
+                if _data['image']:
+
+                    for img in _data['image']:
+                        payload2={
+                            "data":img,
+                            "docname":result['data']['name'] if result['data'] else 'f6391f1cee',
+                            "filename":f"{result['data']['name']}{str(random.randint(1000,9999))}"
+
+                        }
+                        response1 = requests.request("POST", f"{url}/api/method/erpnext.geolife_api.gm_write_file", data=json.dumps(payload2), headers=headers)
+                
+                        frappe.log_error("geolife api response image",response1.text)
+
+                frappe.response["message"] = {
+                    "status":True,
+                    "message": "Report Added Successfully",
+                }
+                return
+            
+        except Exception as e:
+            frappe.log_error('ledger Report Create',str(e))
+            frappe.response["message"] = {
+                "status":False,
+                "message": "Ledger Report Not Created",
+            }
+            return
+
+    
+    elif frappe.request.method == "PUT":
+        _data = frappe.request.json
+        geo_mitra_id = get_geomitra_from_userid(user_email)
+        
+        if geo_mitra_id == False:
+            frappe.response["message"] = {
+                "status": False,
+                "message": "Please map a geo mitra with this user",
+                "user_email": user_email
+            }
+            return                    
+                
+        doc = frappe.get_doc("Geo Mitra Ledger Report", _data.get('name'))
+        doc.notes = _data.get('notes') if _data.get('notes') else ''
+        # doc.end_longitude =_data.get('longitude') if _data.get('longitude') else ''
+        # doc.end_latitude = _data.get('latitude') if _data.get('latitude') else ''
+
+        if _data['image']:
+                for img in _data['image']:
+                    data = img
+                    filename = doc.name
+                    docname = doc.name
+                    doctype = "Geo Mitra Ledger Report"
+                    image = ng_write_file(data, filename, docname, doctype, 'private')        
+        doc.save()
+        frappe.db.commit()
+
+        if _data['image']:
+            for img in _data['image']:
+                payload2={
+                    "data":img,
+                    "docname":doc.name,
+                    "filename":f"{doc.name}{str(random.randint(1000,9999))}"
+                }
+                response1 = requests.request("POST", f"{url}/api/method/erpnext.geolife_api.gm_write_file", data=json.dumps(payload2), headers=headers)
+                frappe.log_error("Geolife api update image",response1.text)
+
+        frappe.response["message"] = {
+            "status":True,
+            "message": "Ledger Report Updated Successfully",
         }
         return
 
@@ -2206,15 +2408,15 @@ def search_dealer():
                 WHERE
                 (d.dealer_name like %s OR d.contact_person like %s OR d.mobile_number like %s) AND
                 gm.lft >= %s AND gm.rgt <= %s
-                Group By d.dealer_name
+                Group By d.dealer_name Limit 50
             """, (text, text, text, lft, rgt), as_dict=1)    
 
         
         # dealers = frappe.db.get_list("Dealer", filters= [['DGO List', 'geo_mitra', 'in', geo_mitra_id]], fields=["*"])
         for m in result :
-            check_activity= frappe.db.get_list('Daily Activity',filters=[['dealer','=',m.dealer],['posting_date', 'between', [datetime.today().replace(day=1),datetime.now().strftime('%Y-%m-%d')]]], fields=["count(name) as count","name", "posting_date","geo_mitra","geo_mitra_name"], order_by='creation asc',)
+            check_activity= frappe.db.get_all('Daily Activity',filters=[['dealer','=',m.dealer],['posting_date', 'between', [datetime.today().replace(day=1),datetime.now().strftime('%Y-%m-%d')]]], fields=["count(name) as count","name", "posting_date","geo_mitra","geo_mitra_name"], order_by='creation desc',)
             # frappe.log_error('dealer',str(m))
-            # frappe.log_error('dealer data',str(check_activity))
+            frappe.log_error('dealer data',str(check_activity))
 
             if check_activity:
                 if check_activity[0].name:
@@ -2225,6 +2427,7 @@ def search_dealer():
                     # frappe.log_error('Activitys',activity.multi_activity_types[0].activity_type)
 
                     check_activity[0].last_visit=activity.multi_activity_types[0].activity_type
+                    check_activity[0].count= len(check_activity)
 
                 m.activity = check_activity
             
