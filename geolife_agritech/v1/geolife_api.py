@@ -62,7 +62,7 @@ def send_push_notification():
 @frappe.whitelist(allow_guest=True)
 def generate_otp(mobile_no,hashcode):
     frappe.log_error('Check from generate_otp user from0',json.loads(mobile_no))
-    frappe.log_error('Check from generate_otp user json from0',json.dumps(mobile_no))
+    # frappe.log_error('Check from generate_otp user json from0',json.dumps(mobile_no))
 
 
     if not mobile_no :
@@ -112,6 +112,8 @@ def generate_otp(mobile_no,hashcode):
         return
 
     except Exception as e:
+        frappe.log_error('Check from generate_otp error',e)
+
         return e
 
 @frappe.whitelist(allow_guest=True)
@@ -257,6 +259,7 @@ def validate_otp(mobile_no, otp):
             "status": False,
             "message": "User Not Exists",
         }
+        return
 
 def get_doctype_images(doctype, docname, is_private):
     attachments = frappe.db.get_all("File",
@@ -2408,7 +2411,7 @@ def search_dealer():
                 WHERE
                 (d.dealer_name like %s OR d.contact_person like %s OR d.mobile_number like %s) AND
                 gm.lft >= %s AND gm.rgt <= %s
-                Group By d.dealer_name Limit 50
+                Group By d.dealer_name
             """, (text, text, text, lft, rgt), as_dict=1)    
 
         
@@ -2416,7 +2419,7 @@ def search_dealer():
         for m in result :
             check_activity= frappe.db.get_all('Daily Activity',filters=[['dealer','=',m.dealer],['posting_date', 'between', [datetime.today().replace(day=1),datetime.now().strftime('%Y-%m-%d')]]], fields=["count(name) as count","name", "posting_date","geo_mitra","geo_mitra_name"], order_by='creation desc',)
             # frappe.log_error('dealer',str(m))
-            frappe.log_error('dealer data',str(check_activity))
+            # frappe.log_error('dealer data',str(check_activity))
 
             if check_activity:
                 if check_activity[0].name:

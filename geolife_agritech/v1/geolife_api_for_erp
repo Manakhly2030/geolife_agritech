@@ -1,0 +1,46 @@
+import datetime
+import json
+import random
+import frappe
+from frappe import auth
+import base64
+import os
+from frappe.utils import get_files_path, get_site_name, now, add_to_date, get_datetime, add_to_date, validate_email_address
+from frappe.utils.data import escape_html
+import requests
+from frappe.core.doctype.user.user import test_password_strength
+import calendar
+import re
+from datetime import datetime
+from geolife_api import get_user_info
+
+
+
+@frappe.whitelist(allow_guest=True)
+def update_item_in_crop():
+    api_key  = frappe.request.headers.get("Authorization")[6:21]
+    api_sec  = frappe.request.headers.get("Authorization")[22:]
+
+    user_email = get_user_info(api_key, api_sec)
+    if not user_email:
+        frappe.response["message"] = {
+            "status": False,
+            "message": "Unauthorised Access",
+        }
+        return
+
+    if frappe.request.method =="GET":
+        try:
+            _data = frappe.form_dict
+            frappe.log_error(_data)
+            # doc = frappe.get_doc("Item", _data.get('name'))
+            # doc.workflow_state = _data.get('workflow_state') if _data.get('workflow_state') else ''
+            # doc.save()
+            # frappe.db.commit()
+            frappe.response["message"] = {
+                "status": True,
+                "message": "Updated Item",
+                }
+            return 
+        except Exception as e:
+            frappe.log_error(e)

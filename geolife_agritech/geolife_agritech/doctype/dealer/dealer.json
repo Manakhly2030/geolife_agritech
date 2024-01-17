@@ -46,6 +46,7 @@
   {
    "fieldname": "mobile_number",
    "fieldtype": "Data",
+   "in_preview": 1,
    "label": "Mobile Number",
    "unique": 1
   },
@@ -124,7 +125,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-10-19 15:09:14.005235",
+ "modified": "2024-01-04 14:15:54.300605",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Dealer",

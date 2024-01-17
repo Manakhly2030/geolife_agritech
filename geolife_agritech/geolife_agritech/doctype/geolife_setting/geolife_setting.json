@@ -12,7 +12,16 @@
   "incentive_without_soil_kit",
   "data_import_for_geo_market_section",
   "import_geo_market_data",
-  "start_import"
+  "start_import",
+  "geolife_live_api_section",
+  "url",
+  "column_break_21kux",
+  "api_secret",
+  "api_key",
+  "geolife_uat_api_section",
+  "uat_url",
+  "uat_api_secret",
+  "uat_api_key"
  ],
  "fields": [
   {
@@ -49,12 +58,56 @@
    "fieldname": "start_import",
    "fieldtype": "Button",
    "label": "start Import"
+  },
+  {
+   "fieldname": "geolife_live_api_section",
+   "fieldtype": "Section Break",
+   "label": "Geolife Live API"
+  },
+  {
+   "fieldname": "url",
+   "fieldtype": "Data",
+   "label": "URL"
+  },
+  {
+   "fieldname": "column_break_21kux",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "api_secret",
+   "fieldtype": "Data",
+   "label": "API Secret"
+  },
+  {
+   "fieldname": "api_key",
+   "fieldtype": "Data",
+   "label": "Api Key"
+  },
+  {
+   "fieldname": "geolife_uat_api_section",
+   "fieldtype": "Section Break",
+   "label": "Geolife UAT API"
+  },
+  {
+   "fieldname": "uat_url",
+   "fieldtype": "Data",
+   "label": "UAT URL"
+  },
+  {
+   "fieldname": "uat_api_secret",
+   "fieldtype": "Data",
+   "label": "UAT API Secret"
+  },
+  {
+   "fieldname": "uat_api_key",
+   "fieldtype": "Data",
+   "label": "UAT Api Key"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-07-17 14:21:05.145070",
+ "modified": "2024-01-16 14:18:34.898122",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "GeoLife Setting",
