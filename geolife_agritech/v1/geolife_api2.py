@@ -1056,22 +1056,96 @@ def update_item_in_crop():
         try:
             _data = frappe.form_dict
             # frappe.log_error('payload',_data)
-            doc = frappe.get_doc("Product", _data.get('item_code'))
-            doc.product_name = _data.get('item_name') if _data.get('item_name') else ''
-            doc.custom_item_group = _data.get('item-group') if _data.get('item-group') else ''
-            doc.custom_item_subgroup = _data.get('item-subgroup') if _data.get('item-subgroup') else ''
-            doc.save()
-            frappe.db.commit()
+            check_item = frappe.db.exists("Product",_data.get('item_code'))
+            if not check_item:
+                doc = frappe.get_doc({"doctype":"Product", 
+                    "item_code":_data.get('item_code'),
+                    "product_name":_data.get('item_name'),
+                    "custom_item_group":_data.get('item-group'),
+                    "custom_item_subgroup":_data.get('item-subgroup') if _data.get('item-subgroup') else ''                    
+                })
+                doc.save()
+                frappe.db.commit()
+                frappe.response["message"] = {
+                    "status": True,
+                    "message": "New Product Inserted In Crop",
+                    }
+                return 
+            else:
+                doc = frappe.get_doc("Product", _data.get('item_code'))
+                doc.product_name = _data.get('item_name') if _data.get('item_name') else ''
+                doc.custom_item_group = _data.get('item-group') if _data.get('item-group') else ''
+                doc.custom_item_subgroup = _data.get('item-subgroup') if _data.get('item-subgroup') else ''
+                doc.save()
+                frappe.db.commit()
+                frappe.response["message"] = {
+                    "status": True,
+                    "message": "Product Updated In Crop",
+                    }
+                return 
+        except Exception as e:
+            # frappe.log_error(e)
+            frappe.response["message"] = {
+                "status": False,
+                "message": f"Item Not Updated in Crop Product {e}",
+                "error":e
+                }
+            return 
+
+
+
+@frappe.whitelist(allow_guest=True)
+def update_dealer_stock_in_crop():
+    api_key  = frappe.request.headers.get("Authorization")[6:21]
+    api_sec  = frappe.request.headers.get("Authorization")[22:]
+
+    user_email = get_user_info(api_key, api_sec)
+    if not user_email:
+        frappe.response["message"] = {
+            "status": False,
+            "message": "Unauthorised Access",
+        }
+        return
+
+    if frappe.request.method =="GET":
+        try:
+            _data = frappe.form_dict
+            if _data.get('stock'):
+                for stock in _data('stock'):
+                    frappe.log_error('dealer stock data payload',stock)
+
+            # check_item = frappe.db.exists("Product",_data.get('item_code'))
+            # if not check_item:
+            #     doc = frappe.get_doc({"doctype":"Product", 
+            #         "item_code":_data.get('item_code'),
+            #         "product_name":_data.get('item_name'),
+            #         "custom_item_group":_data.get('item-group'),
+            #         "custom_item_subgroup":_data.get('item-subgroup') if _data.get('item-subgroup') else ''                    
+            #     })
+            #     doc.save()
+            #     frappe.db.commit()
+            #     frappe.response["message"] = {
+            #         "status": True,
+            #         "message": "New Product Inserted In Crop",
+            #         }
+            #     return 
+            # else:
+                # doc = frappe.get_doc("Product", _data.get('item_code'))
+                # doc.product_name = _data.get('item_name') if _data.get('item_name') else ''
+                # doc.custom_item_group = _data.get('item-group') if _data.get('item-group') else ''
+                # doc.custom_item_subgroup = _data.get('item-subgroup') if _data.get('item-subgroup') else ''
+                # doc.save()
+                # frappe.db.commit()
             frappe.response["message"] = {
                 "status": True,
-                "message": "Updated Item",
+                "message": "Product Updated In Crop",
                 }
             return 
         except Exception as e:
             # frappe.log_error(e)
             frappe.response["message"] = {
                 "status": False,
-                "message": "Item Not Updated in Crop Product",
+                "message": f"Dealer Stock Not Updated in Crop {e}",
                 "error":e
                 }
             return 
@@ -1301,7 +1375,22 @@ def geo_ledger_report():
                 "message": "Please map a geo mitra with this user",
                 "user_email": user_email
             }
-            return                    
+            return  
+        dealer=frappe.get_doc("Dealer", _data.get('dealer'))
+        geo_mitra_doc=frappe.get_doc("Geo Mitra", geo_mitra_id)  
+
+        if not geo_mitra_doc.get('dgo_code'):
+            frappe.response["message"] = {
+                "status": False,
+                "message": "Staff code not found in geo mitra",
+            }
+            return  
+        if not dealer.get('dealer_code'):
+            frappe.response["message"] = {
+                "status": False,
+                "message": "Dealer code not found in Dealer",
+            }
+            return                
                 
         try:
             doc = frappe.get_doc({
@@ -1328,15 +1417,15 @@ def geo_ledger_report():
                     image = ng_write_file(data, filename, docname, doctype, 'private')
             doc.save()
             frappe.db.commit()
-            dealer=frappe.get_doc("Dealer", _data.get('dealer'))
-            geo_mitra_doc=frappe.get_doc("Geo Mitra", geo_mitra_id)
+            
 
             payload={
             "posting_date": frappe.utils.nowdate(),
             "crop_doc_name":doc.name,
             "notes": _data.get('notes') if _data.get('notes') else '' ,
             "geo_mitra":geo_mitra_id,
-            'sales_person':geo_mitra_doc.get('sales_person_name') if geo_mitra_doc.get('sales_person_name') else '' ,
+            # 'sales_person':geo_mitra_doc.get('sales_person_name') if geo_mitra_doc.get('sales_person_name') else '' ,
+            'emp_id':geo_mitra_doc.get('dgo_code') if geo_mitra_doc.get('dgo_code') else '' ,
             "dealer" : _data.get('dealer') if _data.get('dealer') else '',
             "customer" : dealer.get('dealer_code') if dealer.get('dealer_code') else '',
             "from_date" : add_to_date(_data.get('from_date'), days=0, as_string=True, as_datetime=True)if _data.get('from_date') else '',
@@ -1356,7 +1445,8 @@ def geo_ledger_report():
                         payload2={
                             "data":img,
                             "docname":result['data']['name'] if result['data'] else 'f6391f1cee',
-                            "filename":f"{result['data']['name']}{str(random.randint(1000,9999))}"
+                            "filename":f"{result['data']['name']}{str(random.randint(1000,9999))}",
+                            "doctype": "Geo Mitra Ledger Report"
 
                         }
                         response1 = requests.request("POST", f"{url}/api/method/erpnext.geolife_api.gm_write_file", data=json.dumps(payload2), headers=headers)
@@ -1410,7 +1500,8 @@ def geo_ledger_report():
                 payload2={
                     "data":img,
                     "docname":doc.name,
-                    "filename":f"{doc.name}{str(random.randint(1000,9999))}"
+                    "filename":f"{doc.name}{str(random.randint(1000,9999))}",
+                    "doctype": "Geo Mitra Ledger Report"
                 }
                 response1 = requests.request("POST", f"{url}/api/method/erpnext.geolife_api.gm_write_file", data=json.dumps(payload2), headers=headers)
                 frappe.log_error("Geolife api update image",response1.text)
@@ -1906,6 +1997,13 @@ def create_sales_order():
     
     elif frappe.request.method == "POST":
         _data = frappe.request.json
+        if not _data.get('image'):
+            frappe.response["message"] = {
+                "status": False,
+                "message": "Upload Sales Order image with letter head",
+            }
+            return
+        images =_data.get('image')
 
         geo_mitra_id = get_geomitra_from_userid(user_email)
 
@@ -1925,19 +2023,39 @@ def create_sales_order():
                 "message":"Geo Mitra Sales Person Name Not Found"
             }
             return
-        url = frappe.db.get_single_value('GeoLife Setting', 'uat_url')
-        apikey = frappe.db.get_single_value('GeoLife Setting', 'uat_api_key')
-        apisec = frappe.db.get_single_value('GeoLife Setting', 'uat_api_secret')
+        url = frappe.db.get_single_value('GeoLife Setting', 'url')
+        apikey = frappe.db.get_single_value('GeoLife Setting', 'api_key')
+        apisec = frappe.db.get_single_value('GeoLife Setting', 'api_secret')
         headers = {'Authorization': f'token {apikey}:{apisec}','Content-Type': 'application/json'}
 
         dealer = frappe.get_doc("Dealer",_data["dealer_mobile"])
         if dealer.dealer_code:
             try:
-                response = requests.request("GET", f"{url}/api/method/create_sales_order_from_crop?geomitra={geomitra.get('sales_person_name')}&order_details={json.dumps(_data)}", headers=headers)
+                _data.pop('image')
+                response = requests.request("GET", f"{url}/api/method/create_sales_order_from_crop?geomitra={geomitra.get('sales_person_name')}&emp_id={geomitra.get('dgo_code') if geomitra.get('dgo_code') else ''}&order_details={json.dumps(_data)}", headers=headers)
                 frappe.log_error("response",json.loads(response.text))
-                frappe.log_error("URL",f"{url}/api/method/create_sales_order_from_crop?geomitra={geomitra.get('sales_person_name')}&order_details={json.dumps(_data)}")
+                frappe.log_error("URL",f"{url}/api/method/create_sales_order_from_crop?geomitra={geomitra.get('sales_person_name')}emp_id={geomitra.get('dgo_code') if geomitra.get('dgo_code') else ''}&&order_details={json.dumps(_data)}")
                 result = json.loads(response.text)
                 if result.get("message").get('name'):
+
+                    if images:
+                        for img in images:
+                            payload2={
+                                "data":img,
+                                "docname":result.get("message").get('name'),
+                                "filename":f"{ result.get('message').get('name') }{str(random.randint(1000,9999))}",
+                                "doctype":"Sales Order"
+
+                            }
+                            response1 = requests.request("POST", f"{url}/api/method/erpnext.geolife_api.gm_write_file", data=json.dumps(payload2), headers=headers)
+                            # frappe.log_error('image so APi response', json.loads(response1.text))
+                            img_result = json.loads(response1.text)
+                            frappe.response["message"] = {
+                                    "status":True,
+                                    "message": f"Sales order save successfully with image {img_result.get('massage')}",
+                                    "data" : result.get("message"),
+                                }
+                            return
                     frappe.response["message"] = {
                         "status":True,
                         "message": "Sales order save successfully",
@@ -1947,7 +2065,7 @@ def create_sales_order():
                 else:
                     frappe.response["message"] = {
                         "status":False,
-                        "message": result.get("message"),
+                        "message":f"{result.get('message')}",
                         "data" : result.get("message"),
                     }
                     return
@@ -1956,7 +2074,7 @@ def create_sales_order():
                 frappe.log_error('APi error',e)
                 frappe.response["message"] = {
                     "status":False,
-                    "message": "Sales order not save",
+                    "message": f"Sales order not save {e} {result.get('message')} ",
                     "response":e
                 }
                 return
@@ -1988,6 +2106,83 @@ def create_sales_order():
             "message": "Sales Order Successfully Created",
         }
         return
+
+
+@frappe.whitelist(allow_guest=True)
+def sales_order_list():
+    api_key  = frappe.request.headers.get("Authorization")[6:21]
+    api_sec  = frappe.request.headers.get("Authorization")[22:]
+
+    user_email = get_user_info(api_key, api_sec)
+    if not user_email:
+        frappe.response["message"] = {
+            "status": False,
+            "message": "Unauthorised Access",
+        }
+        return
+    
+    elif frappe.request.method == "POST":
+        geo_mitra_id = get_geomitra_from_userid(user_email)
+        if geo_mitra_id == False:
+            frappe.response["message"] = {
+                "status": False,
+                "message": "Please map a geo mitra with this user",
+                "user_email": user_email
+            }
+            return
+        
+        geomitra = frappe.get_doc("Geo Mitra",geo_mitra_id)
+        _data = frappe.request.json
+
+        if not geomitra.get('dgo_code'):
+            frappe.response['message']={
+                "status":False,
+                "message":"Geo Mitra Employee code Name Not Found"
+            }
+            return
+        url = frappe.db.get_single_value('GeoLife Setting', 'url')
+        apikey = frappe.db.get_single_value('GeoLife Setting', 'api_key')
+        apisec = frappe.db.get_single_value('GeoLife Setting', 'api_secret')
+        headers = {'Authorization': f'token {apikey}:{apisec}','Content-Type': 'application/json'}
+
+        dealer = frappe.get_doc("Dealer",_data["dealer_mobile"])
+        if dealer.dealer_code:
+            try:
+                response = requests.request("GET", f"{url}/api/method/mobile_api_for_sales_order_list?emp_id={geomitra.get('dgo_code') if geomitra.get('dgo_code') else ''}&dealer={dealer.dealer_code}", headers=headers)
+                frappe.log_error("response",json.loads(response.text))
+                frappe.log_error("URL", f"{url}/api/method/mobile_api_for_sales_order_list?emp_id={geomitra.get('dgo_code') if geomitra.get('dgo_code') else ''}&dealer={dealer.dealer_code}")
+                result = json.loads(response.text)
+                if result.get("message"):
+                    frappe.response["message"] = {
+                        "status":True,
+                        "message": "Sales order List",
+                        "data" : result.get("message"),
+                    }
+                    return
+                else:
+                    frappe.response["message"] = {
+                        "status":False,
+                        "message": result.get("message"),
+                        "data" : result.get("message"),
+                    }
+                    return
+
+            except Exception as e:
+                frappe.log_error('APi error',e)
+                frappe.response["message"] = {
+                    "status":False,
+                    "message": f"Sales order not fetch {e} ",
+                    "response":e
+                }
+                return
+                
+           
+        else:
+            frappe.response["message"] = {
+                "status": False,
+                "message": "Dealer Code Not Found",
+            }
+            return
 
 @frappe.whitelist(allow_guest=True)
 def create_Advance_booking_order():
