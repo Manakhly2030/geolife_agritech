@@ -5,5 +5,5 @@
 from frappe.tests.utils import FrappeTestCase
 
 
-class TestGeoMitraLedgerReport(FrappeTestCase):
+class TestGeomitraCustomerBalanceConfirmation(FrappeTestCase):
 	pass

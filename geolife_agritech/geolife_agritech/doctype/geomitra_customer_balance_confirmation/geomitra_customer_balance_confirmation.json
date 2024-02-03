@@ -20,7 +20,8 @@
   "subject",
   "amended_from",
   "workflow_state",
-  "status"
+  "status",
+  "reason_for_reject"
  ],
  "fields": [
   {
@@ -92,7 +93,7 @@
    "fieldtype": "Link",
    "label": "Amended From",
    "no_copy": 1,
-   "options": "Geo Mitra Ledger Report",
+   "options": "Geomitra Customer Balance Confirmation",
    "print_hide": 1,
    "read_only": 1
   },
@@ -100,20 +101,28 @@
    "fieldname": "workflow_state",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Workflow State"
+   "label": "Workflow State",
+   "read_only": 1
   },
   {
    "fieldname": "status",
    "fieldtype": "Data",
-   "label": "status"
+   "label": "status",
+   "read_only": 1
+  },
+  {
+   "fieldname": "reason_for_reject",
+   "fieldtype": "Data",
+   "label": "Reason For Reject",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-12-06 11:14:28.090483",
+ "modified": "2024-01-31 15:08:22.406616",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
- "name": "Geo Mitra Ledger Report",
+ "name": "Geomitra Customer Balance Confirmation",
  "owner": "Administrator",
  "permissions": [
   {

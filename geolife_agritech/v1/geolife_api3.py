@@ -2596,6 +2596,7 @@ def get_tour_plan_list():
                                     if d.dealer_code == dlr.get('dealer'):
                                         d.outstanding = dlr.get('outstanding_amt')
                                         d.credit_limit = dlr.get('credit_limit')
+                                        d.biilling_amt = dlr.get('biilling_amt')
                                         d.bal = dlr.get('bal')
                     except Exception as e:
                         frappe.response["message"] = {
@@ -3011,7 +3012,7 @@ def search_dealer():
                     dgm.parent as dealer,
                     dgm.geo_mitra,
                     d.custom_longitude, d.custom_latitude,
-                    d.dealer_name,d.qr_code, d.mobile_number,
+                    d.dealer_name,d.qr_code, d.mobile_number,d.dealer_code,
                     gm.sales_person_name, gm.parent_geo_mitra as parent,
                     gm.name as id
                     
@@ -3043,41 +3044,41 @@ def search_dealer():
                     check_activity[0].last_visit=activity.multi_activity_types[0].activity_type
                     check_activity[0].count= len(check_activity)
 
-                    # payload={
-                    #     'dealers': [d.dealer_code for d in pln.dealers]
-                    #     # 'dealers': [vars(d) for d in pln.dealers]
-                    # }
-                    # frappe.log_error("re",payload)
-                    # try:
-                    #     response = requests.request("POST", f"{url}/api/method/erpnext.geolife_api.customer_credit_limit_outstanding_bl", data=json.dumps(payload), headers=headers)
-                    #     frappe.log_error("response",json.loads(response.text))
-                    #     result = json.loads(response.text)
-                    #     result1= result.get('message')
-                    #     for d in pln.dealers:
-                    #         if d.dealer_code:
-                    #             for dlr in result1:
-                    #                 if d.dealer_code == dlr.get('dealer'):
-                    #                     d.outstanding = dlr.get('outstanding_amt')
-                    #                     d.credit_limit = dlr.get('credit_limit')
-                    #                     d.bal = dlr.get('bal')
-                    # except Exception as e:
-                    #     frappe.response["message"] = {
-                    #         "status":False,
-                    #         "message": "",
-                    #         "data" : result,
-                    #         "geo_mitra_id": geo_mitra_id
-                    #     }
-                    #     return
+                    
                 m.activity = check_activity
             if m.qr_code:
                 m.qr_code = frappe.utils.get_url(m.qr_code)
-        frappe.response["message"] = {
-            "status":True,
-            "message": "",
-            "data" : result,
-            "geo_mitra_id": geo_mitra_id
+        payload={
+            'dealers': [d.dealer_code for d in result]
+            # 'dealers': [vars(d) for d in pln.dealers]
         }
-        return
+        frappe.log_error("re",payload)
+        try:
+            response = requests.request("POST", f"{url}/api/method/erpnext.geolife_api.customer_credit_limit_outstanding_bl", data=json.dumps(payload), headers=headers)
+            frappe.log_error("response",json.loads(response.text))
+            result2 = json.loads(response.text)
+            result1= result2.get('message')
+            for d in result:
+                if d.dealer_code:
+                    for dlr in result1:
+                        if d.dealer_code == dlr.get('dealer'):
+                            d.outstanding = dlr.get('outstanding_amt')
+                            d.credit_limit = dlr.get('credit_limit')
+                            d.biilling_amt = dlr.get('biilling_amt')
+                            d.bal = dlr.get('bal')
+            frappe.response["message"] = {
+                "status":True,
+                "message": "",
+                "data" : result,
+                "geo_mitra_id": geo_mitra_id
+            }
+            return
+        except Exception as e:
+            frappe.response["message"] = {
+                "status":False,
+                "message": f"{e}"
+            }
+            return
 
 @frappe.whitelist(allow_guest=True)
 def search_retailer():
