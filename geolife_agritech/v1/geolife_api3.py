@@ -623,7 +623,7 @@ def activity_list():
             "latitude": _data.get('latitude') if _data.get('latitude') else ''
                             })
         
-        doc.insert()
+        doc.save()
         # if doc.longitude and doc.my_location=='' :
         #     doc.my_location={'type':'FeatureCollection','features':[{'type':'Feature','properties':{'point_type':'circlemarker','radius':10},'geometry':{'type':'Point','coordinates':[f"{doc.longitude}",f"{doc.latitude}"]}}]}
         if _data.get('activity_type'):
@@ -644,6 +644,7 @@ def activity_list():
                     doc.multi_activity_types.append(cdoc)
 
                     if itm =='Start Day' :
+                        doc.session_started=now()
                         doc.save()
                         frappe.db.commit()
                         videoData = frappe.db.get_list('Session Videos', filters={"session_date":frappe.utils.nowdate()}, fields=["name","session_date","youtube_video"])
@@ -657,16 +658,30 @@ def activity_list():
                             }
                             return
                     if itm == 'End Day':
-                        doc.session_started = _data['session']
-                        doc.session_enddate = now()
-                        doc.save()
-                        frappe.db.commit()
-                        
-                        frappe.response["message"] = {
-                                "status":True,
-                                "message": "Session Successfully End",
-                            }
-                        return
+                        home_data = frappe.db.get_list("Daily Activity", filters=[["Activity Type Multiselect","activity_type","in",["Start Day"]],["Daily Activity","posting_date","Between", [frappe.utils.nowdate(),add_to_date(frappe.utils.nowdate(), days=1, as_string=True, as_datetime=False)]],["Daily Activity","geo_mitra","=", geo_mitra_id], ["Daily Activity","session_enddate","is","not set"]], fields=["*"])
+                        if home_data:
+                            for h in home_data:
+                                get_activity= frappe.get_doc('Daily Activity',h.get('name'))
+                                get_activity.session_enddate=frappe.utils.get_datetime()
+                                get_activity.save()
+                            doc.session_started = _data['session']
+                            doc.session_enddate = now()
+                            doc.save()
+                            frappe.db.commit()
+                            
+                            frappe.response["message"] = {
+                                    "status":True,
+                                    "message": "Session Successfully End",
+                                }
+                            return
+                        else:
+                            frappe.delete_doc("Daily Activity",doc.name)
+                            frappe.response["message"] = {
+                                    "status":True,
+                                    "message": "Session Successfully End",
+                                }
+                            return
+
 
             else:
                 cdoc =frappe.get_doc({
@@ -791,7 +806,7 @@ def checkuser():
     if frappe.request.method =="POST":
         mdata =[]
         count_time=0
-        home_data = frappe.db.get_list("Daily Activity", filters=[["Activity Type Multiselect","activity_type","in",["Start Day"]],["Daily Activity","posting_date","=", frappe.utils.nowdate()], ["Daily Activity", "geo_mitra" ,"=", geo_mitra_id]], fields=["*"])
+        home_data = frappe.db.get_list("Daily Activity", filters=[["Activity Type Multiselect","activity_type","in",["Start Day"]],["Daily Activity","posting_date","=", frappe.utils.nowdate()],["Daily Activity","session_enddate","is","not set"], ["Daily Activity", "geo_mitra" ,"=", geo_mitra_id]], fields=["*"])
         
         if home_data:
             for h in home_data:
@@ -825,6 +840,12 @@ def checkuser():
                 "status":False,
                 "message": "small",
                 "data":home_data
+            }
+        return
+    else:
+        frappe.response["message"] = {
+                "status":True,
+                "message": "",
             }
         return
 
@@ -3639,7 +3660,18 @@ def dashboard_data(geo_mitra):
 
 
         Dashboard["incentive"] = incentive
+
+        target = frappe.db.sql("""
+            SELECT
+                st.fiscal_year, st.last_year_target, st.target
+            FROM `tabSales Target` st 
+            LEFT JOIN `tabFiscal Year` fy on fy.name = st.fiscal_year
+            WHERE st.sales_team = %s
+            ORDER BY fy.to_date DESC LIMIT 2
+        """, geo_mitra, as_dict=True)
       
+        Dashboard["target"] = target
+
         return Dashboard
 
 @frappe.whitelist(allow_guest=True)
