@@ -278,7 +278,7 @@ def get_doctype_images(doctype, docname, is_private):
 
 def ng_write_file(data, filename, docname, doctype, file_type):
     try:
-        filename_ext = f'/home/geolife/frappe-bench/sites/crop.erpgeolife.com/{file_type}/files/{filename}.png'
+        filename_ext = f'/home/geolife/frappe-bench/sites/{frappe.local.site}/{file_type}/files/{filename}.png'
         base64data = data.replace('data:image/jpeg;base64,', '')
         imgdata = base64.b64decode(base64data)
         with open(filename_ext, 'wb') as file:
