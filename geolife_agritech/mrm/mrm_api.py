@@ -55,8 +55,8 @@ def dealer_import(doc_name):
 			monthly_sales.return_amount = res.get("r_amount") if res.get("r_amount") else ''
 			monthly_sales.insert(ignore_permissions=True, ignore_links=True, ignore_if_duplicate=True, ignore_mandatory=True)
 	
-	frappe.log_error('Customer_Avilable', cust_avilable)
-	frappe.log_error('Customer_Not_Avilable', cust_not_avilable)
+	# frappe.log_error('Customer_Avilable', cust_avilable)
+	# frappe.log_error('Customer_Not_Avilable', cust_not_avilable)
 
 @frappe.whitelist()
 def custom_enqueue(doc_name):

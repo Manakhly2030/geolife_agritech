@@ -14,7 +14,8 @@
   "column_break_qzroi",
   "notes",
   "section_break_m7kdx",
-  "dealers"
+  "dealers",
+  "system_generated"
  ],
  "fields": [
   {
@@ -58,11 +59,17 @@
    "fieldname": "to_date",
    "fieldtype": "Data",
    "label": "To Date"
+  },
+  {
+   "fieldname": "system_generated",
+   "fieldtype": "Table",
+   "label": "System Generated",
+   "options": "Circular Tour Plan System"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-02-02 14:03:29.798587",
+ "modified": "2024-02-23 07:49:27.754407",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Circular Tour Plan",

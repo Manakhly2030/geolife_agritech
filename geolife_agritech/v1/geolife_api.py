@@ -39,7 +39,7 @@ def send_whatsapp(mobile_no,tamplate_name, param):
             }
             }
     # payload = payload.encode('utf8').decode('iso-8859-1')
-    frappe.log_error('whatsapp',payload)
+    # frappe.log_error('whatsapp',payload)
     headers = {'Authorization': 'Bearer EAAKkYgHIqkIBAK8axW3TJ05uOgHpyzVyuQpZBiFAYJrZAv6C4gt5H8T7R0ssIddK4kCIZChqj5R3MJG3nbbxLcVefMVkkOC40ZB8akhfbyAAxcqVXUPkbKsTeUVVZCH9wxADjXeSZBcstbcWXbFqlHbQyNx6JRHx1Hu9kPwZCuO6DXeUcOitNPc','Content-Type': 'application/json'}
 
     response = requests.request("POST", url, data=json.dumps(payload), headers=headers)
@@ -61,7 +61,7 @@ def send_push_notification():
 
 @frappe.whitelist(allow_guest=True)
 def generate_otp(mobile_no,hashcode):
-    frappe.log_error('Check from generate_otp user from0',json.loads(mobile_no))
+    # frappe.log_error('Check from generate_otp user from0',json.loads(mobile_no))
     # frappe.log_error('Check from generate_otp user json from0',json.dumps(mobile_no))
 
 
@@ -360,7 +360,7 @@ def Evening_7pm_Notifications():
 
     response = requests.request("POST", url, headers=headers, data=payload)
 
-    frappe.log_error('Evening_7pm_Notifications', response.text)
+    # frappe.log_error('Evening_7pm_Notifications', response.text)
     
     return
     
@@ -377,7 +377,7 @@ def daily_day_end():
     response = requests.request("POST", url, headers=headers, data=payload)
 
     # print(req.status_code, req.reason)
-    frappe.log_error('daily_day_end', response.text)
+    # frappe.log_error('daily_day_end', response.text)
 
     return
     
@@ -984,7 +984,7 @@ def expenses():
 
 @frappe.whitelist(allow_guest=True)
 def update_geo_ledger_report():
-    frappe.log_error('update_geo_ledger_report',frappe.request.headers.get("Authorization"))
+    # frappe.log_error('update_geo_ledger_report',frappe.request.headers.get("Authorization"))
     api_key  = frappe.request.headers.get("Authorization")[6:21]
     api_sec  = frappe.request.headers.get("Authorization")[22:]
     user_email = get_user_info(api_key, api_sec)
@@ -1109,7 +1109,7 @@ def geo_ledger_report():
            
             response11 = requests.request("POST", f"{url}/api/resource/Geo%20Mitra%20Ledger%20Report", data=json.dumps(payload), headers=headers)
             result = json.loads(response11.text)
-            frappe.log_error("api responsedd1", result)
+            # frappe.log_error("api responsedd1", result)
 
             if(result):
                 frappe.log_error("api response11", result['data']['name'])

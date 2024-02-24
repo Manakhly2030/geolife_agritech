@@ -1,0 +1,95 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-02-23 07:49:18.640020",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "dealer",
+  "dealer_name",
+  "latitude",
+  "longitude",
+  "dealer_code",
+  "outstanding",
+  "credit_limit",
+  "bal",
+  "biilling_amt"
+ ],
+ "fields": [
+  {
+   "fieldname": "dealer",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Dealer",
+   "options": "Dealer",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fetch_from": "dealer.dealer_name",
+   "fieldname": "dealer_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Dealer Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "dealer.custom_latitude",
+   "fieldname": "latitude",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Latitude",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "dealer.custom_longitude",
+   "fieldname": "longitude",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Longitude",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "dealer.dealer_code",
+   "fieldname": "dealer_code",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Dealer Code",
+   "read_only": 1
+  },
+  {
+   "fieldname": "outstanding",
+   "fieldtype": "Data",
+   "label": "Outstanding"
+  },
+  {
+   "fieldname": "credit_limit",
+   "fieldtype": "Data",
+   "label": "Credit Limit"
+  },
+  {
+   "fieldname": "bal",
+   "fieldtype": "Data",
+   "label": "Bal"
+  },
+  {
+   "fieldname": "biilling_amt",
+   "fieldtype": "Data",
+   "label": "Biilling_amt"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-02-23 07:49:18.640020",
+ "modified_by": "Administrator",
+ "module": "Geolife Agritech",
+ "name": "Circular Tour Plan System",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
