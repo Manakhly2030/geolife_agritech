@@ -3767,3 +3767,27 @@ def dealer_outstanding_pdf(customer):
     resp = requests.request('GET', f"{url}/api/method/geolife_customapp.geolife_customapp.pdf.dealer_outstanding_pdf?customer={customer}", headers=headers)
 
     return resp.json()
+
+@frappe.whitelist()
+def get_general_ledger_pdf(customer, from_date, to_date):
+
+    url = frappe.db.get_single_value('GeoLife Setting', 'url')
+    apikey = frappe.db.get_single_value('GeoLife Setting', 'api_key')
+    apisec = frappe.db.get_single_value('GeoLife Setting', 'api_secret')
+    headers = {'Authorization': f'token {apikey}:{apisec}','Content-Type': 'application/json'}
+
+    resp = requests.request('GET', f"{url}/api/method/geolife_customapp.geolife_customapp.pdf.get_general_ledger_pdf?customer={customer}&from_date={from_date}&to_date={to_date}", headers=headers)
+
+    return resp.json()
+
+@frappe.whitelist()
+def get_confirmation_of_accounts_pdf(customer, from_date, to_date):
+
+    url = frappe.db.get_single_value('GeoLife Setting', 'url')
+    apikey = frappe.db.get_single_value('GeoLife Setting', 'api_key')
+    apisec = frappe.db.get_single_value('GeoLife Setting', 'api_secret')
+    headers = {'Authorization': f'token {apikey}:{apisec}','Content-Type': 'application/json'}
+
+    resp = requests.request('GET', f"{url}/api/method/geolife_customapp.geolife_customapp.pdf.get_confirmation_of_accounts_pdf?customer={customer}&from_date={from_date}&to_date={to_date}", headers=headers)
+
+    return resp.json()
