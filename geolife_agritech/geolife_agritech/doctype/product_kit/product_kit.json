@@ -73,13 +73,13 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "CNP KIT Type",
-   "options": "With Soil Application\nWithout Soil Application"
+   "options": "With Soil Application\nWithout Soil Application\nCarbon Stone"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-08-14 12:33:40.593396",
+ "modified": "2024-02-27 11:41:06.448098",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Product Kit",

@@ -21,6 +21,7 @@
   "zone",
   "area",
   "headquarter",
+  "territory",
   "state",
   "date_of_joining",
   "reporting_person_name",
@@ -201,12 +202,18 @@
    "fieldtype": "Link",
    "label": "Headquarter",
    "options": "Headquarter"
+  },
+  {
+   "fieldname": "territory",
+   "fieldtype": "Table",
+   "label": "Multiple Territory",
+   "options": "Multiple Territory"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2024-01-09 14:07:51.059611",
+ "modified": "2024-02-26 14:19:11.117425",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Geo Mitra",

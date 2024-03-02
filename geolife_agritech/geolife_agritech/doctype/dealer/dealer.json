@@ -25,7 +25,8 @@
   "geomitra_number",
   "qr_code",
   "section_break_lc4tc",
-  "dgo_list"
+  "dgo_list",
+  "outstanding"
  ],
  "fields": [
   {
@@ -121,11 +122,16 @@
    "fieldname": "erp_dealer_name",
    "fieldtype": "Data",
    "label": "ERP Dealer Name"
+  },
+  {
+   "fieldname": "outstanding",
+   "fieldtype": "Data",
+   "label": "outstanding"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-01-04 14:15:54.300605",
+ "modified": "2024-02-26 18:38:57.843738",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Dealer",
