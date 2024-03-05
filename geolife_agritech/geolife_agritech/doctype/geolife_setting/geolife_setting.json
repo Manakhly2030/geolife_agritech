@@ -10,6 +10,7 @@
   "incentive_section",
   "incentive_with_soil_kit",
   "incentive_without_soil_kit",
+  "carbon_stone",
   "data_import_for_geo_market_section",
   "import_geo_market_data",
   "start_import",
@@ -102,12 +103,17 @@
    "fieldname": "uat_api_key",
    "fieldtype": "Data",
    "label": "UAT Api Key"
+  },
+  {
+   "fieldname": "carbon_stone",
+   "fieldtype": "Int",
+   "label": "Carbon Stone"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-01-16 14:18:34.898122",
+ "modified": "2024-03-01 14:06:26.998797",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "GeoLife Setting",

@@ -14,6 +14,7 @@
   "payment_method",
   "column_break_whbsl",
   "geo_mitra",
+  "geo_mitra_name",
   "posting_date",
   "geo_advance_booking",
   "booking_date",
@@ -115,12 +116,19 @@
    "fieldtype": "Link",
    "label": "Geo Advance Booking",
    "options": "Geo Advance Booking"
+  },
+  {
+   "fetch_from": "geo_mitra.sales_person_name",
+   "fieldname": "geo_mitra_name",
+   "fieldtype": "Data",
+   "label": "Geo Mitra Name",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-07-15 15:40:46.813090",
+ "modified": "2024-03-02 19:16:04.337587",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Geo Advance Booking",
