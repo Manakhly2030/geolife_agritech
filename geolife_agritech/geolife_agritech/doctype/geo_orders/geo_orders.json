@@ -9,12 +9,16 @@
  "engine": "InnoDB",
  "field_order": [
   "dealer",
+  "customer",
   "type",
   "geo_mitra",
   "products",
   "employee_location",
   "naming_series",
-  "amended_from"
+  "amended_from",
+  "approved_by",
+  "approved_date",
+  "images"
  ],
  "fields": [
   {
@@ -60,12 +64,35 @@
    "fieldtype": "Select",
    "label": "Type",
    "options": "\nSales Order\nSales Return"
+  },
+  {
+   "fetch_from": "dealer.dealer_code",
+   "fieldname": "customer",
+   "fieldtype": "Data",
+   "label": "Customer"
+  },
+  {
+   "fieldname": "approved_by",
+   "fieldtype": "Link",
+   "label": "Approved By",
+   "options": "Geo Mitra"
+  },
+  {
+   "fieldname": "approved_date",
+   "fieldtype": "Date",
+   "label": "Approved Date"
+  },
+  {
+   "default": "[]",
+   "fieldname": "images",
+   "fieldtype": "Attach",
+   "label": "Images"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-15 16:40:27.240881",
+ "modified": "2024-03-11 12:22:16.947621",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "GEO Orders",

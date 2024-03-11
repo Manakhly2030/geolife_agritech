@@ -26,10 +26,10 @@
    "options": "Crop"
   },
   {
-   "fetch_from": "crop_name.crop_type",
    "fieldname": "crop_type",
-   "fieldtype": "Data",
-   "label": "Crop Type"
+   "fieldtype": "Link",
+   "label": "Crop Type",
+   "options": "Crop Type"
   },
   {
    "fieldname": "crop_items",
@@ -40,7 +40,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-12-17 17:10:42.492932",
+ "modified": "2024-03-11 16:48:47.585430",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Crop Cycle",
