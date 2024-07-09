@@ -18,8 +18,13 @@
   "farmer_list_image",
   "dealer_image",
   "so_image",
+  "so_name",
   "farmers_image",
-  "geo_mitra"
+  "geo_mitra",
+  "dealer",
+  "authrised_dealer",
+  "market",
+  "marketing_coordinator"
  ],
  "fields": [
   {
@@ -89,11 +94,42 @@
    "fieldtype": "Link",
    "label": "Geo Mitra",
    "options": "Geo Mitra"
+  },
+  {
+   "fieldname": "dealer",
+   "fieldtype": "Link",
+   "label": "Nearest Dealer",
+   "options": "Dealer"
+  },
+  {
+   "fieldname": "market",
+   "fieldtype": "Link",
+   "label": "Market",
+   "options": "Territory"
+  },
+  {
+   "fieldname": "so_name",
+   "fieldtype": "Data",
+   "label": "So Name"
+  },
+  {
+   "fieldname": "authrised_dealer",
+   "fieldtype": "Link",
+   "label": "Authrised Dealer",
+   "options": "Dealer"
+  },
+  {
+   "default": "geo_mitra.custom_marketing_coordinator",
+   "fetch_from": "geo_mitra.custom_marketing_coordinator",
+   "fieldname": "marketing_coordinator",
+   "fieldtype": "Link",
+   "label": "Marketing Coordinator",
+   "options": "Geo Mitra"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-09-04 18:36:54.156616",
+ "modified": "2024-05-16 18:07:20.054938",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Farmer Meeting",

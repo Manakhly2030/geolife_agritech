@@ -12,7 +12,9 @@
   "rate",
   "uom",
   "quantity",
-  "posting_date"
+  "posting_date",
+  "conversion_factor",
+  "conversion_factor_uom"
  ],
  "fields": [
   {
@@ -32,7 +34,8 @@
    "fieldname": "quantity",
    "fieldtype": "Int",
    "in_list_view": 1,
-   "label": "Quantity"
+   "label": "Quantity",
+   "read_only": 1
   },
   {
    "fieldname": "posting_date",
@@ -44,19 +47,33 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Item",
-   "options": "Product"
+   "options": "Product",
+   "read_only": 1
   },
   {
+   "fetch_from": "item_code.product_name",
    "fieldname": "product_name",
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Product Name"
+  },
+  {
+   "fieldname": "conversion_factor",
+   "fieldtype": "Int",
+   "label": "Conversion Factor",
+   "read_only": 1
+  },
+  {
+   "fieldname": "conversion_factor_uom",
+   "fieldtype": "Data",
+   "label": "Conversion Factor uom",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2023-03-15 16:39:13.065977",
+ "modified": "2024-05-14 15:06:23.000161",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Sales Order Products",

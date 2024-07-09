@@ -1,0 +1,111 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-05-31 17:28:13.076839",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "banner_campaign",
+  "dealer",
+  "geo_mitra",
+  "dealer_name",
+  "geo_mitra_name",
+  "banner_image",
+  "posting_date",
+  "notes",
+  "longitude",
+  "latitude",
+  "location"
+ ],
+ "fields": [
+  {
+   "fieldname": "banner_campaign",
+   "fieldtype": "Link",
+   "label": "Banner Campaign",
+   "options": "Banner Campaign"
+  },
+  {
+   "fieldname": "dealer",
+   "fieldtype": "Link",
+   "label": "Dealer",
+   "options": "Dealer"
+  },
+  {
+   "fieldname": "geo_mitra",
+   "fieldtype": "Link",
+   "label": "Geo Mitra",
+   "options": "Geo Mitra"
+  },
+  {
+   "fetch_from": "dealer.dealer_name",
+   "fieldname": "dealer_name",
+   "fieldtype": "Data",
+   "label": "Dealer Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "geo_mitra.sales_person_name",
+   "fieldname": "geo_mitra_name",
+   "fieldtype": "Data",
+   "label": "Geo Mitra Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "banner_image",
+   "fieldtype": "Attach Image",
+   "label": "Banner Image"
+  },
+  {
+   "default": "Today",
+   "fieldname": "posting_date",
+   "fieldtype": "Data",
+   "label": "Posting Date"
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Text",
+   "label": "notes"
+  },
+  {
+   "fieldname": "longitude",
+   "fieldtype": "Data",
+   "label": "Longitude"
+  },
+  {
+   "fieldname": "latitude",
+   "fieldtype": "Data",
+   "label": "Latitude"
+  },
+  {
+   "fieldname": "location",
+   "fieldtype": "Geolocation",
+   "label": "Location"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-06-01 13:12:01.397616",
+ "modified_by": "Administrator",
+ "module": "Geolife Agritech",
+ "name": "Banner Campaign Form",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

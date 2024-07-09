@@ -2,6 +2,7 @@
  "charts": [],
  "content": "[{\"id\":\"W3bcONwHwI\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Geolife</span>\",\"col\":12}},{\"id\":\"FUSGc1E_lU\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Crop Project\",\"col\":4}},{\"id\":\"zSCO2EJZ9j\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Crop\",\"col\":4}},{\"id\":\"ieFoYmFJLu\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Crop Cycle\",\"col\":4}},{\"id\":\"VNvy6EvlV3\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Crop</b></span>\",\"col\":12}},{\"id\":\"3BID0Hdmfw\",\"type\":\"card\",\"data\":{\"card_name\":\"Master\",\"col\":4}},{\"id\":\"Cetz0OUjs0\",\"type\":\"card\",\"data\":{\"card_name\":\"Transactions\",\"col\":4}},{\"id\":\"CdIFXFkouB\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}}]",
  "creation": "2022-12-27 15:12:43.614810",
+ "custom_blocks": [],
  "docstatus": 0,
  "doctype": "Workspace",
  "for_user": "",
@@ -136,10 +137,11 @@
    "type": "Link"
   }
  ],
- "modified": "2023-11-21 14:08:41.161290",
- "modified_by": "sawan@erpdesks.in",
+ "modified": "2024-06-21 12:35:02.429226",
+ "modified_by": "tushar@erpdesks.in",
  "module": "Geolife Agritech",
  "name": "Geolife",
+ "number_cards": [],
  "owner": "Administrator",
  "parent_page": "",
  "public": 1,

@@ -131,7 +131,7 @@
    "fieldname": "market",
    "fieldtype": "Link",
    "label": "Nearest Market",
-   "options": "Geo Market"
+   "options": "Territory"
   },
   {
    "fieldname": "village",
@@ -166,7 +166,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-09-06 17:28:21.095474",
+ "modified": "2024-05-08 15:06:01.235331",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "My Farmer",

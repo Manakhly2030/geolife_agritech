@@ -16,6 +16,9 @@
   "mobile_number",
   "pan_no",
   "gst_number",
+  "virtual_account_number",
+  "attachment_vaccc_no",
+  "dealer_is_aware",
   "column_break_ox3mz",
   "address_1",
   "address_2",
@@ -121,11 +124,27 @@
    "fieldname": "erp_dealer_name",
    "fieldtype": "Data",
    "label": "ERP Dealer Name"
+  },
+  {
+   "fieldname": "virtual_account_number",
+   "fieldtype": "Data",
+   "label": "Virtual Account Number"
+  },
+  {
+   "fieldname": "attachment_vaccc_no",
+   "fieldtype": "Data",
+   "label": "Attachment V.accc No."
+  },
+  {
+   "fieldname": "dealer_is_aware",
+   "fieldtype": "Select",
+   "label": "Dealer Is Aware",
+   "options": "Pending\nYes\nNo"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-01-04 14:15:54.300605",
+ "modified": "2024-06-04 12:12:15.161373",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Dealer",

@@ -9,12 +9,12 @@
  "engine": "InnoDB",
  "field_order": [
   "dealer",
+  "deale_code",
   "posting_date",
   "geo_mitra",
   "dealer_stock_details_section",
   "stock",
   "naming_series",
-  "employee_location",
   "amended_from"
  ],
  "fields": [
@@ -25,8 +25,9 @@
    "options": "Dealer"
   },
   {
+   "default": "Today",
    "fieldname": "posting_date",
-   "fieldtype": "Data",
+   "fieldtype": "Date",
    "label": "Posting Date"
   },
   {
@@ -53,11 +54,6 @@
    "options": "DS-.YYYY.-.#####"
   },
   {
-   "fieldname": "employee_location",
-   "fieldtype": "Geolocation",
-   "label": "employee_location"
-  },
-  {
    "fieldname": "amended_from",
    "fieldtype": "Link",
    "label": "Amended From",
@@ -65,12 +61,19 @@
    "options": "Dealer Stock",
    "print_hide": 1,
    "read_only": 1
+  },
+  {
+   "fetch_from": "dealer.dealer_code",
+   "fieldname": "deale_code",
+   "fieldtype": "Data",
+   "label": "Deale Code",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-15 16:28:00.675031",
+ "modified": "2024-03-20 16:44:59.139910",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Dealer Stock",

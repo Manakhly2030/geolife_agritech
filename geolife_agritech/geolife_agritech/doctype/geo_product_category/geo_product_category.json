@@ -1,28 +1,49 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "field:category",
  "creation": "2023-02-28 22:35:33.881249",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "category"
+  "category",
+  "product_name",
+  "product_image",
+  "description"
  ],
  "fields": [
   {
    "fieldname": "category",
    "fieldtype": "Link",
    "label": "Category",
-   "options": "GEO Category"
+   "options": "GEO Category",
+   "unique": 1
+  },
+  {
+   "fieldname": "product_name",
+   "fieldtype": "Data",
+   "label": "Product Name"
+  },
+  {
+   "fieldname": "product_image",
+   "fieldtype": "Data",
+   "label": "Product Image"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "HTML",
+   "label": "Description"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2023-03-01 14:49:41.277066",
+ "modified": "2024-06-10 16:36:17.651057",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Geo Product Category",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [],
  "sort_field": "modified",

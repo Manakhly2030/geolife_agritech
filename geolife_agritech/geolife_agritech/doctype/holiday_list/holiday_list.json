@@ -1,0 +1,108 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:holiday_list_name",
+ "creation": "2024-06-24 18:33:21.860561",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "holiday_list_name",
+  "from_date",
+  "to_date",
+  "total_holidays",
+  "add_weekly_holidays_section",
+  "weekly_off",
+  "add_to_holidays",
+  "holidays_section",
+  "holidays",
+  "clear_table",
+  "color"
+ ],
+ "fields": [
+  {
+   "fieldname": "holiday_list_name",
+   "fieldtype": "Data",
+   "label": "Holiday List Name",
+   "unique": 1
+  },
+  {
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "label": "From Date"
+  },
+  {
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "label": "To Date"
+  },
+  {
+   "fieldname": "total_holidays",
+   "fieldtype": "Int",
+   "label": "Total Holidays"
+  },
+  {
+   "fieldname": "add_weekly_holidays_section",
+   "fieldtype": "Section Break",
+   "label": "Add Weekly Holidays"
+  },
+  {
+   "fieldname": "weekly_off",
+   "fieldtype": "Select",
+   "label": "Weekly Off",
+   "options": "\nSunday\nMonday\nTuesday\nWednesday\nThursday\nFriday\nSaturday"
+  },
+  {
+   "fieldname": "add_to_holidays",
+   "fieldtype": "Button",
+   "label": "Add to Holidays"
+  },
+  {
+   "fieldname": "holidays_section",
+   "fieldtype": "Section Break",
+   "label": "Holidays"
+  },
+  {
+   "fieldname": "holidays",
+   "fieldtype": "Table",
+   "label": "Holidays",
+   "options": "Holiday"
+  },
+  {
+   "fieldname": "clear_table",
+   "fieldtype": "Button",
+   "label": "Clear Table"
+  },
+  {
+   "fieldname": "color",
+   "fieldtype": "Color",
+   "label": "Color"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-06-24 18:34:15.637928",
+ "modified_by": "Administrator",
+ "module": "Geolife Agritech",
+ "name": "Holiday List",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

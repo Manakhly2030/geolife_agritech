@@ -8,6 +8,7 @@
  "engine": "InnoDB",
  "field_order": [
   "geo_mitra",
+  "geo_mitra_name",
   "posting_date",
   "from_date",
   "to_date",
@@ -65,11 +66,18 @@
    "fieldtype": "Table",
    "label": "System Generated",
    "options": "Circular Tour Plan System"
+  },
+  {
+   "fetch_from": "geo_mitra.sales_person_name",
+   "fieldname": "geo_mitra_name",
+   "fieldtype": "Data",
+   "label": "Geo Mitra Name",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-02-23 07:49:27.754407",
+ "modified": "2024-05-21 14:02:52.365336",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Circular Tour Plan",

@@ -9,12 +9,18 @@
  "engine": "InnoDB",
  "field_order": [
   "dealer",
+  "customer",
+  "customer_name",
   "type",
   "geo_mitra",
+  "geo_mitra_name",
   "products",
   "employee_location",
   "naming_series",
-  "amended_from"
+  "amended_from",
+  "approved_by",
+  "approved_date",
+  "images"
  ],
  "fields": [
   {
@@ -30,6 +36,7 @@
    "options": "Geo Mitra"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "products",
    "fieldtype": "Table",
    "label": "Products",
@@ -60,12 +67,50 @@
    "fieldtype": "Select",
    "label": "Type",
    "options": "\nSales Order\nSales Return"
+  },
+  {
+   "fetch_from": "dealer.dealer_code",
+   "fieldname": "customer",
+   "fieldtype": "Data",
+   "label": "Customer",
+   "options": "Dealer"
+  },
+  {
+   "fetch_from": "dealer.dealer_name",
+   "fieldname": "customer_name",
+   "fieldtype": "Data",
+   "label": "Customer Name"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "approved_by",
+   "fieldtype": "Link",
+   "label": "Approved By",
+   "options": "Geo Mitra"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "approved_date",
+   "fieldtype": "Date",
+   "label": "Approved Date"
+  },
+  {
+   "fieldname": "images",
+   "fieldtype": "Attach",
+   "label": "Images"
+  },
+  {
+   "fetch_from": "geo_mitra.sales_person_name",
+   "fieldname": "geo_mitra_name",
+   "fieldtype": "Data",
+   "label": "Geo Mitra Name",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-15 16:40:27.240881",
+ "modified": "2024-05-08 14:42:56.373544",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "GEO Orders",
@@ -87,5 +132,6 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "track_changes": 1
 }

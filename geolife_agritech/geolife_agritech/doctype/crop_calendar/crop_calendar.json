@@ -24,7 +24,9 @@
   "territory",
   "month",
   "section_break_15",
-  "crop_cycle_products"
+  "crop_cycle_products",
+  "crop_cycle_items",
+  "amended_from"
  ],
  "fields": [
   {
@@ -136,11 +138,29 @@
    "fieldname": "sowing_date",
    "fieldtype": "Date",
    "label": "Date Of Sowing"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Crop Calendar",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "crop_cycle_items",
+   "fieldtype": "Table",
+   "label": "crop_cycle_items",
+   "options": "Crop Cycle Item",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
+ "is_submittable": 1,
  "links": [],
- "modified": "2023-05-06 14:28:57.442928",
+ "modified": "2024-06-21 17:51:33.039974",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Crop Calendar",
@@ -148,6 +168,7 @@
  "owner": "Administrator",
  "permissions": [
   {
+   "cancel": 1,
    "create": 1,
    "delete": 1,
    "email": 1,
@@ -156,7 +177,9 @@
    "read": 1,
    "report": 1,
    "role": "System Manager",
+   "select": 1,
    "share": 1,
+   "submit": 1,
    "write": 1
   }
  ],

@@ -12,16 +12,20 @@
   "item_code",
   "product_name",
   "rate",
-  "uom",
+  "product_image",
   "column_break_rmug8",
   "company_name",
   "has_free_sample",
   "dosage",
   "dosage_unit",
   "section_break_gtios",
-  "poduct_description",
-  "column_break_pgjsh",
+  "description",
+  "column_break_okwqu",
+  "uom",
+  "uoms",
   "method_of_application",
+  "section_break_1rerp",
+  "product_details",
   "section_break_c2etn",
   "categories",
   "column_break_jse9b",
@@ -78,15 +82,6 @@
    "fieldtype": "Section Break"
   },
   {
-   "fieldname": "poduct_description",
-   "fieldtype": "Long Text",
-   "label": "Poduct Description"
-  },
-  {
-   "fieldname": "column_break_pgjsh",
-   "fieldtype": "Column Break"
-  },
-  {
    "fieldname": "method_of_application",
    "fieldtype": "Data",
    "label": "Method Of Application"
@@ -121,13 +116,42 @@
    "fieldname": "item_code",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "item_code",
+   "label": "Item Code",
    "unique": 1
+  },
+  {
+   "fieldname": "uoms",
+   "fieldtype": "Table",
+   "label": "UOMS",
+   "options": "Geo Uoms"
+  },
+  {
+   "fieldname": "product_image",
+   "fieldtype": "Attach Image",
+   "label": "Product Image"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Text",
+   "label": "Description"
+  },
+  {
+   "fieldname": "product_details",
+   "fieldtype": "Text Editor",
+   "label": "Product Details"
+  },
+  {
+   "fieldname": "column_break_okwqu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_1rerp",
+   "fieldtype": "Section Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-08-02 12:38:27.261176",
+ "modified": "2024-06-10 15:51:49.475080",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Product",

@@ -24,7 +24,12 @@
   "naming_series",
   "amended_from",
   "dealer_msg",
-  "farmer_msg"
+  "farmer_msg",
+  "geo_mitra_zone",
+  "geo_mitra_area",
+  "geo_mitra_state",
+  "prent_geo_mitra",
+  "prent_geo_mitra_name"
  ],
  "fields": [
   {
@@ -123,12 +128,47 @@
    "fieldtype": "Data",
    "label": "Geo Mitra Name",
    "read_only": 1
+  },
+  {
+   "fetch_from": "geo_mitra.zone",
+   "fieldname": "geo_mitra_zone",
+   "fieldtype": "Data",
+   "label": "Geo MItra Zone",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "geo_mitra.area",
+   "fieldname": "geo_mitra_area",
+   "fieldtype": "Data",
+   "label": "Geo MItra Area",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "geo_mitra.state",
+   "fieldname": "geo_mitra_state",
+   "fieldtype": "Data",
+   "label": "Geo MItra State",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "geo_mitra.parent_geo_mitra",
+   "fieldname": "prent_geo_mitra",
+   "fieldtype": "Link",
+   "label": "Prent Geo Mitra",
+   "options": "Geo Mitra"
+  },
+  {
+   "fetch_from": "prent_geo_mitra.sales_person_name",
+   "fieldname": "prent_geo_mitra_name",
+   "fieldtype": "Data",
+   "label": "Prent Geo Mitra Name",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-03-02 19:16:04.337587",
+ "modified": "2024-03-18 14:39:37.734572",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Geo Advance Booking",

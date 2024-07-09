@@ -121,7 +121,7 @@ scheduler_events = {
 		"geolife_agritech.v1.geolife_api.daily_day_end"
 	],
     "cron":
-		{"01 19 * * 1-7": [
+		{"00 03 * * 1-7": [
 			"geolife_agritech.v1.geolife_api.Evening_7pm_Notifications"
 			]
 		},
