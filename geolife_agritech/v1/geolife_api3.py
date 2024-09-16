@@ -4930,36 +4930,8 @@ def dashboard_data(geo_mitra):
                     WHERE g.geo_mitra={geo_mitra} AND gd.product_kit='PK-2024-0001'
                     """)
         Dashboard["kit_booking"] = kit_booking[0][0] if kit_booking else 0
-        
-        # incentive = frappe.db.count("Geo Mitra Incentive", {"geo_mitra":geo_mitra, "crop_type":"Carbon Stone"})
-        # Dashboard["incentive"] = f"{Dashboard['kit_booking']}"
         Dealers_count=0
-        # Dealers = frappe.db.get_all("Dealer Geo Mitra",filters={"geo_mitra":geo_mitra}, fields=["parent"])
-        # for dealer in Dealers :
-        #     ddealer = frappe.get_doc("Dealer",dealer.parent)
-        #     if ddealer.dgo_list:
-        #         for d in ddealer.dgo_list :
-        #             if d.geo_mitra == geo_mitra :
-        #                 Dealers_count = Dealers_count+1
-
-        # lft = frappe.db.get_value("Geo Mitra", geo_mitra, "lft")
-        # rgt = frappe.db.get_value("Geo Mitra", geo_mitra, "rgt") 
-        # result = frappe.db.sql("""
-        #         SELECT
-        #             dgm.parent as dealer,
-        #             dgm.geo_mitra,
-        #             d.dealer_name,d.qr_code, d.mobile_number,
-        #             gm.sales_person_name, gm.parent_geo_mitra as parent,
-        #             gm.name as id       
-        #         FROM
-        #             `tabDealer Geo Mitra` dgm
-        #         LEFT JOIN `tabDealer` d ON d.name = dgm.parent
-        #         LEFT JOIN `tabGeo Mitra` gm ON gm.name = dgm.geo_mitra
-        #         WHERE
-        #         gm.lft >= %s AND gm.rgt <= %s
-                
-        #     """, (lft, rgt), as_dict=1) 
-        # frappe.log_error("Dash board", result)
+       
         geo_mitra1 = frappe.get_doc("Geo Mitra",geo_mitra)
         if not geo_mitra1.get('territory'):
             frappe.response["message"] = {
@@ -5012,8 +4984,20 @@ def dashboard_data(geo_mitra):
         Dashboard["tft_downloads"] = frappe.db.count("Door To Door Visit", {"geo_mitra":geo_mitra})
         Dashboard["farmer_connected"] = frappe.db.count("My Farmer", {"geomitra_number":geo_mitra})
         Dashboard["new_dealer"] = Dealers_count
-        Dashboard["target_achievement"] = ""
+        # fiscle_year = frappe.get_all("Fiscal Year", filters=[''])
 
+        url = frappe.db.get_single_value('GeoLife Setting', 'url')
+        apikey = frappe.db.get_single_value('GeoLife Setting', 'api_key')
+        apisec = frappe.db.get_single_value('GeoLife Setting', 'api_secret')
+        headers = {'Authorization': f'token {apikey}:{apisec}','Content-Type': 'application/json'}
+        target_achievement_req=requests.request("GET", f"{url}/api/method/total_achivement_salesman?empid={geo_mitra1.get('dgo_code')}", headers=headers)
+        frappe.log_error("achivement rec",target_achievement_req.text)
+        achive_result = json.loads(target_achievement_req.text)
+        
+        if achive_result['message']:
+            Dashboard["target_achievement"] =achive_result['message'][0]['total']
+        else:
+            Dashboard["target_achievement"] =0
         inc = frappe.db.get_list("Geo Mitra Incentive", filters={"geo_mitra":geo_mitra, "crop_type":"Carbon Stone"}, fields=["name","incentive"])
         incentive =0
         if inc :
@@ -5025,11 +5009,10 @@ def dashboard_data(geo_mitra):
 
         target = frappe.db.sql("""
             SELECT
-                st.fiscal_year, st.last_year_target, st.target
-            FROM `tabSales Target` st 
-            LEFT JOIN `tabFiscal Year` fy on fy.name = st.fiscal_year
+               st.total_target as target
+            FROM `tabProduct Target` st 
             WHERE st.sales_team = %s
-            ORDER BY fy.to_date DESC LIMIT 2
+            ORDER BY st.creation DESC LIMIT 2
         """, geo_mitra, as_dict=True)
       
         Dashboard["target"] = target
@@ -5114,6 +5097,45 @@ def search_product():
                 "message": "Dealer Code Not Found",
             }
             return
+
+@frappe.whitelist()
+def search_all_product():
+
+    api_key  = frappe.request.headers.get("Authorization")[6:21]
+    api_sec  = frappe.request.headers.get("Authorization")[22:]
+    
+    url = frappe.db.get_single_value('GeoLife Setting', 'url')
+    apikey = frappe.db.get_single_value('GeoLife Setting', 'api_key')
+    apisec = frappe.db.get_single_value('GeoLife Setting', 'api_secret')
+    headers = {'Authorization': f'token {apikey}:{apisec}','Content-Type': 'application/json'}
+
+    user_email = get_user_info(api_key, api_sec)
+    if not user_email:
+        frappe.response["message"] = {
+            "status": False,
+            "message": "Unauthorised Access",
+        }
+        return
+
+    if frappe.request.method =="POST":
+        _data = frappe.request.json
+        text = f'%{_data["text"]}%'
+        geo_mitra_id = get_geomitra_from_userid(user_email)
+        products = frappe.db.get_all("Product",filters=[["Product","product_name","like",text]],fields=["*"] )
+
+        if products:
+            frappe.response["message"] = {
+                "status":True,
+                "data" : products,
+            }
+            return
+        else:
+            frappe.response["message"] = {
+                "status": False,
+                "message": "Product Code Not Found",
+            }
+            return
+
 
 
 @frappe.whitelist(allow_guest=True)
@@ -5462,24 +5484,42 @@ def monthly_achivement():
             "message": "territory not found in geo mitra",
             }
             return
+        # if not geo_mitra.get('dgo_code'):
+        #     frappe.response["message"] = {
+        #     "status": False,
+        #     "message": "Staff code not found in geo mitra",
+        #     }
+        #     return
         
-        result=[]
         try:
             dealers = frappe.db.sql(""" SELECT dt.name, dt.sales_team ,
-                                    sum(dpi.current_jan_value) as jan, sum(dpi.current_feb_value) as feb,
-                                    sum(dpi.current_mar_value) as mar, sum(dpi.current_apr_value) as apr,
-                                    sum(dpi.current_may_value) as may, sum(dpi.current_jun_value) as jun,
-                                    sum(dpi.current_jul_value) as jul, sum(dpi.current_aug_value) as aug,
-                                    sum(dpi.current_sep_value) as sep, sum(dpi.current_oct_value) as oct,
-                                    sum(dpi.current_nov_value) as nov, sum(dpi.current_dec_value) as december FROM `tabDealer Target` dt
+                                    sum(dpi.current_jan_value) as Jan, sum(dpi.current_feb_value) as Feb,
+                                    sum(dpi.current_mar_value) as Mar, sum(dpi.current_apr_value) as Apr,
+                                    sum(dpi.current_may_value) as May, sum(dpi.current_jun_value) as Jun,
+                                    sum(dpi.current_jul_value) as Jul, sum(dpi.current_aug_value) as Aug,
+                                    sum(dpi.current_sep_value) as Sep, sum(dpi.current_oct_value) as Oct,
+                                    sum(dpi.current_nov_value) as Nov, sum(dpi.current_dec_value) as December FROM `tabDealer Target` dt
                                     LEFT JOIN `tabDealer Product Item` dpi ON dpi.parent=dt.name
                                     WHERE dt.sales_team=%s
                                     """,(geo_mitra_id),as_dict=1)
-            frappe.response['message']={
-                'status':True,
-                'data':dealers,
-                'message':f'{geo_mitra_id}'
-            }
+            response11 = requests.request("GET", f"{url}/api/method/monthly_achivement_salesman?empid={geo_mitra.get('dgo_code')}", headers=headers)
+            frappe.log_error("api monthly_achivement", response11.text)
+            resultn = json.loads(response11.text)
+               
+            if resultn['message']:
+                frappe.response["message"] = {
+                    "status":True,
+                    "target":dealers,
+                    # 'data':monthly_collection,
+                    'data':resultn['message']
+                }
+                return
+            else:
+                frappe.response['message']={
+                    'status':True,
+                    "target":dealers,
+                    'data':[],
+                }
 
         except Exception as e :
             frappe.response['message']={
@@ -5487,3 +5527,245 @@ def monthly_achivement():
                 'message':f'{e}'
             }
             
+@frappe.whitelist()
+def yearly_achivement():
+    api_key  = frappe.request.headers.get("Authorization")[6:21]
+    api_sec  = frappe.request.headers.get("Authorization")[22:]
+
+    user_email = get_user_info(api_key, api_sec)
+    if not user_email:
+        frappe.response["message"] = {
+            "status": False,
+            "message": "Unauthorised Access",
+        }
+        return
+    url = frappe.db.get_single_value('GeoLife Setting', 'url')
+    apikey = frappe.db.get_single_value('GeoLife Setting', 'api_key')
+    apisec = frappe.db.get_single_value('GeoLife Setting', 'api_secret')
+    headers = {'Authorization': f'token {apikey}:{apisec}','Content-Type': 'application/json'}
+
+
+    if frappe.request.method =="POST":
+        # _data = frappe.request.json
+
+        geo_mitra_id = get_geomitra_from_userid(user_email)
+        search_able_geo_mitra =  geo_mitra_id
+        geo_mitra = frappe.get_doc("Geo Mitra",search_able_geo_mitra)
+        if not geo_mitra.get('territory'):
+            frappe.response["message"] = {
+            "status": False,
+            "message": "territory not found in geo mitra",
+            }
+            return
+        # if not geo_mitra.get('dgo_code'):
+        #     frappe.response["message"] = {
+        #     "status": False,
+        #     "message": "Staff code not found in geo mitra",
+        #     }
+        #     return
+        
+        try:
+            dealers = frappe.db.sql(""" SELECT dt.name, dt.sales_team ,dt.dealer_name, dt.dealer_full_name ,dt.current_total_value
+                                    FROM `tabDealer Target` dt
+                                    WHERE dt.sales_team=%s
+                                    """,(geo_mitra_id),as_dict=1)
+            response11 = requests.request("GET", f"{url}/api/method/total_yearly_achivement_salesman?empid={geo_mitra.get('dgo_code')}", headers=headers)
+            frappe.log_error("api monthly_achivement", response11.text)
+            resultn = json.loads(response11.text)
+               
+            if resultn['message']:
+                frappe.response["message"] = {
+                    "status":True,
+                    "target":dealers,
+                    'data':resultn['message']
+                }
+                return
+            else:
+                frappe.response['message']={
+                    'status':True,
+                    "target":dealers,
+                    'data':[],
+                }
+
+        except Exception as e :
+            frappe.response['message']={
+                'status':False,
+                'message':f'{e}'
+            }
+            
+
+@frappe.whitelist()
+def monthly_dealer_wise_achivement():
+    api_key  = frappe.request.headers.get("Authorization")[6:21]
+    api_sec  = frappe.request.headers.get("Authorization")[22:]
+
+    user_email = get_user_info(api_key, api_sec)
+    if not user_email:
+        frappe.response["message"] = {
+            "status": False,
+            "message": "Unauthorised Access",
+        }
+        return
+    url = frappe.db.get_single_value('GeoLife Setting', 'url')
+    apikey = frappe.db.get_single_value('GeoLife Setting', 'api_key')
+    apisec = frappe.db.get_single_value('GeoLife Setting', 'api_secret')
+    headers = {'Authorization': f'token {apikey}:{apisec}','Content-Type': 'application/json'}
+
+
+    if frappe.request.method =="POST":
+        _data = frappe.request.json
+        geo_mitra_id = get_geomitra_from_userid(user_email)
+        search_able_geo_mitra =  geo_mitra_id
+        geo_mitra = frappe.get_doc("Geo Mitra",search_able_geo_mitra)
+        if not geo_mitra.get('territory'):
+            frappe.response["message"] = {
+            "status": False,
+            "message": "territory not found in geo mitra",
+            }
+            return
+        
+        try:
+            today = datetime.today()
+            year = today.year            
+            # monthly_collection = frappe.db.get_list("MRM Dealer Planning", filters={'docstatus':1,'sales_team':geo_mitra_id, 'month':f"{_data['month']}-{year}"}, fields=["*"])
+            
+            dealer_monthly =frappe.db.sql(""" SELECT dt.dealer_name,dt.dealer_full_name, dt.sales_team ,
+                                    sum(dpi.current_jan_value) as Jan, sum(dpi.current_feb_value) as Feb,
+                                    sum(dpi.current_mar_value) as Mar, sum(dpi.current_apr_value) as Apr,
+                                    sum(dpi.current_may_value) as May, sum(dpi.current_jun_value) as Jun,
+                                    sum(dpi.current_jul_value) as Jul, sum(dpi.current_aug_value) as Aug,
+                                    sum(dpi.current_sep_value) as Sep, sum(dpi.current_oct_value) as Oct,
+                                    sum(dpi.current_nov_value) as Nov, sum(dpi.current_dec_value) as December 
+                                    FROM `tabDealer Target` dt
+                                    LEFT JOIN `tabDealer Product Item` dpi ON dpi.parent=dt.name
+                                    WHERE dt.sales_team=%s 
+                                    GROUP BY dt.dealer_name
+                                    """,(geo_mitra_id),as_dict=1)
+            response11 = requests.request("GET", f"{url}/api/method/dealer_monthly_achivement_salesman?empid={geo_mitra.get('dgo_code')}&month={_data['month']}", headers=headers)
+            frappe.log_error("api monthly_dealer_wise_achivement", response11.text)
+            resultn = json.loads(response11.text)
+               
+            if resultn['message']:
+                frappe.response["message"] = {
+                    "status":True,
+                    'data':dealer_monthly,
+                    'year':year,
+                    'achive':resultn['message'],
+                }
+                return
+            else:
+                frappe.response['message']={
+                    'status':True,
+                    'data':[],
+                    'year':year
+                }
+
+        except Exception as e :
+            frappe.response['message']={
+                'status':False,
+                'message':f'{e}'
+            }
+            
+         
+@frappe.whitelist()
+def approve_multiple_geo_mitra_attendance():
+    api_key  = frappe.request.headers.get("Authorization")[6:21]
+    api_sec  = frappe.request.headers.get("Authorization")[22:]
+
+    user_email = get_user_info(api_key, api_sec)
+    if not user_email:
+        frappe.response["message"] = {
+            "status": False,
+            "message": "Unauthorised Access",
+        }
+        return
+    url = frappe.db.get_single_value('GeoLife Setting', 'url')
+    apikey = frappe.db.get_single_value('GeoLife Setting', 'api_key')
+    apisec = frappe.db.get_single_value('GeoLife Setting', 'api_secret')
+    headers = {'Authorization': f'token {apikey}:{apisec}','Content-Type': 'application/json'}
+
+
+    if frappe.request.method =="POST":
+        try:
+            attendance = frappe.form_dict.attendance
+            geo_mitra = frappe.form_dict.geo_mitra
+            for att in attendance:
+                try:
+                    x = frappe.get_doc("Attendance",att)
+                    attendance ={
+                        'emp' : x.get('employee_code'),
+                        'status' : x.get('status'),
+                        'attendance_date' : datetime.strftime(x.get('attendance_date'),'%Y-%m-%d')
+                    }
+                    frappe.log_error('attendance approval geo mitra',attendance)
+                    response = requests.request("GET", f"{url}/api/method/approve_attendance?emp={x.get('employee_code')}&status={x.get('status')}&attendance_date={datetime.strftime(x.get('attendance_date'),'%Y-%m-%d') }", headers=headers)
+                    frappe.log_error('attendance approval geo mitra',response.text)
+                    x.submit()
+                    frappe.response.message={
+                        'status':True,
+                        'message':'Attendance Approved'
+                    }
+                except Exception as er:
+                    frappe.log_error('attendance error approval geo mitra',er)
+                    frappe.response.message={
+                        'status':False,
+                        'message':er
+                    }
+        except Exception as e:
+            frappe.response.message={
+                'status':False,
+                'message':e
+            }
+
+
+        
+@frappe.whitelist()
+def approve_geo_mitra_attendance():
+    api_key  = frappe.request.headers.get("Authorization")[6:21]
+    api_sec  = frappe.request.headers.get("Authorization")[22:]
+
+    user_email = get_user_info(api_key, api_sec)
+    if not user_email:
+        frappe.response["message"] = {
+            "status": False,
+            "message": "Unauthorised Access",
+        }
+        return
+    url = frappe.db.get_single_value('GeoLife Setting', 'url')
+    apikey = frappe.db.get_single_value('GeoLife Setting', 'api_key')
+    apisec = frappe.db.get_single_value('GeoLife Setting', 'api_secret')
+    headers = {'Authorization': f'token {apikey}:{apisec}','Content-Type': 'application/json'}
+
+
+    if frappe.request.method =="POST":
+        try:
+            name = frappe.form_dict.name
+            status = frappe.form_dict.status
+            leave_type = frappe.form_dict.leave_type
+            try:
+                x = frappe.get_doc("Attendance",name)
+                x.status= status
+                attendance ={
+                    'emp' : x.get('employee_code'),
+                    'status' : x.get('status'),
+                    'attendance_date' : x.get('attendance_date')
+                }
+                frappe.log_error('attendance approval geo mitra',attendance)
+                response = requests.request("GET", f"{url}/api/method/approve_attendance?emp={x.get('employee_code')}&status={x.get('status')}&attendance_date={x.get('attendance_date')}", headers=headers)
+                frappe.log_error('attendance approval geo mitra',response.text)
+                x.submit()
+                frappe.response.message={
+                    'status':True,
+                    'message':'Attendance Approved'
+                }
+            except Exception as er:
+                frappe.log_error('attendance error approval geo mitra',er)
+                frappe.response.message={
+                    'status':False,
+                    'message':er
+                }
+        except Exception as e:
+            frappe.response.message={
+                'status':False,
+                'message':e
+            }

@@ -15,64 +15,6 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Master",
-   "link_count": 5,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Crop",
-   "link_count": 0,
-   "link_to": "Crop",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Product",
-   "link_count": 0,
-   "link_to": "Product",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Product Bundle",
-   "link_count": 0,
-   "link_to": "Product Bundle",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Crop Stage",
-   "link_count": 0,
-   "link_to": "Crop Stage",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Crop Cycle",
-   "link_count": 0,
-   "link_to": "Crop Cycle",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
    "label": "Transactions",
    "link_count": 2,
    "onboard": 0,
@@ -135,10 +77,78 @@
    "link_type": "Report",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Master",
+   "link_count": 6,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Crop",
+   "link_count": 0,
+   "link_to": "Crop",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Product",
+   "link_count": 0,
+   "link_to": "Product",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Product Bundle",
+   "link_count": 0,
+   "link_to": "Product Bundle",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Crop Stage",
+   "link_count": 0,
+   "link_to": "Crop Stage",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Crop Cycle",
+   "link_count": 0,
+   "link_to": "Crop Cycle",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Daily Activity",
+   "link_count": 0,
+   "link_to": "Daily Activity",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2024-06-21 12:35:02.429226",
- "modified_by": "tushar@erpdesks.in",
+ "modified": "2024-08-20 14:53:29.972145",
+ "modified_by": "developer@geolife.com",
  "module": "Geolife Agritech",
  "name": "Geolife",
  "number_cards": [],

@@ -37,7 +37,8 @@
   "parent_geo_mitra",
   "sales_person_name",
   "parent_geo_mitra2",
-  "is_dgo"
+  "is_dgo",
+  "policy_title"
  ],
  "fields": [
   {
@@ -208,12 +209,18 @@
    "fieldtype": "Table",
    "label": "Multiple Territory",
    "options": "Multiple Territory"
+  },
+  {
+   "fieldname": "policy_title",
+   "fieldtype": "Link",
+   "label": "Policy Title",
+   "options": "Geo Mitra Policy"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2024-03-02 17:45:30.980568",
+ "modified": "2024-08-22 12:23:15.604663",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Geo Mitra",

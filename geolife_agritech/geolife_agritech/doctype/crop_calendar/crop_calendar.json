@@ -66,7 +66,7 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Zone",
-   "options": "Zone"
+   "options": "Territory"
   },
   {
    "fieldname": "region",
@@ -74,7 +74,7 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Region",
-   "options": "Region"
+   "options": "Territory"
   },
   {
    "fieldname": "district",
@@ -160,7 +160,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-06-21 17:51:33.039974",
+ "modified": "2024-09-13 11:55:59.944936",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Crop Calendar",
