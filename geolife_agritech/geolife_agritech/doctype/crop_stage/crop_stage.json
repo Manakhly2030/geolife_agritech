@@ -9,12 +9,9 @@
  "engine": "InnoDB",
  "field_order": [
   "crop_stage",
-  "locale",
   "stagedescription",
-  "companyname",
   "stagecontent",
   "translatedfrom",
-  "crop",
   "sequence",
   "triggerbeforeorafter",
   "stagenutirents",
@@ -36,19 +33,9 @@
    "unique": 1
   },
   {
-   "fieldname": "locale",
-   "fieldtype": "Data",
-   "label": "Locale "
-  },
-  {
    "fieldname": "stagedescription",
    "fieldtype": "Long Text",
    "label": "Stage Description"
-  },
-  {
-   "fieldname": "companyname",
-   "fieldtype": "Data",
-   "label": "Ccompany Name"
   },
   {
    "fieldname": "stagecontent",
@@ -59,12 +46,6 @@
    "fieldname": "translatedfrom",
    "fieldtype": "Data",
    "label": "Translated From "
-  },
-  {
-   "fieldname": "crop",
-   "fieldtype": "Link",
-   "label": "Crop",
-   "options": "Crop"
   },
   {
    "fieldname": "sequence",
@@ -130,7 +111,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-03-01 15:41:17.193915",
+ "modified": "2024-09-18 13:51:09.367917",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Crop Stage",

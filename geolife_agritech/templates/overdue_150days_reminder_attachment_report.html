@@ -1,0 +1,58 @@
+<div class="print-format landscape">
+    <div id="header-html" class="hidden-pdf">
+        {% if letter_head %}
+        <div class="letter-head text-center">{{ letter_head.content }}</div>
+        <hr style="height:2px;border-width:0;color:black;background-color:black;">
+        {% endif %}
+    </div>
+    <div id="footer-html" class="visible-pdf">
+        {% if letter_head.footer %}
+        <div class="letter-head-footer">
+            <hr style="border-width:0;color:black;background-color:black;padding-bottom:2px;">
+            {{ letter_head.footer }}
+        </div>
+        {% endif %}
+    </div>
+
+    <h2 class="text-center">{{ _("Dealer overdue 150days reminder report") }}</h2>
+    <h3 class="text-center">For Date {{frappe.format(frappe.utils.today(), {'fieldtype': 'Date'}) }}  </h3>
+
+
+        <br>
+    <style>
+        tr,
+        td {
+            font-size: 11px;
+        }
+    </style>
+		<!-- {% set vars = {'bal_qty': 0} %} -->
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>{{ _("Sr.") }}</th>
+            <th>{{ _("Dealer") }}</th>
+            <th>{{ _("Dealer Name") }}</th>
+            <th>{{ _("Territory") }}</th>
+            <th>{{ _("FY Outstanding Amount") }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in data %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ row.dealer_code }}</td>
+            <td>{{ row.dealer_name }}</td>
+            <td>{{ row.territory }}</td>
+            <td >{{ frappe.format(row.outstanding_amount, {'fieldtype': 'Currency'}) }}</td>
+
+        </tr>
+        {% endfor %}
+       
+        
+    </tbody>
+</table>
+  
+
+
+</div>

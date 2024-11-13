@@ -19,6 +19,7 @@
   "geo_market",
   "column_break_p3woe",
   "zone",
+  "region",
   "area",
   "headquarter",
   "territory",
@@ -38,7 +39,9 @@
   "sales_person_name",
   "parent_geo_mitra2",
   "is_dgo",
-  "policy_title"
+  "policy_title",
+  "travel_expense_for",
+  "travel_expense_allowance"
  ],
  "fields": [
   {
@@ -215,12 +218,32 @@
    "fieldtype": "Link",
    "label": "Policy Title",
    "options": "Geo Mitra Policy"
+  },
+  {
+   "fieldname": "region",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Region",
+   "options": "Territory"
+  },
+  {
+   "depends_on": "eval:frappe.user_roles.includes(\"HR\")",
+   "fieldname": "travel_expense_for",
+   "fieldtype": "Select",
+   "label": "Travel Expense For",
+   "options": "\nTwo Wheeler\nFour Wheeler"
+  },
+  {
+   "depends_on": "eval:frappe.user_roles.includes(\"HR\")",
+   "fieldname": "travel_expense_allowance",
+   "fieldtype": "Float",
+   "label": "Travel Expense Allowance"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2024-08-22 12:23:15.604663",
+ "modified": "2024-10-14 14:07:09.248868",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Geo Mitra",

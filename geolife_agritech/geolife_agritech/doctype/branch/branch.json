@@ -1,0 +1,51 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "allow_rename": 1,
+ "autoname": "field:branch",
+ "creation": "2024-10-28 12:19:38.260892",
+ "default_view": "List",
+ "doctype": "DocType",
+ "document_type": "Setup",
+ "engine": "InnoDB",
+ "field_order": [
+  "branch"
+ ],
+ "fields": [
+  {
+   "fieldname": "branch",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Branch",
+   "oldfieldname": "branch",
+   "oldfieldtype": "Data",
+   "reqd": 1,
+   "unique": 1
+  }
+ ],
+ "icon": "fa fa-code-fork",
+ "links": [],
+ "modified": "2024-10-28 12:22:28.599189",
+ "modified_by": "Administrator",
+ "module": "Geolife Agritech",
+ "name": "Branch",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "All",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

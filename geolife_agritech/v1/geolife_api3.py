@@ -2324,8 +2324,8 @@ def sales_order_list():
 
                 #         sales_orders.append(m)
                 response = requests.request("GET", f"{url}/api/method/mobile_api_for_sales_order_list?emp_id={tree_geo_mitra.get('dgo_code') if tree_geo_mitra.get('dgo_code') else ''}&dealer=all&from_date={_data['from_date']}&to_date={_data['to_date']}&order_status={_data['order_status']}", headers=headers)
-                # frappe.log_error("response",json.loads(response.text))
-                # frappe.log_error("URL", f"{url}/api/method/mobile_api_for_sales_order_list?emp_id={geomitra.get('dgo_code') if geomitra.get('dgo_code') else ''}&dealer={dealer.dealer_code}")
+                frappe.log_error("response",json.loads(response.text))
+                frappe.log_error("URL geo", f"{url}/api/method/mobile_api_for_sales_order_list?emp_id={tree_geo_mitra.get('dgo_code') if tree_geo_mitra.get('dgo_code') else ''}&dealer=all&from_date={_data['from_date']}&to_date={_data['to_date']}&order_status={_data['order_status']}")
                 result = json.loads(response.text)
                 if result.get("message"):
                     for ord in result.get("message"):
@@ -2483,16 +2483,16 @@ def all_sales_order_list():
                                     mym['images']=mymimage
 
                             sales_orders.append(mym)
-                if _data['order_status']!='Pending' or _data['order_status']!='Rejected':
+                if _data['order_status']!='Pending' or _data['order_status']!='Rejected' or _data['order_status']=='':
                     response = requests.request("GET", f"{url}/api/method/mobile_api_for_sales_order_list?emp_id={geomitra.get('dgo_code') if geomitra.get('dgo_code') else ''}&dealer=all&from_date={_data['from_date']}&to_date={_data['to_date']}&order_status={_data['order_status']}", headers=headers)
                     frappe.log_error("response sales order erp list",json.loads(response.text))
-                    # frappe.log_error("URL", f"{url}/api/method/mobile_api_for_sales_order_list?emp_id={geomitra.get('dgo_code') if geomitra.get('dgo_code') else ''}&dealer={dealer.dealer_code}")
+                    frappe.log_error("URL", f"{url}/api/method/mobile_api_for_sales_order_list?emp_id={geomitra.get('dgo_code') if geomitra.get('dgo_code') else ''}&dealer=all&from_date={_data['from_date']}&to_date={_data['to_date']}&order_status={_data['order_status']}")
                     result = json.loads(response.text)
                     if result.get("message"):
                         for ord in result.get("message"):
                             response_img = requests.request("GET", f"{url}/api/method/erpnext.geolife_api.get_doctype_images?doctype=Sales Order&docname={ord.get('name')}&is_private=1", headers=headers)
                             img = json.loads(response_img.text)
-                            # frappe.log_error("response image sales order erp list",json.loads(response_img.text))
+                            frappe.log_error("response image sales order erp list",json.loads(response_img.text))
 
                             if img.get('message'):
                                 ord['images']=[]
@@ -3679,15 +3679,18 @@ def search_farmer():
         text = f'%{_data["text"]}%'
         geo_mitra_id = get_geomitra_from_userid(user_email)
 
+        geo_mitra_list = [d.name for d in frappe.db.get_all("Geo Mitra", filters=[["Geo Mitra","name","descendants of",geo_mitra_id]], fields=["name"])]
+        geo_mitra_list.append(geo_mitra_id)
+
         if _data.get("all_farmer") :
             geomitras = frappe.db.sql("""
                 SELECT 
                     *
                 FROM
                     `tabMy Farmer`
-                WHERE first_name like %s OR last_name like %s OR mobile_number like %s
+                WHERE (first_name like %s OR last_name like %s OR mobile_number like %s) AND geomitra_number IN %s
                 LIMIT 100
-            """, (text, text, text), as_dict=1)
+            """, (text, text, text, tuple(geo_mitra_list)), as_dict=1)
         else :
             if _data.get('village'):
                 geomitras = frappe.db.sql("""
@@ -3695,16 +3698,16 @@ def search_farmer():
                         *
                     FROM
                         `tabMy Farmer`
-                    WHERE (first_name like %s OR last_name like %s OR mobile_number like %s) AND geomitra_number = %s AND village=%s
-                    """, (text, text, text, geo_mitra_id,_data.get('village') ), as_dict=1)
+                    WHERE (first_name like %s OR last_name like %s OR mobile_number like %s) AND geomitra_number IN %s AND village=%s
+                    """, (text, text, text, tuple(geo_mitra_list),_data.get('village') ), as_dict=1)
             else:
                 geomitras = frappe.db.sql("""
                     SELECT 
                         *
                     FROM
                         `tabMy Farmer`
-                    WHERE (first_name like %s OR last_name like %s OR mobile_number like %s) AND geomitra_number = %s
-                """, (text, text, text, geo_mitra_id), as_dict=1)
+                    WHERE (first_name like %s OR last_name like %s OR mobile_number like %s) AND geomitra_number IN %s
+                """, (text, text, text, tuple(geo_mitra_list)), as_dict=1)
         
         for g in geomitras:
            g.free_sample, g.free_sample_name = get_farmer_from_id(g.name)
@@ -4941,7 +4944,7 @@ def dashboard_data(geo_mitra):
             return
         
         territories = [d.territory for d in geo_mitra1.get('territory')]
-        result=[]
+        result=territories
         
         for territory in territories:
             lft = frappe.db.get_value("Territory", territory, "lft")
@@ -4961,28 +4964,65 @@ def dashboard_data(geo_mitra):
             }
             return
 
-        dealers =frappe.db.sql(f"""SELECT  name as dealer,
-                territory as sales_person_name,
-                custom_longitude, custom_latitude,
-                dealer_name, qr_code, mobile_number, dealer_code FROM `tabDealer` 
+        dealers =[d.name for d in frappe.db.sql(f"""SELECT  name  FROM `tabDealer` 
                 WHERE 
                 territory IN ({mresult}) AND custom_customer_active_type IN ('Active', 'OB', 'Overdue', 'legal')
-                """, as_dict=1)
+                """, as_dict=1)]
+        dealers_code =[d.dealer_code for d in frappe.db.sql(f"""SELECT  dealer_code  FROM `tabDealer` 
+            WHERE 
+            territory IN ({mresult}) AND custom_customer_active_type IN ('Active', 'OB', 'Overdue', 'legal')
+            """, as_dict=1)]
+
+        mterritories=[d.territory for d in geo_mitra1.get('territory')]+['All']
+        mdealers =[d.name for d in frappe.db.sql(f"""SELECT  name  FROM `tabDealer` 
+                WHERE 
+                territory IN {tuple(mterritories)} AND custom_customer_active_type IN ('Active', 'OB', 'Overdue', 'legal')
+                """, as_dict=1)]
+
             
 
         if dealers:
             Dealers_count=len(dealers)
 
 
-        dealer_visit_data = frappe.db.get_list('Daily Activity',filters=[["activity_name", "=", " Dealer Visit"], ["geo_mitra", "=", geo_mitra], ["creation","Timespan","this month"]], fields=['count(name) as count'], group_by='dealer')
+        dealer_visit_data = frappe.db.get_all('Daily Activity',filters=[['geo_mitra','=',geo_mitra],["dealer", "is", "set"], ["creation","Timespan","this month"]], fields=['name'], group_by='dealer')
         if len(dealer_visit_data)>0 :
-            dealer_not_visit = Dealers_count-len(dealer_visit_data)
+            dealer_not_visit = len(dealer_visit_data)
         else :
             dealer_not_visit=0
+        
+        
+        # dealer_not_visit=0
+        # query = f"""
+        #     SELECT t1.dealer, 
+        #         t1.creation as last_visit,
+        #         TIMESTAMPDIFF(DAY, t1.creation, CURDATE()) AS diff
+        #     FROM `tabDaily Activity` t1
+        #     JOIN (
+        #         SELECT dealer, MAX(creation) as max_creation
+        #         FROM `tabDaily Activity`
+        #         WHERE dealer IN {tuple(dealers+['All'])}
+        #         GROUP BY dealer
+        #     ) t2 ON t1.dealer = t2.dealer AND t1.creation = t2.max_creation
+        #     WHERE t1.creation < DATE_SUB(CURDATE(), INTERVAL 15 DAY)
+        #     ORDER BY t1.creation DESC;
+        # """
+        # visited_dealers = frappe.db.sql(query, as_dict=True)
+        # for dealer in dealers:
+        #     found = False
+        #     for visited_dealer in visited_dealers:
+        #         if dealer == visited_dealer.dealer:
+        #             if visited_dealer.diff >15:
+        #                 dealer_not_visit= dealer_not_visit+1
+        #                 found = True
+        #                 break
+        # visited_dealer_list = [d.dealer for d in visited_dealers]
+        
+
         Dashboard["dealer_not_visit"] = f"{dealer_not_visit}/{Dealers_count}"
 
         Dashboard["tft_downloads"] = frappe.db.count("Door To Door Visit", {"geo_mitra":geo_mitra})
-        Dashboard["farmer_connected"] = frappe.db.count("My Farmer", {"geomitra_number":geo_mitra})
+        Dashboard["farmer_connected"] = frappe.db.count("My Farmer", {"geomitra_number":geo_mitra}) +  frappe.db.count("My Farmer", [["geomitra_number", "descendants of",geo_mitra]])
         Dashboard["new_dealer"] = Dealers_count
         # fiscle_year = frappe.get_all("Fiscal Year", filters=[''])
 
@@ -5016,6 +5056,19 @@ def dashboard_data(geo_mitra):
         """, geo_mitra, as_dict=True)
       
         Dashboard["target"] = target
+
+        # mlist = frappe.db.sql(f""" SELECT COUNT(*) as count
+        #     FROM `tabCustomer 120 Day items`
+        #     WHERE (range5 > 0
+        #     OR range6 > 0
+        #     OR range7 > 0
+        #     OR range8 > 0) AND dealer IN {tuple(dealers_code+['All'])}  """, as_dict=True)
+        
+        mlist = frappe.db.get_all("Customer 120 Day Overdue For Currenct Fiscal Year", filters=[['territory', 'in',result ],['outstanding_amount','>','1']], fields=["*"])
+
+        # Dashboard["days120_overdues"] =mlist[0].count
+        Dashboard["days120_overdues"] =len(mlist)
+
 
         return Dashboard
 
@@ -5506,12 +5559,12 @@ def monthly_achivement():
             frappe.log_error("api monthly_achivement", response11.text)
             resultn = json.loads(response11.text)
                
-            if resultn['message']:
+            if resultn.get('message'):
                 frappe.response["message"] = {
                     "status":True,
                     "target":dealers,
                     # 'data':monthly_collection,
-                    'data':resultn['message']
+                    'data':resultn.get('message')
                 }
                 return
             else:

@@ -191,3 +191,5 @@ scheduler_events = {
 #	"geolife_agritech.auth.validate"
 # ]
 
+fixtures = ["Custom Field"]
+

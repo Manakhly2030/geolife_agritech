@@ -1,0 +1,158 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:dealer",
+ "creation": "2024-09-27 16:40:47.264022",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "dealer",
+  "dealer_name",
+  "territory",
+  "invoiced",
+  "paid",
+  "credit_note",
+  "outstanding",
+  "range1",
+  "range2",
+  "range3",
+  "range4",
+  "range5",
+  "range6",
+  "range7",
+  "range8",
+  "total_due",
+  "currency",
+  "customer_group",
+  "advance"
+ ],
+ "fields": [
+  {
+   "fieldname": "dealer",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Dealer",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "dealer_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Dealer Name"
+  },
+  {
+   "fieldname": "territory",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Territory",
+   "options": "Territory"
+  },
+  {
+   "fieldname": "invoiced",
+   "fieldtype": "Float",
+   "label": "invoiced"
+  },
+  {
+   "fieldname": "paid",
+   "fieldtype": "Float",
+   "label": "paid"
+  },
+  {
+   "fieldname": "credit_note",
+   "fieldtype": "Float",
+   "label": "credit_note"
+  },
+  {
+   "fieldname": "outstanding",
+   "fieldtype": "Float",
+   "label": "outstanding"
+  },
+  {
+   "fieldname": "range1",
+   "fieldtype": "Float",
+   "label": "range1"
+  },
+  {
+   "fieldname": "range2",
+   "fieldtype": "Float",
+   "label": "range2"
+  },
+  {
+   "fieldname": "range3",
+   "fieldtype": "Float",
+   "label": "range3"
+  },
+  {
+   "fieldname": "range4",
+   "fieldtype": "Float",
+   "label": "range4"
+  },
+  {
+   "fieldname": "range5",
+   "fieldtype": "Float",
+   "label": "range5"
+  },
+  {
+   "fieldname": "range6",
+   "fieldtype": "Float",
+   "label": "range6"
+  },
+  {
+   "fieldname": "range7",
+   "fieldtype": "Float",
+   "label": "range7"
+  },
+  {
+   "fieldname": "range8",
+   "fieldtype": "Float",
+   "label": "range8"
+  },
+  {
+   "fieldname": "total_due",
+   "fieldtype": "Float",
+   "label": "total_due"
+  },
+  {
+   "fieldname": "currency",
+   "fieldtype": "Data",
+   "label": "currency"
+  },
+  {
+   "fieldname": "customer_group",
+   "fieldtype": "Data",
+   "label": "customer_group"
+  },
+  {
+   "fieldname": "advance",
+   "fieldtype": "Int",
+   "label": "advance"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-09-27 18:40:48.914200",
+ "modified_by": "Administrator",
+ "module": "Geolife Agritech",
+ "name": "Customer 120 Day items",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

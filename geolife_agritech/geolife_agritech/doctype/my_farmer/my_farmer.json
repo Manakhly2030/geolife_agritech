@@ -61,9 +61,10 @@
   },
   {
    "fieldname": "geomitra_number",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "in_list_view": 1,
-   "label": "GeoMitra Number"
+   "label": "GeoMitra Number",
+   "options": "Geo Mitra"
   },
   {
    "fieldname": "geomitra_number_company",
@@ -173,7 +174,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-07-30 14:46:30.661467",
+ "modified": "2024-10-03 23:02:50.438641",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "My Farmer",

@@ -1,0 +1,98 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:dealer",
+ "creation": "2024-10-19 14:11:55.156936",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "dealer",
+  "dealer_code",
+  "dealer_name",
+  "territory",
+  "outstanding_amount",
+  "due_days",
+  "status",
+  "invoiced_amount"
+ ],
+ "fields": [
+  {
+   "fieldname": "dealer",
+   "fieldtype": "Link",
+   "label": "Dealer",
+   "options": "Dealer",
+   "unique": 1
+  },
+  {
+   "fetch_from": "dealer.dealer_code",
+   "fieldname": "dealer_code",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Dealer Code"
+  },
+  {
+   "fetch_from": "dealer.dealer_name",
+   "fieldname": "dealer_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Dealer Name"
+  },
+  {
+   "fetch_from": "dealer.territory",
+   "fieldname": "territory",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Territory",
+   "options": "Territory"
+  },
+  {
+   "fieldname": "outstanding_amount",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Outstanding Amount"
+  },
+  {
+   "fieldname": "due_days",
+   "fieldtype": "Data",
+   "label": "Due Days"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Data",
+   "label": "Status"
+  },
+  {
+   "fieldname": "invoiced_amount",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Invoiced Amount"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-10-22 12:18:08.101876",
+ "modified_by": "Administrator",
+ "module": "Geolife Agritech",
+ "name": "Customer 120 Day Overdue For Currenct Fiscal Year",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
