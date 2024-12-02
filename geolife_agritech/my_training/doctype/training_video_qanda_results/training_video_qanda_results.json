@@ -1,0 +1,101 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-11-28 18:09:25.717489",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "video",
+  "session",
+  "course",
+  "geo_mitra",
+  "time",
+  "ans",
+  "correct_ans",
+  "earned_point",
+  "question"
+ ],
+ "fields": [
+  {
+   "fieldname": "video",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Video",
+   "options": "Training Videos"
+  },
+  {
+   "fieldname": "session",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Session",
+   "options": "Training Session"
+  },
+  {
+   "fieldname": "course",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Course",
+   "options": "Traning Courses"
+  },
+  {
+   "fieldname": "geo_mitra",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Geo Mitra",
+   "options": "Geo Mitra"
+  },
+  {
+   "fieldname": "time",
+   "fieldtype": "Data",
+   "label": "Points"
+  },
+  {
+   "fieldname": "ans",
+   "fieldtype": "Data",
+   "label": "Ans"
+  },
+  {
+   "fieldname": "correct_ans",
+   "fieldtype": "Data",
+   "label": "Correct Ans"
+  },
+  {
+   "fieldname": "earned_point",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Earned Point"
+  },
+  {
+   "fieldname": "question",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Question"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-11-28 18:11:52.500227",
+ "modified_by": "Administrator",
+ "module": "My Training",
+ "name": "Training Video QandA Results",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
