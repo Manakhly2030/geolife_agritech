@@ -23,6 +23,8 @@
   "posting_date",
   "geo_mitra",
   "naming_series",
+  "manager_deduction",
+  "hr_deduction",
   "column_break_3p6sn",
   "vehicale_type",
   "odometer_start",
@@ -92,7 +94,7 @@
   },
   {
    "fieldname": "odometer_start",
-   "fieldtype": "Data",
+   "fieldtype": "Int",
    "label": "Odometer Start"
   },
   {
@@ -102,7 +104,7 @@
   },
   {
    "fieldname": "odometer_end",
-   "fieldtype": "Data",
+   "fieldtype": "Int",
    "label": "Odometer End"
   },
   {
@@ -211,12 +213,24 @@
    "fieldname": "end_location_address",
    "fieldtype": "Text",
    "label": "End Location Address"
+  },
+  {
+   "fieldname": "manager_deduction",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "Manager Deduction"
+  },
+  {
+   "fieldname": "hr_deduction",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "HR Deduction"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-11-21 12:26:50.949603",
+ "modified": "2024-12-04 11:13:52.568145",
  "modified_by": "Administrator",
  "module": "Geolife Agritech",
  "name": "Geo Expenses",
@@ -234,6 +248,18 @@
    "report": 1,
    "role": "System Manager",
    "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Manager",
+   "share": 1,
+   "submit": 1,
    "write": 1
   }
  ],

@@ -1,0 +1,88 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-12-05 12:38:18.193583",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "session_video",
+  "video_id",
+  "course",
+  "session",
+  "qua",
+  "ans",
+  "point",
+  "geo_mitra"
+ ],
+ "fields": [
+  {
+   "fieldname": "session_video",
+   "fieldtype": "Link",
+   "label": "Session Video",
+   "options": "Training Videos"
+  },
+  {
+   "fieldname": "video_id",
+   "fieldtype": "Data",
+   "label": "Video Id"
+  },
+  {
+   "fieldname": "course",
+   "fieldtype": "Link",
+   "label": "Course",
+   "options": "Traning Courses"
+  },
+  {
+   "fieldname": "session",
+   "fieldtype": "Link",
+   "label": "Session",
+   "options": "Training Session"
+  },
+  {
+   "fieldname": "qua",
+   "fieldtype": "Link",
+   "label": "Qua",
+   "options": "Training Video QandA Results"
+  },
+  {
+   "fieldname": "ans",
+   "fieldtype": "Data",
+   "label": "Ans"
+  },
+  {
+   "fieldname": "point",
+   "fieldtype": "Float",
+   "label": "Point"
+  },
+  {
+   "fieldname": "geo_mitra",
+   "fieldtype": "Link",
+   "label": "Geo Mitra",
+   "options": "Geo Mitra"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-12-05 12:45:49.064010",
+ "modified_by": "Administrator",
+ "module": "My Training",
+ "name": "Training Videos Point",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

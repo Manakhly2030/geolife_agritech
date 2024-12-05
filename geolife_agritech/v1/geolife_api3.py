@@ -993,7 +993,49 @@ def expenses():
 
     if frappe.request.method =="GET":
         _data = frappe.form_dict
-        home_data = frappe.db.get_list("Geo Expenses",filters=[["posting_date",'between', [_data.get('from_date'),_data.get('to_date')]],{"geo_mitra":geo_mitra_id}], fields=["*"])
+        # home_data = frappe.db.get_list("Geo Expenses",filters=[["posting_date",'between', [_data.get('from_date'),_data.get('to_date')]],{"geo_mitra":geo_mitra_id}], fields=["*"])
+        home_data = frappe.db.sql("""
+                SELECT 
+                    manager_approved,
+                    remarks,
+                    hr_approved,
+                    hr_remarks,
+                    expense_type,
+                    custom_bill_image,
+                    custom_distance_in_km,
+                    amount,
+                    against_expense,
+                    notes,
+                    posting_date,
+                    geo_mitra,
+                    naming_series,
+                    manager_deduction,
+                    hr_deduction,
+                    vehicale_type,
+                    CAST(odometer_start AS CHAR) AS odometer_start,  -- Cast to string
+                    odometer_start_image,
+                    odometer_end,
+                    odometer_end_image,
+                    fuel_type,
+                    liters,
+                    amended_from,
+                    employee_location,
+                    latitude,
+                    location_address,
+                    longitude,
+                    end_longitude,
+                    end_latitude,
+                    end_location_address,
+                    name,creation
+                FROM `tabGeo Expenses` 
+                WHERE geo_mitra = %(geo_mitra_id)s AND posting_date BETWEEN %(from_date)s AND %(to_date)s
+                """, {
+                    "geo_mitra_id": geo_mitra_id,
+                    "from_date": _data.get('from_date') if _data.get('from_date') else datetime.now().strftime('%Y-%m-%d'),
+                    "to_date": _data.get('to_date') if _data.get('to_date') else datetime.now().strftime('%Y-%m-%d')
+                                
+            }, as_dict=True)
+        
         for hd in home_data:
             if hd.amount:
                 hd.amount = float(hd.get('amount'))
@@ -1543,7 +1585,7 @@ def geo_ledger_report():
                             "doctype": "Geomitra Customer Balance Confirmation"
 
                         }
-                        response1 = requests.request("POST", f"{url}/api/method/erpnext.geolife_api.gm_write_file", data=json.dumps(payload2), headers=headers)
+                        response1 = requests.request("POST", f"{url}/api/method/geo_v15.geolife_api.gm_write_file", data=json.dumps(payload2), headers=headers)
                 
                         # frappe.log_error("geolife api response image",response1.text)
 
@@ -1597,7 +1639,7 @@ def geo_ledger_report():
                     "filename":f"{doc.name}{str(random.randint(1000,9999))}",
                     "doctype": "Geomitra Customer Balance Confirmation"
                 }
-                response1 = requests.request("POST", f"{url}/api/method/erpnext.geolife_api.gm_write_file", data=json.dumps(payload2), headers=headers)
+                response1 = requests.request("POST", f"{url}/api/method/geo_v15.geolife_api.gm_write_file", data=json.dumps(payload2), headers=headers)
                 frappe.log_error("Geolife api update image",response1.text)
 
         frappe.response["message"] = {
@@ -2142,7 +2184,7 @@ def create_sales_order():
                                 "doctype":"Sales Order"
 
                             }
-                            response1 = requests.request("POST", f"{url}/api/method/erpnext.geolife_api.gm_write_file", data=json.dumps(payload2), headers=headers)
+                            response1 = requests.request("POST", f"{url}/api/method/geo_v15.geolife_api.gm_write_file", data=json.dumps(payload2), headers=headers)
                             # frappe.log_error('image so APi response', json.loads(response1.text))
                             img_result = json.loads(response1.text)
                             frappe.response["message"] = {
@@ -2329,7 +2371,7 @@ def sales_order_list():
                 result = json.loads(response.text)
                 if result.get("message"):
                     for ord in result.get("message"):
-                        response_img = requests.request("GET", f"{url}/api/method/erpnext.geolife_api.get_doctype_images?doctype=Sales Order&docname={ord.get('name')}&is_private=1", headers=headers)
+                        response_img = requests.request("GET", f"{url}/api/method/geo_v15.geolife_api.get_doctype_images?doctype=Sales Order&docname={ord.get('name')}&is_private=1", headers=headers)
                         img = json.loads(response_img.text)
                         frappe.log_error("response image sales order erp list",json.loads(response_img.text))
 
@@ -2490,7 +2532,7 @@ def all_sales_order_list():
                     result = json.loads(response.text)
                     if result.get("message"):
                         for ord in result.get("message"):
-                            response_img = requests.request("GET", f"{url}/api/method/erpnext.geolife_api.get_doctype_images?doctype=Sales Order&docname={ord.get('name')}&is_private=1", headers=headers)
+                            response_img = requests.request("GET", f"{url}/api/method/geo_v15.geolife_api.get_doctype_images?doctype=Sales Order&docname={ord.get('name')}&is_private=1", headers=headers)
                             img = json.loads(response_img.text)
                             frappe.log_error("response image sales order erp list",json.loads(response_img.text))
 
@@ -2501,7 +2543,7 @@ def all_sales_order_list():
                                 
                             else:
                                 ord['images']=[]
-                                sales_orders.append(ord)
+                            sales_orders.append(ord)
                         frappe.response["message"] = {
                             "status":True,
                             "message": "Sales order List",
@@ -2879,7 +2921,7 @@ def create_sales_order_in_erp():
                                     "doctype":"Sales Order"
 
                                 }
-                                response1 = requests.request("POST", f"{url}/api/method/erpnext.geolife_api.gm_write_file", data=json.dumps(payload2), headers=headers)
+                                response1 = requests.request("POST", f"{url}/api/method/geo_v15.geolife_api.gm_write_file", data=json.dumps(payload2), headers=headers)
                                 # frappe.log_error('image so APi response', json.loads(response1.text))
                                 img_result = json.loads(response1.text)
                                 frappe.response["message"] = {
@@ -3307,12 +3349,13 @@ def add_dealer_payment():
         })
         doc.insert()
         if _data['image']:
-            data = _data['image'][0]
-            filename = doc.name
-            docname = doc.name
-            doctype = "Geo Payment Entry"
-            image = ng_write_file(data, filename, docname, doctype, 'private')
-            doc.image = image
+            for img in _data['image']:
+                data = img
+                filename = doc.name
+                docname = doc.name
+                doctype = "Geo Payment Entry"
+                image = ng_write_file(data, filename, docname, doctype, 'private')
+                doc.image = image
         doc.save()
         frappe.db.commit()
 
@@ -3576,7 +3619,7 @@ def get_tour_plan_list():
                     }
                     # frappe.log_error("re",payload)
                     try:
-                        response = requests.request("POST", f"{url}/api/method/erpnext.geolife_api.customer_credit_limit_outstanding_bl", data=json.dumps(payload), headers=headers)
+                        response = requests.request("POST", f"{url}/api/method/geo_v15.geolife_api.customer_credit_limit_outstanding_bl", data=json.dumps(payload), headers=headers)
                         # frappe.log_error("response",json.loads(response.text))
                         result = json.loads(response.text)
                         result1= result.get('message')
@@ -4096,7 +4139,7 @@ def search_dealer():
     #     }
     #     # frappe.log_error("re",payload)
     #     try:
-    #         response = requests.request("POST", f"{url}/api/method/erpnext.geolife_api.customer_credit_limit_outstanding_bl", data=json.dumps(payload), headers=headers)
+    #         response = requests.request("POST", f"{url}/api/method/geo_v15.geolife_api.customer_credit_limit_outstanding_bl", data=json.dumps(payload), headers=headers)
     #         # frappe.log_error("response",json.loads(response.text))
     #         result2 = json.loads(response.text)
     #         result1= result2.get('message')
@@ -4209,7 +4252,7 @@ def get_dealer_marker_list():
             }
             # frappe.log_error("re",payload)
             try:
-                response = requests.request("POST", f"{url}/api/method/erpnext.geolife_api.customer_credit_limit_outstanding_bl", data=json.dumps(payload), headers=headers)
+                response = requests.request("POST", f"{url}/api/method/geo_v15.geolife_api.customer_credit_limit_outstanding_bl", data=json.dumps(payload), headers=headers)
                 # frappe.log_error("response",json.loads(response.text))
                 result2 = json.loads(response.text)
                 result1= result2.get('message')
@@ -4331,7 +4374,7 @@ def search_dealer_territory():
             }
             # frappe.log_error("re",payload)
             try:
-                response = requests.request("POST", f"{url}/api/method/erpnext.geolife_api.customer_credit_limit_outstanding_bl", data=json.dumps(payload), headers=headers)
+                response = requests.request("POST", f"{url}/api/method/geo_v15.geolife_api.customer_credit_limit_outstanding_bl", data=json.dumps(payload), headers=headers)
                 # frappe.log_error("response",json.loads(response.text))
                 result2 = json.loads(response.text)
                 result1= result2.get('message')
